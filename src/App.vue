@@ -22,7 +22,7 @@
     <div class="funcWrapper">
       <div class="funclistArea">
         <div class="listCreate">
-          <button class="listCreate__button" v-on:click="listCreate(listLength)">リスト作成</button>
+          <button class="listCreate__button" v-bind:class="{ is_deactive: btnChange }" v-on:click="listCreate(listLength)">リスト作成</button>
           <button class="listCreate__button" v-on:click="listLengthInit">初期化</button>
         </div>
         <div class="listSelect">
@@ -33,7 +33,7 @@
         </div>
 
         <!-- リスト数を0未満に指定した場合のみ出現 -->
-        <div class="errMessage" v-if="errFlag">マイナスは選べません</div>
+        <div v-bind:class="{ errMessage: errFlag }" v-if="errFlag">マイナスは選べません</div>
 
         <div class="createResult">
           <div class="createResult__header">リスト</div>
@@ -55,12 +55,13 @@ export default {
   data: function() {
     return {
       // 加算・減算 
-      calc: 0,
+      calc: 0, // 演算値（初期値：0）
 
       // リスト生成
-      listLength: 0,
-      lists: {},
-      errFlag: false,
+      listLength: 0, // リストの長さ（初期値：0）
+      lists: {}, // forループ
+      errFlag: false, // エラーメッセージ切替
+      btnChange: false, // 生成ボタン切替
     }
   },
   methods: {
@@ -81,31 +82,28 @@ export default {
 
     // ▼初期化ボタン押下時の処理 => lists/listLengthプロパティへ初期値を設定する
     listLengthInit: function() {
-      // 値のクリア
+      // 各プロパティの値とオブジェクトの内容をクリアする
       this.listLength = 0;
       this.lists = {},
 
       // リスト作成ボタンを活性化させる
       this.errFlag = false;
-      document.querySelector('.listCreate__button').classList.remove('is_deactive');
+      this.btnChange = false;
     },
 
     // ▼リスト数の入力値判定
     numberJudgement: function(num) {
-      // リスト作成ボタンのDOM取得
-      const $CreateBtn = document.querySelector('.listCreate__button');
-
       // 入力値0未満の場合はリスト作成ボタンを非活性化させる
       if(Number(num) < 0) {
         this.errFlag = true;
-        $CreateBtn.classList.add('is_deactive');
+        this.btnChange = true;
 
         return true;
       }
 
       // 入力値0以上の場合はリスト作成ボタンを活性化させる
       this.errFlag = false;
-      $CreateBtn.classList.remove('is_deactive');
+      this.btnChange = false;
 
       return false;
     }, 
