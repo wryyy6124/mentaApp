@@ -126,7 +126,9 @@ body { margin: 0; }
 /*---------------------------------------
   各セクションの入れ物（.funcWrapper）のスタイル定義
 ---------------------------------------*/
-.funcWrapper:not(:last-of-type) { margin-bottom: 30px; }
+.funcWrapper {
+  &:not(:last-of-type) { margin-bottom: 30px; }
+}
 
 /*---------------------------------------
   「計算処理」エリアのスタイル定義
@@ -137,41 +139,41 @@ body { margin: 0; }
   padding: 30px 0;
   width: 500px;
 
-}
-  /* & > div {
+  & > div {
     display: flex;
     justify-content: end;
     align-items: center;
 
     &:not(:last-of-type) { margin-bottom: 25px; }
-  } */
-
-
-.funcCalcArea > div {
-  display: flex;
-  justify-content: end;
-  align-items: center;
+  }
 }
-.funcCalcArea > div:not(:last-of-type) { margin-bottom: 25px; }
 
-.selectCalc__button {
-  cursor: pointer;
-  padding: 10px 0;
-  flex-basis: 31%;
+.selectCalc {
+  &__button {
+    cursor: pointer;
+    padding: 10px 0;
+    flex-basis: 31%;
+
+    &:not(:first-of-type) { margin-left: 3.5%; }
+  }
 }
-.selectCalc__button:not(:first-of-type) { margin-left: 3.5%; }
 
-.resultCalc > div:not(:first-of-type) { margin-left: 3.5%; }
+.resultCalc {
+  & > div {
+    &:not(:first-of-type) { margin-left: 3.5%; }
+  }
 
-.resultCalc__header,
-.resultCalc__body { width: 30%; }
+  &__header { 
+    text-align: right;
+    width: 30%;
+  }
 
-.resultCalc__header { text-align: right; }
-
-.resultCalc__body {
-  border: 1px solid #666;
-  text-align: center;
-  padding: 10px;
+  &__body {
+    border: 1px solid #666;
+    text-align: center;
+    padding: 10px;
+    width: 30%;
+  }
 }
 
 /*---------------------------------------
@@ -182,81 +184,93 @@ body { margin: 0; }
   margin: 0 auto;
   padding: 30px 0;
   width: 500px;
+
+  & > div{
+    &:not(:last-of-type) { margin-bottom: 25px; }
+  }
 }
 
-.listCreate,
+.listCreate {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+
+  &__button {
+    background-color: #ddd;
+    border: 1px solid #666;
+    border-radius: 5px;
+    color: #232323;
+    cursor: pointer;
+    font-weight: bold;
+    transition: .4s;
+    padding: 10px 0;
+    flex-basis: 31%;
+
+    &:not(:first-of-type) { margin-left: 3.5%; }
+
+    &.is_deactive {
+      background-color: #ddd;
+      border: 1px solid #bbb;
+      color: #bbb;
+      cursor: default;
+      font-weight: normal;
+      opacity: .8;
+      pointer-events: none;
+    }
+  }
+}
+
 .listSelect {
   display: flex;
   justify-content: end;
   align-items: center;
-}
-.funclistArea > div:not(:last-of-type) { margin-bottom: 25px; }
 
-.listCreate__button {
-  background-color: #ddd;
-  border: 1px solid #666;
-  border-radius: 5px;
-  color: #232323;
-  cursor: pointer;
-  font-weight: bold;
-  transition: .4s;
-  padding: 10px 0;
-  flex-basis: 31%;
-}
-.listCreate__button:not(:first-of-type) { margin-left: 3.5%; }
+  & > div {
+    &:not(:first-of-type) { margin-left: 3.5%; }
+  }
 
-.listCreate__button.is_deactive {
-  background-color: #ddd;
-  border: 1px solid #bbb;
-  color: #bbb;
-  cursor: default;
-  font-weight: normal;
-  opacity: .8;
-  pointer-events: none;
-}
+  &__header {
+    text-align: right;
+    width: 30%;
+  }
 
-.listSelect > div:not(:first-of-type) { margin-left: 3.5%; }
+  &__number {
+    border: 1px solid #666;
+    text-align: center;
+    width: 15%;
 
-.listSelect__header { width: 30%; }
-.listSelect__number { width: 15%; }
-
-.listSelect__header { text-align: right; }
-
-.listSelect__number {
-  border: 1px solid #666;
-  text-align: center;
-}
-
-.listSelect__number > input {
-  border: none;
-  font-size: 20px;
-  text-align: center;
-  padding: 10px 0;
-  width: 100%;
+    & > input {
+      border: none;
+      font-size: 20px;
+      text-align: center;
+      padding: 10px 0;
+      width: 100%;
+    }
+  }
 }
 
 .createResult {
   border: 1px solid #bbb;
   border-radius: 5px;
   text-align: center;
-}
 
-.createResult__header {
-  background-color: #f0f0f0;
-  border-radius: 5px 5px 0 0;
-  padding: 10px 0;
-  width: 100%;
-}
+  &__header {
+    background-color: #f0f0f0;
+    border-radius: 5px 5px 0 0;
+    padding: 10px 0;
+    width: 100%;
+  }
 
-.createResult__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 
-.createResult__list > li {
-  border-top: 1px solid #aaa;
-  padding: 10px 0;
+    & > li {
+      border-top: 1px solid #aaa;
+      padding: 10px 0;
+    }
+  }
 }
 
 .errMessage {
