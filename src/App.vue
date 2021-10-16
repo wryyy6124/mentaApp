@@ -113,7 +113,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 body { margin: 0; }
 
 #app {
@@ -136,7 +136,16 @@ body { margin: 0; }
   margin: 0 auto;
   padding: 30px 0;
   width: 500px;
+
 }
+  /* & > div {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+
+    &:not(:last-of-type) { margin-bottom: 25px; }
+  } */
+
 
 .funcCalcArea > div {
   display: flex;
