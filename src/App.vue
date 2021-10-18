@@ -69,10 +69,13 @@
 
         <div class="commentSearch">
           <div class="commentSearch__body">
-            <button class="commentSearch__executionBtn"><i class="fas fa-search"></i></button>
-            <input type="text" name="commentSearch" class="commentSearch__inputText" placeholder="コメント一覧から検索したいキーワードを入力してください">
+            <div class="commentSearch__executionIcon"><i class="fas fa-search"></i></div>
+            <input type="text" v-model.trim="searchText" v-on:input="searchTextFunc(searchText)" name="commentSearch" class="commentSearch__inputText" placeholder="コメント一覧から検索したいキーワードを入力してください">
           </div>
         </div>
+
+        <!-- 検証用 -->
+        <div>{{ searchText }}</div>
 
         <div class="commentList">
           <div class="commentList__header">コメント</div>
@@ -96,7 +99,7 @@ export default {
   name: 'App',
   data: function() {
     return {
-      // 完了分の隔離
+      // 課題（完了分）の格納
       isDisplay: false,
       accordionMsg: '課題完了分（クリックで開閉）',
 
@@ -112,29 +115,31 @@ export default {
       // コメント投稿
       commentPost: '',
       commentValues: [],
+      searchText: '',
     }
   },
   methods: {
-    toggleAccordion: function() {
-      this.isDisplay = !this.isDisplay
-    },
+    /*---------------
+      課題（完了分）の格納
+    ---------------*/
+    toggleAccordion: function() { this.isDisplay = !this.isDisplay; },
 
     /*---------------
       加算・減算
     ---------------*/
-    // ▼プラス or マイナスボタン押下時 => calcプロパティに対して加算or減算の処理を行なう
+    // プラス or マイナスボタン押下時 => calcプロパティに対して加算or減算の処理を行なう
     clickCalc: function(num) { this.calc += num; },
 
-    // ▼初期化ボタン押下時の処理 => calcプロパティを初期値に設定する
+    // 初期化ボタン押下時の処理 => calcプロパティを初期値に設定する
     calcInit: function() { this.calc = 0; },
 
     /*---------------
       リスト生成
     ---------------*/
-    // ▼リスト作成ボタン押下時の処理 => 入力された数値分の配列を作成する
+    // リスト作成ボタン押下時の処理 => 入力された数値分の配列を作成する
     listCreate: function(len) { this.lists = new Array(Number(len)); },
 
-    // ▼初期化ボタン押下時の処理 => lists/listLengthプロパティへ初期値を設定する
+    // 初期化ボタン押下時の処理 => lists/listLengthプロパティへ初期値を設定する
     listLengthInit: function() {
       // 各プロパティの値とオブジェクトの内容をクリアする
       this.listLength = 0;
@@ -145,7 +150,7 @@ export default {
       this.btnChange = false;
     },
 
-    // ▼リスト数の入力値判定
+    // リスト数の入力値判定
     numberJudgement: function(num) {
       // 入力値0未満の場合はリスト作成ボタンを非活性化させる
       if(Number(num) < 0) {
@@ -181,9 +186,14 @@ export default {
     },
 
     // コメント削除
-    commentDelete: function(num) {
-      this.commentValues.splice(num, 1);
-    }
+    commentDelete: function(num) { this.commentValues.splice(num, 1); },
+
+    // ▼リスト数の入力値判定
+    searchTextFunc: function(txt) {
+      console.log(txt);
+      
+    },
+
   }
 }
 </script>
@@ -419,9 +429,7 @@ export default {
     padding: 0;
 
     // 共通スタイル指定
-    border-width: 1px;
-    border-style: solid;
-    border-color: #bbb;
+    border: 1px solid #bbb;
     font-size: 16px;
     line-height: 1.2;
     padding: 15px;
@@ -460,7 +468,7 @@ export default {
   }
 
   &__inputText,
-  &__executionBtn {
+  &__executionIcon {
     // ボタンとテキストのスタイルを一旦打ち消す
     appearance: none;
     background-color: transparent;
@@ -471,22 +479,17 @@ export default {
     padding: 0;
 
     // 共通スタイル指定
-    border-width: 1px;
-    border-style: solid;
-    border-color: #bbb;
+    border: 1px solid #bbb;
     font-size: 16px;
     line-height: 1.2;
     padding: 15px;
   }
 
-  &__executionBtn {
+  &__executionIcon {
     background-color: #dfdfdf;
     border-radius: 5px 0 0 5px;
-    cursor: pointer;
     text-align: center;
     transition: .4s;
-
-    &:hover { background-color: #ccc; }
   }
 
   &__inputText {
