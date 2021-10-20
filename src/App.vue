@@ -62,24 +62,21 @@
         <div class="commentPost">
           <div class="commentPost__header">コメント</div>
           <div class="commentPost__body">
-            <input type="text" v-model="commentPost" name="commentPost" class="commentPost__inputText" placeholder="コメントを入力してください">
-            <button class="commentPost__executionBtn" v-on:click="clickPost">追加</button>
+            <input type="text" v-model="commentText" name="Post" class="commentPost__inputText" placeholder="コメントを入力してください">
+            <button class="commentPost__executionBtn" v-on:click="commentPost">追加</button>
           </div>
         </div>
 
         <div class="commentSearch">
           <div class="commentSearch__body">
             <div class="commentSearch__executionIcon"><i class="fas fa-search"></i></div>
-            <input type="text" v-model.trim="searchText" v-on:input="searchTextFunc(searchText)" name="commentSearch" class="commentSearch__inputText" placeholder="コメント一覧から検索したいキーワードを入力してください">
+            <input type="text" v-model.trim="searchText" v-on:input="commentFilter" name="commentSearch" class="commentSearch__inputText" placeholder="コメント一覧から検索したいキーワードを入力してください">
           </div>
         </div>
 
-        <!-- 検証用 -->
-        <div>{{ searchText }}</div>
-
         <div class="commentList">
           <div class="commentList__header">コメント</div>
-          <div class="commentList__postBody" v-for="(comment, index) in commentValues" v-bind:key="index">
+          <div class="commentList__postBody" v-for="(comment, index) in commentFilter" v-bind:key="index">
             <div class="commentList__postText">{{ comment }}</div>
             <div class="commentList__postButton">
               <div class="commentList__postButton__inner" v-on:click="commentDelete(index)">削除</div>
@@ -112,10 +109,14 @@ export default {
       errFlag: false, // エラーメッセージ切替
       btnChange: false, // 生成ボタン切替
 
-      // コメント投稿
-      commentPost: '',
-      commentValues: [],
+      // コメント投稿・検索・削除
+      commentText: '',
       searchText: '',
+
+      commentValues: [],
+      commentFilters: [],
+      // commentEvacuations: [],
+
     }
   },
   methods: {
@@ -170,31 +171,35 @@ export default {
     /*---------------
       コメント投稿
     ---------------*/
-    // コメント投稿
-    clickPost: function() {
-      // コメント入力欄の判定
-      if(this.commentPost === ''){
-        alert('コメント投稿には1文字以上の入力が必要です');
-        return false;
+    // 投稿
+    commentPost: function() {
+      // コメント入力欄に1字以上テキストが入っているか
+      if(this.commentText !== '') {
+        // テキストを配列へ追加後、入力欄を初期化する
+        this.commentValues.push(this.commentText);
+        this.commentText = '';
       }
-
-      // 一覧にコメント追加
-      this.commentValues.push(this.commentPost);
-
-      // コメント入力欄を初期化
-      this.commentPost = '';
     },
 
-    // コメント削除
+    // 検索キーワードと部分一致するコメントを洗い出して一覧へ表示させる
+    // 呼び出し元：computedプロパティ内のcommentFilter関数
+    findByComment: function(comments, search) {
+      return comments.filter(function(comment) {
+        // 部分一致のワードを捜索、なお入力がない場合はコメント全件表示させる
+        return (comment.indexOf(search) !== -1 || search === '')
+      })
+    },
+
+    // 削除
     commentDelete: function(num) { this.commentValues.splice(num, 1); },
-
-    // ▼リスト数の入力値判定
-    searchTextFunc: function(txt) {
-      console.log(txt);
-      
+  },
+  computed: {
+    // コメントフィルター
+    commentFilter: function() {
+      // コメント一覧と検索ワードの2点を引数に「method」プロパティ内の「findByComment」メソッドを実行
+      return this.findByComment(this.commentValues, this.searchText)
     },
-
-  }
+  },
 }
 </script>
 
