@@ -1,6 +1,9 @@
 <template>
   <!-- #app start -->
   <div id="app">
+    <!-- reset.css destyle -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/destyle.css@1.0.15/destyle.css">
+
     <!-- FontAwesome CDN読み込み -->
     <link rel ="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
 
@@ -35,6 +38,15 @@
         <componentTask3></componentTask3>
       </div>
     </div>
+
+      <div class="funcWrapper">
+        <div class="funcWrapper__header">
+          ④コンポーネントへ値（プロパティ）引き渡し
+        </div>
+        <!-- コメント投稿 -->
+        <componentTask4></componentTask4>
+      </div>
+
   </div>
   <!-- #app end -->
 </template>
@@ -44,6 +56,7 @@
 import componentTask1 from "./components/componentTask1";
 import componentTask2 from "./components/componentTask2";
 import componentTask3 from "./components/componentTask3";
+import componentTask4 from "./components/componentTask4";
 
 export default {
   name: 'App',
@@ -51,11 +64,12 @@ export default {
     componentTask1,
     componentTask2,
     componentTask3,
+    componentTask4,
   },
   data: function() {
     return {
       // 課題（完了分）の格納
-      isDisplay: true,
+      isDisplay: false,
       accordionMsg: '課題完了分（クリックで開閉）',
     }
   },
@@ -74,6 +88,7 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding-top: 30px;
 }
 
 // 完了分課題収納用のスタイル定義
@@ -90,14 +105,15 @@ export default {
 
 // 各セクションの入れ物（.funcWrapper）のスタイル定義
 .funcWrapper {
-  &:not(:last-of-type) { margin-bottom: 30px; }
+  margin: 0 auto;
+  padding-bottom: 60px;
+  width: 750px;
 
   &__header {
     border-bottom: 5px solid;
     font-weight: bold;
-    margin: 0 auto;
+    margin-bottom: 30px;
     padding: 10px 0;
-    width: 750px;
   }
 }
 </style>

@@ -88,7 +88,6 @@ export default {
 ---------------------------------------*/
 .funclistArea {
   margin: 0 auto;
-  padding: 30px 0;
   width: 500px;
 
   > div {
@@ -107,7 +106,7 @@ export default {
     border-radius: 5px;
     color: #232323;
     cursor: pointer;
-    font-weight: bold;
+    text-align: center;
     transition: .4s;
     padding: 10px 0;
     flex-basis: 31%;

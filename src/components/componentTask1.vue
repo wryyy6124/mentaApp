@@ -46,7 +46,6 @@ export default {
 ---------------------------------------*/
 .funcCalcArea {
   margin: 0 auto;
-  padding: 30px 0;
   width: 500px;
 
   > div {
@@ -60,7 +59,12 @@ export default {
 
 .selectCalc {
   &__button {
+    background-color: #ddd;
+    border: 1px solid #666;
+    border-radius: 5px;
+    color: #232323;
     cursor: pointer;
+    text-align: center;
     padding: 10px 0;
     flex-basis: 31%;
 
