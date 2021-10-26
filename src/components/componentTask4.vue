@@ -32,9 +32,9 @@
           <div class="dataProduct__body">
             <div class="dataProduct__name">{{ item.name }}</div>
             <div class="dataProduct__detail">{{ item.detail }}</div>
-            <div class="dataProduct__price"><span>&yen;</span>{{ item.price }}</div>
+            <div class="dataProduct__price">{{ Number(item.price).toLocaleString() }}</div>
             <div class="dataProduct__button">
-              <div class="dataProduct__add">Add to Cart</div>
+              <div class="dataProduct__add" @click="onClickCalc(index)">Add to Cart</div>
               <div class="dataProduct__delete" @click="onClickListDelete(index)">Delete</div>
             </div>
           </div>
@@ -48,9 +48,9 @@
       </div>
       <div class="dataResult__body">
         <div class="dataResult__text">
-          <input type="text" id="dataResult" name="dataResult" readonly>
+          <input type="text" :value="Number(result.total) + '円'" id="dataResult" name="dataResult" readonly>
         </div>
-        <div class="dataResult__init">
+        <div class="dataResult__init" @click="onClickCalcInit">
           初期化
         </div>
       </div>
@@ -87,7 +87,6 @@ export default {
       // 価格
       price: '',
 
-      // カートに入れた商品の合計金額
       result: {
         total: 0,
         display: false,
@@ -95,6 +94,7 @@ export default {
     }
   },
   methods: {
+    // 追加ボタン押下時：各入力項目を元にカード型リストを作成する
     onClickDataAppend: function() {
       // 各テキストフィールドに1字以上の入力がされているか
       if (this.name !== '' && this.detail !== '' && this.price !== '') {
@@ -107,7 +107,7 @@ export default {
         this.product = {
           name: this.name,
           detail: this.detail,
-          price: Number(this.price).toLocaleString(),
+          price: this.price,
         }
 
         // 配列にオブジェクト（各入力内容）を追加
@@ -123,6 +123,10 @@ export default {
       }
     },
 
+    // AddtoCartボタン押下時：登録した各商品の価格を合計金額に加算する
+    onClickCalc(num) { this.result.total += Number(this.lists[num].price); },
+
+    // Deleteボタン押下時：登録した各商品の一つを削除する
     onClickListDelete: function(num) {
       this.lists.splice(num, 1);
       console.log(this.lists.length);
@@ -132,6 +136,9 @@ export default {
         this.result.display = false;
       }
     },
+
+    // 初期化ボタン押下時：合計金額を初期化（０）する
+    onClickCalcInit: function() { this.result.total = 0; },
   },
   computed: {
   },
@@ -245,7 +252,8 @@ export default {
     color: #df0000;
     text-align: center;
 
-    > span {
+    &::before {
+      content: '¥';
       font-size: 80%;
       display: inline-block;
       margin-right: 5px;
@@ -297,8 +305,12 @@ export default {
   &__text {
     border: 1px solid #bbb;
     border-radius: 5px;
-    padding: 10px;
     width: 80%;
+
+    > input {
+      padding: 10px;
+      width: 100%;
+    }
   }
 
   &__init {
