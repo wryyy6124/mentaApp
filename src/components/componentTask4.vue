@@ -27,18 +27,11 @@
 
     <div class="dataProduct">
       <ol class="dataProduct__list">
-        <li v-for="(item, index) in lists" :key="index">
-          <div class="dataProduct__image">Dummy</div>
-          <div class="dataProduct__body">
-            <div class="dataProduct__name">{{ item.name }}</div>
-            <div class="dataProduct__detail">{{ item.detail }}</div>
-            <div class="dataProduct__price">{{ Number(item.price).toLocaleString() }}</div>
-            <div class="dataProduct__button">
-              <div class="dataProduct__add" @click="onClickCalc(index)">Add to Cart</div>
-              <div class="dataProduct__delete" @click="onClickListDelete(index)">Delete</div>
-            </div>
-          </div>
-        </li>
+        <task4Card
+          v-for="(product, key) in products" :key="product.id" :product="product"
+          @add="onClickCalc(key)" @del="onClickListDelete(key)"
+        >
+        </task4Card>
       </ol>
     </div>
 
@@ -60,33 +53,28 @@
 </template>
 
 <script>
+import task4Card from "./task4Card";
+
 export default {
   name: 'componentTask4',
-  props: {
-    products : {
-      // 名前
-      name: [String, Number],
-      // 詳細
-      detail: [String, Number],
-      // 価格
-      price: Number,
-    }
+  components: {
+    task4Card,
   },
   data: function() {
     return {
-      // 親コンポーネント（App.vue）から渡ってきた配列を格納
-      lists: this.products,
+      // 全商品データの格納（配列）
+      products: [],
 
-      //各商品情報を格納する
+      // 各値のバインディング
+      id: 1, // ID（リスト識別用）
+      name: '', // 名前
+      detail: '', // 詳細
+      price: '', // 価格
+
+      //各商品情報を格納
       product: {},
 
-      // 名前
-      name: '',
-      // 詳細
-      detail: '',
-      // 価格
-      price: '',
-
+      // 合計額
       result: {
         total: 0,
         display: false,
@@ -105,13 +93,14 @@ export default {
 
         // 入力内容をオブジェクトへ格納
         this.product = {
+          id: this.id++,
           name: this.name,
           detail: this.detail,
           price: this.price,
         }
 
         // 配列にオブジェクト（各入力内容）を追加
-        this.lists.push(this.product);
+        this.products.push(this.product);
 
         // 合計金額部分を活性化
         this.result.display = true;
@@ -122,16 +111,14 @@ export default {
         this.price = '';
       }
     },
-
     // AddtoCartボタン押下時：登録した各商品の価格を合計金額に加算する
-    onClickCalc(num) { this.result.total += Number(this.lists[num].price); },
+    onClickCalc: function(num) { this.result.total += Number(this.products[num].price); },
 
     // Deleteボタン押下時：登録した各商品の一つを削除する
     onClickListDelete: function(num) {
-      this.lists.splice(num, 1);
-      console.log(this.lists.length);
+      this.products.splice(num, 1);
 
-      if (this.lists.length === 0) {
+      if (this.product.length === 0) {
         // リストが空だったら合計金額部分を非活性化
         this.result.display = false;
       }
@@ -139,8 +126,6 @@ export default {
 
     // 初期化ボタン押下時：合計金額を初期化（０）する
     onClickCalcInit: function() { this.result.total = 0; },
-  },
-  computed: {
   },
 }
 </script>
@@ -212,74 +197,7 @@ export default {
   &__list {
     display: flex;
     flex-flow: row wrap; 
-
-    > li {
-      border: 1px solid #bbb;
-      border-radius: 5px;
-      margin-bottom: 30px;
-      flex-basis: 31%;
-
-      &:not(:nth-of-type(3n)) { margin-right: 3.5%; }
-      &:last-of-type { margin-right: 0; }
-
-      &:not(:nth-of-type(-n+3)) { margin-bottom: 0; }
-    }
   }
-
-  &__image {
-    background-color: #666;
-    border-radius: 5px 5px 0 0;
-    color: #fff;
-    text-align: center;
-    padding: 50px 0;
-  }
-
-  &__body {
-    padding: 15px 10px;
-    > div:not(:last-of-type) { margin-bottom: 20px; }
-  }
-
-  &__name, &__detail {
-    line-height: 1.5;
-    padding-left: 10px;
-  }
-
-  &__detail { font-size: 75%; }
-
-  &__name, &__price { font-weight: bold; }
-
-  &__price {
-    color: #df0000;
-    text-align: center;
-
-    &::before {
-      content: '¥';
-      font-size: 80%;
-      display: inline-block;
-      margin-right: 5px;
-    }
-  }
-
-  &__button {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    > div {
-      border-radius: 5px;
-      color: #fff;
-      cursor: pointer;
-      font-size: 80%;
-      text-align: center;
-      transition: .4s;
-      padding: 10px 5px;
-      flex-basis: 48%;
-
-      &:hover { opacity: .5; }
-    }
-  }
-  &__add { background-color: #fd7e00; }
-  &__delete { background-color: #c00; }
 }
 
 .dataResult {

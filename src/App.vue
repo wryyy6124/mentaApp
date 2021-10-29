@@ -44,7 +44,7 @@
           ④コンポーネントへ値（プロパティ）引き渡し
         </div>
         <!-- コメント投稿 -->
-        <componentTask4 :products="productList"></componentTask4>
+        <componentTask4></componentTask4>
       </div>
 
   </div>
@@ -71,9 +71,6 @@ export default {
       // 課題（完了分）の格納
       isDisplay: false,
       accordionMsg: '課題完了分（クリックで開閉）',
-
-      // 子コンポーネント（Task４）へ受け渡す
-      productList: [],
     }
   },
   methods: {
