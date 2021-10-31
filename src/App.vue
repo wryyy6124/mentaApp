@@ -100,14 +100,23 @@ export default {
   margin: 0 auto;
   margin-bottom: 40px;
   padding: 15px 0;
-  width: 750px;
+  width: 900px;
 }
 
 // 各セクションの入れ物（.funcWrapper）のスタイル定義
 .funcWrapper {
   margin: 0 auto;
   padding-bottom: 60px;
-  width: 750px;
+  margin: 0 auto;
+  width: 900px;
+
+  > div {
+    > div {
+      margin: 0 auto;
+      width: 750px;
+      &:not(:last-of-type) { margin-bottom: 40px; }
+    }
+  }
 
   &__header {
     border-bottom: 5px solid;

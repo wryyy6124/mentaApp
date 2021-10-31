@@ -87,9 +87,6 @@ export default {
   「リスト生成処理」エリアのスタイル定義
 ---------------------------------------*/
 .funclistArea {
-  margin: 0 auto;
-  width: 500px;
-
   > div {
     &:not(:last-of-type) { margin-bottom: 25px; }
   }

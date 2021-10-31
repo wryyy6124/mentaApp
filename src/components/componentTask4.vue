@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div class="dataProduct">
+    <div class="dataProduct" v-if="productFlg">
       <ol class="dataProduct__list">
         <task4Card
           v-for="(product, key) in products" :key="product.id" :product="product"
@@ -35,7 +35,7 @@
       </ol>
     </div>
 
-    <div class="dataResult" v-if="result.display">
+    <!-- <div class="dataResult" v-if="result.display">
       <div class="dataResult__header">
         合計
       </div>
@@ -47,6 +47,40 @@
           初期化
         </div>
       </div>
+    </div> -->
+
+    <div class="dataCartTable">
+      <table class="dataCartTable__body">
+        <tr class="dataCartTable__header">
+          <th></th>
+          <th>商品名</th>
+          <th>数量</th>
+          <th>単価</th>
+          <th>小計</th>
+          <th>操作</th>
+        </tr>
+        <tr class="dataCartTable__list">
+          <td class="dataCartTable__check">
+            <input type="checkbox">
+          </td>
+          <td class="dataCartTable__pName">
+            サンプル商品
+          </td>
+          <td class="dataCartTable__num">
+            1
+          </td>
+          <td class="dataCartTable__price">
+            1,200
+          </td>
+          <td class="dataCartTable__total">
+            1,200
+          </td>
+          <td class="dataCartTable__btn">
+            <div class="dataCartTable__btn__edit">編集</div>
+            <div class="dataCartTable__btn__delete">削除</div>
+          </td>
+        </tr>
+      </table>
     </div>
 
   </div>
@@ -62,6 +96,8 @@ export default {
   },
   data: function() {
     return {
+      productFlg: false,
+
       // 全商品データの格納（配列）
       products: [],
 
@@ -75,10 +111,12 @@ export default {
       product: {},
 
       // 合計額
-      result: {
-        total: 0,
-        display: false,
-      }
+      // result: {
+      //   total: 0,
+      //   display: false,
+      // }
+
+
     }
   },
   methods: {
@@ -102,8 +140,11 @@ export default {
         // 配列にオブジェクト（各入力内容）を追加
         this.products.push(this.product);
 
+        // 追加データが１件でもあれば活性化させる
+        this.productFlg = true;
+
         // 合計金額部分を活性化
-        this.result.display = true;
+        // this.result.display = true;
 
         // 入力内容の初期化
         this.name = '';
@@ -111,8 +152,14 @@ export default {
         this.price = '';
       }
     },
-    // AddtoCartボタン押下時：登録した各商品の価格を合計金額に加算する
-    onClickCalc: function(num) { this.result.total += Number(this.products[num].price); },
+
+    // AddtoCartボタン押下時
+    onClickCalc: function(num) {
+
+    },
+
+    // 登録した各商品の価格を合計金額に加算する
+    // onClickCalc: function(num) { this.result.total += Number(this.products[num].price); },
 
     // Deleteボタン押下時：登録した各商品の一つを削除する
     onClickListDelete: function(num) {
@@ -120,7 +167,9 @@ export default {
 
       if (this.product.length === 0) {
         // リストが空だったら合計金額部分を非活性化
-        this.result.display = false;
+        // this.result.display = false;
+
+        this.productFlg = false;
       }
     },
 
@@ -131,6 +180,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 .dataGive {
   border: 1px solid #bbb;
   border-radius: 5px;
@@ -200,47 +250,83 @@ export default {
   }
 }
 
-.dataResult {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+// .dataResult {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
 
-  &__header {
-    display: inline-block;
-    text-align: center;
-    padding: 15px;
-    width: 15%;
+//   &__header {
+//     display: inline-block;
+//     text-align: center;
+//     padding: 15px;
+//     width: 15%;
+//   }
+
+//   &__body {
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+//     line-height: 1;
+//     width: 85%;
+//   }
+
+//   &__text {
+//     border: 1px solid #bbb;
+//     border-radius: 5px;
+//     width: 80%;
+
+//     > input {
+//       padding: 10px;
+//       width: 100%;
+//     }
+//   }
+
+//   &__init {
+//     background-color: #f0f0f0;
+//     border: 1px solid #ddd;
+//     border-radius: 5px;
+//     cursor: pointer;
+//     text-align: center;
+//     padding: 15px;
+//     width: 15%;
+//   }
+
+// }
+
+.dataCartTable {
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  text-align: center;
+  width: 900px !important;
+
+  table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    border-radius: 5px;
   }
 
   &__body {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    line-height: 1;
-    width: 85%;
+    width: 100%;
   }
 
-  &__text {
-    border: 1px solid #bbb;
+  &__header {
+    border-bottom: 1px solid #bbb;
+    background-color: #f0f0f0;
     border-radius: 5px;
-    width: 80%;
 
-    > input {
-      padding: 10px;
-      width: 100%;
+    th {
+      text-align: center;
+      padding: 15px;
+      &:not(:last-of-type) { border-right: 1px solid #bbb; }
     }
   }
 
-  &__init {
-    background-color: #f0f0f0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    padding: 15px;
-    width: 15%;
+  &__list {
+    td {
+      vertical-align: middle;
+      &:not(:last-of-type) { border-right: 1px solid #bbb; }
+    }
   }
-
 }
 
 </style>

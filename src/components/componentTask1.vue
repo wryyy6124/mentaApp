@@ -45,9 +45,6 @@ export default {
   「計算処理」エリアのスタイル定義
 ---------------------------------------*/
 .funcCalcArea {
-  margin: 0 auto;
-  width: 500px;
-
   > div {
     display: flex;
     justify-content: end;
