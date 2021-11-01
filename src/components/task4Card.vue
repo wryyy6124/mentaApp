@@ -26,24 +26,22 @@ export default {
       list: this.product,
     }
   },
-  methods: {
-  },
 }
 </script>
 
 <style lang="scss">
 .dataProduct {
   &__list {
+    align-items: flex-start;
+
     > li {
       border: 1px solid #bbb;
       border-radius: 5px;
-      margin-bottom: 30px;
       flex-basis: 31%;
 
       &:not(:nth-of-type(3n)) { margin-right: 3.5%; }
       &:last-of-type { margin-right: 0; }
-
-      &:not(:nth-of-type(-n+3)) { margin-bottom: 0; }
+      &:not(:nth-last-of-type(-n+3)) { margin-bottom: 30px; }
     }
   }
 
@@ -66,7 +64,6 @@ export default {
   }
 
   &__detail { font-size: 75%; }
-
   &__name, &__price { font-weight: bold; }
 
   &__price {
@@ -99,8 +96,8 @@ export default {
       &:hover { opacity: .5; }
     }
   }
+
   &__add { background-color: #fd7e00; }
   &__delete { background-color: #c00; }
 }
-
 </style>
