@@ -25,7 +25,7 @@
         1,200
       </td>
       <td class="dataCartTable__btn">
-        <div class="dataCartTable__btn__edit">編集</div>
+        <div class="dataCartTable__btn__edit" @click="$emit('modal')">編集</div>
         <div class="dataCartTable__btn__delete">削除</div>
       </td>
     </tr>
@@ -42,6 +42,9 @@ export default {
     }
   },
   methods: {
+    onClickModalOpen: function() {
+
+    },
   },
 }
 </script>

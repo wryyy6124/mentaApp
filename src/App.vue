@@ -19,7 +19,7 @@
           ①数値の加算・減算・初期化
         </div>
         <!-- 加算・減算　 -->
-        <componentTask1></componentTask1>
+        <componentTask1 />
       </div>
 
       <div class="funcWrapper">
@@ -27,7 +27,7 @@
           ②リスト生成・初期化
         </div>
         <!-- リスト生成　-->
-        <componentTask2></componentTask2>
+        <componentTask2 />
       </div>
 
       <div class="funcWrapper">
@@ -35,20 +35,30 @@
           ③コメントの投稿／削除・検索
         </div>
         <!-- コメント投稿 -->
-        <componentTask3></componentTask3>
+        <componentTask3 />
       </div>
     </div>
 
-      <div class="funcWrapper">
-        <div class="funcWrapper__header">
-          ④コンポーネントへ値（プロパティ）引き渡し
-        </div>
-        <!-- コメント投稿 -->
-        <componentTask4></componentTask4>
+    <div class="funcWrapper">
+      <div class="funcWrapper__header">
+        ④コンポーネントへ値（プロパティ）引き渡し
       </div>
+      <!-- コメント投稿 -->
+      <componentTask4 @modal="onClickModalOpen" />
+    </div>
+
+    <div class="modalWindow" style="display: none;">
+      <div class="modalWindow__body">
+        <div class="modalWindow__body__contents">
+        あああ
+        </div>
+      </div>
+    </div>
 
   </div>
   <!-- #app end -->
+
+
 </template>
 
 <script>
@@ -76,6 +86,11 @@ export default {
   methods: {
     // 課題（完了分）の格納
     toggleAccordion: function() { this.isDisplay = !this.isDisplay; },
+
+    // モーダルウィンドウ起動
+    onClickModalOpen: function() {
+      console.log('孫コンポーネントから指令を受け取った');
+    },
   },
 }
 </script>
@@ -125,4 +140,38 @@ export default {
     padding: 10px 0;
   }
 }
+
+.modalWindow {
+
+  &__body {
+    background-color: rgba(0, 0, 0, .5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+
+    &__contents {
+      animation-name: modalopen;
+      animation-duration: 1s;
+      background-color: #f4f4f4;
+      box-shadow: 0 5px 8px 0 rgba(0, 0, 0, .2),
+                  0 7px 20px 0 rgba(0, 0, 0, .2);
+      border-radius: 10px;
+      width: 30%;
+      height: 30%;
+    }
+  }
+}
+
+@keyframes modalopen {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 </style>

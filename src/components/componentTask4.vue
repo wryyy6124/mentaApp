@@ -25,30 +25,26 @@
       </div>
     </div>
 
-    <div class="dataProduct" v-if="productFlg">
+    <div class="dataProduct" v-if="flag.product">
       <ol class="dataProduct__list">
-        <task4Card
-          v-for="(product, key) in products" :key="product.id" :product="product"
-          @add="onClickCalc(key)" @del="onClickListDelete(key)"
-        >
-        </task4Card>
+        <!-- データ追加した商品一覧を追加した数分カード表示する -->
+        <task4Card v-for="(product, key) in products" :key="product.id" :product="product" @add="onClickCalc(key)" @del="onClickListDelete(key)" />
       </ol>
     </div>
 
-    <div class="dataCartTable" v-if="cartFlg">
-      <!-- 商品カート一覧 -->
-      <task4TableList></task4TableList>
-
-      <!-- 商品カート合計 -->
-      <task4TableCalc></task4TableCalc>
+    <div class="dataCartTable" v-if="flag.cart">
+      <!-- カートに追加した商品の一覧と金額合計表示 -->
+      <task4TableList @modal="$emit('modal')" />
+      <task4TableCalc />
     </div>
+
   </div>
 </template>
 
 <script>
-import task4Card from "./task4Card";
-import task4TableList from "./task4TableList";
-import task4TableCalc from "./task4TableCalc";
+import task4Card from "./task4component/card";
+import task4TableList from "./task4component/tableList";
+import task4TableCalc from "./task4component/tableCalc";
 
 export default {
   name: 'componentTask4',
@@ -59,22 +55,24 @@ export default {
   },
   data: function() {
     return {
-      productFlg: false,
-
+      
       // 全商品データの格納（配列）
       products: [],
 
-      // 各値のバインディング
+      // 各値のデータバインディング
       id: 1, // ID（リスト識別用）
       name: '', // 名前
       detail: '', // 詳細
       price: '', // 価格
 
-      //各商品情報を格納
+      // 各商品情報を格納
       product: {},
 
-      // カートに商品が追加されたら活性化
-      cartFlg: false,
+      // フラグ管理
+      flag: {
+        product: false,
+        cart: false,
+      },
 
     }
   },
@@ -100,7 +98,7 @@ export default {
         this.products.push(this.product);
 
         // 追加データが１件でもあれば活性化させる
-        this.productFlg = true;
+        this.flag.product = true;
 
         // 入力内容の初期化
         this.name = '';
@@ -111,7 +109,7 @@ export default {
 
     // AddtoCartボタン押下時
     onClickCalc: function(num) {
-      this.cartFlg = true;
+      this.flag.cart = true;
     },
 
     // Deleteボタン押下時：登録した各商品の一つを削除する
@@ -120,13 +118,10 @@ export default {
 
       if (this.products.length === 0) {
         // リストが空だったら合計金額部分を非活性化
-        this.productFlg = false;
-        this.cartFlg = false;
+        this.flag.product = true;
+        this.flag.cart = true;
       }
     },
-
-    // 初期化ボタン押下時：合計金額を初期化（０）する
-    onClickCalcInit: function() { this.result.total = 0; },
   },
 }
 </script>
