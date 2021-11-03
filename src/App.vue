@@ -1,7 +1,7 @@
 <template>
   <!-- #app start -->
   <div id="app">
-    <!-- reset.css destyle -->
+    <!-- reset.css_destyle CDN読み込み -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/destyle.css@1.0.15/destyle.css">
 
     <!-- FontAwesome CDN読み込み -->
@@ -9,7 +9,7 @@
 
     <!-- 完了した課題分のアコーディオン開閉 -->
     <div class="taskToggle" @click="toggleAccordion">
-      課題完了分（クリックで開閉）<i class="fas fa-angle-double-down"></i>
+      タスク完了分（クリックで開閉）<i class="fas fa-angle-double-down"></i>
     </div>
 
     <!-- 完了した課題を格納する -->
@@ -18,6 +18,7 @@
         <div class="funcWrapper__header">
           ①数値の加算・減算・初期化
         </div>
+
         <!-- 加算・減算　 -->
         <componentTask1 />
       </div>
@@ -26,6 +27,7 @@
         <div class="funcWrapper__header">
           ②リスト生成・初期化
         </div>
+
         <!-- リスト生成　-->
         <componentTask2 />
       </div>
@@ -34,6 +36,7 @@
         <div class="funcWrapper__header">
           ③コメントの投稿／削除・検索
         </div>
+
         <!-- コメント投稿 -->
         <componentTask3 />
       </div>
@@ -43,12 +46,19 @@
       <div class="funcWrapper__header">
         ④コンポーネントへ値（プロパティ）引き渡し
       </div>
-      <!-- コメント投稿 -->
-      <componentTask4 @modal="onClickModalOpen" />
+
+      <!-- 子コンポーネント引き継ぎ -->
+      <componentTask4
+        :cartData="cartData" :changeNum="changeNum"
+        @modalOpen="onClickModalOpen" @modalClose="onClickModalClose"
+      />
     </div>
 
     <!-- モーダルウィンドウ -->
-    <modalWindow @close="onClickModalClose" v-if="isDisplay.modal" />
+    <modalWindow
+      :cartData="cartData" v-if="isDisplay.modal"
+      @modalClose="onClickModalClose" @changeProductNum="onChangeNum"
+    />
 
   </div>
   <!-- #app end -->
@@ -56,41 +66,65 @@
 </template>
 
 <script>
-// 各コンポーネントのインポート
+// 各課題コンポーネントのインポート
 import componentTask1 from "./components/componentTask1";
 import componentTask2 from "./components/componentTask2";
 import componentTask3 from "./components/componentTask3";
 import componentTask4 from "./components/componentTask4";
+
+// モーダルウィンドウのインポート
 import modalWindow from "./components/modalWindow";
 
 export default {
   name: 'App',
   components: {
-    componentTask1,
-    componentTask2,
-    componentTask3,
-    componentTask4,
+    componentTask1, componentTask2,
+    componentTask3, componentTask4,
     modalWindow,
   },
   data: function() {
     return {
       // 課題（完了分）の格納
       isDisplay: {
+        // 完了分課題
         task: false,
+
+        // モーダルウィンドウ
         modal: false,
       },
+
+      // カート内の商品情報格納
+      cartData: {
+        name: '',
+        price: '',
+        num: 1,
+      },
+
+      changeNum: 1,
+
     }
   },
   methods: {
     // 課題（完了分）の格納
     toggleAccordion: function() { this.isDisplay.task = !this.isDisplay.task; },
 
-    // モーダルウィンドウ起動
-    onClickModalOpen: function() {
+    // モーダルウィンドウ起動・停止
+    onClickModalOpen: function(name, num, price) {
+      // 孫コンポーネントから渡ってきたデータを格納
+      this.cartData.name = name;
+      this.cartData.num = num;
+      this.cartData.price = price;
+
+      // モーダルウィンドウ起動
       this.isDisplay.modal = true;
-      console.log('孫コンポーネントから指令を受け取った');
     },
     onClickModalClose: function() { this.isDisplay.modal = false; },
+
+    // 商品数変更
+    onChangeNum: function(number) {
+      console.log(number);
+      this.changeNum = number;
+    },
   },
 }
 </script>

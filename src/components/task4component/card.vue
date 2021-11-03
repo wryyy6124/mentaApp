@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: 'task4Card',
+  name: 'card',
   props: {
     product: Object,
   },

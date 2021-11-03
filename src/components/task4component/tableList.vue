@@ -1,49 +1,46 @@
 <template>
-  <table class="dataCartTable__body">
-    <tr class="dataCartTable__header">
-      <th></th>
-      <th>商品名</th>
-      <th>数量</th>
-      <th>単価</th>
-      <th>小計</th>
-      <th>操作</th>
-    </tr>
     <tr class="dataCartTable__list">
       <td class="dataCartTable__check">
-        <input type="checkbox">
+        <input type="checkbox" disabled="disabled">
       </td>
       <td class="dataCartTable__pName">
-        サンプル商品
+        {{ list.name }}
       </td>
       <td class="dataCartTable__num">
-        1
+        {{ number }}
       </td>
       <td class="dataCartTable__price">
-        1,200
+        {{ Number(list.price).toLocaleString() }}
       </td>
       <td class="dataCartTable__total">
-        1,200
+        <!-- {{ Number(list.price * number).toLocaleString() }} -->
       </td>
       <td class="dataCartTable__btn">
-        <div class="dataCartTable__btn__edit" @click="$emit('modal')">編集</div>
+        <div class="dataCartTable__btn__edit" @click="onClickChangeNum">編集</div>
         <div class="dataCartTable__btn__delete">削除</div>
       </td>
     </tr>
-  </table>
 </template>
 
 <script>
 export default {
-  name: 'task4TableList',
+  name: 'task4List',
   props: {
+    cart: Object,
+    changeNum: Number,
   },
   data: function() {
     return {
+      // 親コンポーネント（componentTask4.vue）から渡ってきた配列を格納
+      list: this.cart,
+
+      // 商品数
+      number: this.changeNum,
     }
   },
   methods: {
-    onClickModalOpen: function() {
-
+    onClickChangeNum: function() {
+      this.$emit('modalOpen',　this.list.name, this.list.num, this.list.price);
     },
   },
 }
@@ -69,6 +66,8 @@ export default {
   }
 
   &__list {
+    &:not(:last-of-type) { border-bottom: 1px dotted #ccc; }
+
     td {
       vertical-align: middle;
       padding: 15px;

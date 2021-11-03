@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: 'task4TableCalc',
+  name: 'task4Calc',
   props: {
   },
   data: function() {
