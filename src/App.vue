@@ -9,11 +9,11 @@
 
     <!-- 完了した課題分のアコーディオン開閉 -->
     <div class="taskToggle" @click="toggleAccordion">
-      {{ accordionMsg }} <i class="fas fa-angle-double-down"></i>
+      課題完了分（クリックで開閉）<i class="fas fa-angle-double-down"></i>
     </div>
 
     <!-- 完了した課題を格納する -->
-    <div class="accordionTask" :class="{ is_display: isDisplay }" v-if="isDisplay">
+    <div class="accordionTask" :class="{ is_display: isDisplay.task }">
       <div class="funcWrapper">
         <div class="funcWrapper__header">
           ①数値の加算・減算・初期化
@@ -47,17 +47,11 @@
       <componentTask4 @modal="onClickModalOpen" />
     </div>
 
-    <div class="modalWindow" style="display: none;">
-      <div class="modalWindow__body">
-        <div class="modalWindow__body__contents">
-        あああ
-        </div>
-      </div>
-    </div>
+    <!-- モーダルウィンドウ -->
+    <modalWindow @close="onClickModalClose" v-if="isDisplay.modal" />
 
   </div>
   <!-- #app end -->
-
 
 </template>
 
@@ -67,6 +61,7 @@ import componentTask1 from "./components/componentTask1";
 import componentTask2 from "./components/componentTask2";
 import componentTask3 from "./components/componentTask3";
 import componentTask4 from "./components/componentTask4";
+import modalWindow from "./components/modalWindow";
 
 export default {
   name: 'App',
@@ -75,22 +70,27 @@ export default {
     componentTask2,
     componentTask3,
     componentTask4,
+    modalWindow,
   },
   data: function() {
     return {
       // 課題（完了分）の格納
-      isDisplay: false,
-      accordionMsg: '課題完了分（クリックで開閉）',
+      isDisplay: {
+        task: false,
+        modal: false,
+      },
     }
   },
   methods: {
     // 課題（完了分）の格納
-    toggleAccordion: function() { this.isDisplay = !this.isDisplay; },
+    toggleAccordion: function() { this.isDisplay.task = !this.isDisplay.task; },
 
     // モーダルウィンドウ起動
     onClickModalOpen: function() {
+      this.isDisplay.modal = true;
       console.log('孫コンポーネントから指令を受け取った');
     },
+    onClickModalClose: function() { this.isDisplay.modal = false; },
   },
 }
 </script>
@@ -106,6 +106,11 @@ export default {
   padding-top: 30px;
 }
 
+@keyframes displayToggleAnime {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 // 完了分課題収納用のスタイル定義
 .taskToggle {
   background-color: #2c3e50;
@@ -116,6 +121,14 @@ export default {
   margin-bottom: 40px;
   padding: 15px 0;
   width: 900px;
+}
+
+.accordionTask {
+  animation-name: displayToggleAnime;
+  animation-duration: 1s;
+
+  display: none;
+  &.is_display { display: block; }
 }
 
 // 各セクションの入れ物（.funcWrapper）のスタイル定義
@@ -139,39 +152,6 @@ export default {
     margin-bottom: 30px;
     padding: 10px 0;
   }
-}
-
-.modalWindow {
-
-  &__body {
-    background-color: rgba(0, 0, 0, .5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: auto;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-
-    &__contents {
-      animation-name: modalopen;
-      animation-duration: 1s;
-      background-color: #f4f4f4;
-      box-shadow: 0 5px 8px 0 rgba(0, 0, 0, .2),
-                  0 7px 20px 0 rgba(0, 0, 0, .2);
-      border-radius: 10px;
-      width: 30%;
-      height: 30%;
-    }
-  }
-}
-
-@keyframes modalopen {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 </style>

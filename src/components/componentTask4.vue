@@ -8,15 +8,15 @@
         <ul class="dataGive__body__list">
           <li>
             <span class="dataGive__list__header">商品名</span>
-            <input class="dataGive__list__inputText"　type="text" v-model.trim="name" name="productName" placeholder="商品名称を入力" autocomplete="off">
+            <input class="dataGive__list__inputText"　type="text" v-model.trim="p_name" name="productName" placeholder="商品名称を入力" autocomplete="off">
           </li>
           <li>
             <span class="dataGive__list__header">詳細</span>
-            <input class="dataGive__list__inputText"　type="text" v-model.trim="detail" name="productDetail" placeholder="商品の詳細を入力" autocomplete="off">
+            <input class="dataGive__list__inputText"　type="text" v-model.trim="p_detail" name="productDetail" placeholder="商品の詳細を入力" autocomplete="off">
           </li>
           <li>
             <span class="dataGive__list__header">金額</span>
-            <input class="dataGive__list__inputText"　type="number" v-model.trim="price" name="productPrice" placeholder="金額は1円以上の数値を入力" autocomplete="off">
+            <input class="dataGive__list__inputText"　type="number" v-model.trim="p_price" name="productPrice" placeholder="金額は1円以上の数値を入力" autocomplete="off">
           </li>
         </ul>
         <div class="dataGive__body__append" @click="onClickDataAppend">
@@ -55,43 +55,52 @@ export default {
   },
   data: function() {
     return {
-      
-      // 全商品データの格納（配列）
-      products: [],
-
-      // 各値のデータバインディング
-      id: 1, // ID（リスト識別用）
-      name: '', // 名前
-      detail: '', // 詳細
-      price: '', // 価格
-
-      // 各商品情報を格納
-      product: {},
-
-      // フラグ管理
+      // 各セクションの表示管理
       flag: {
         product: false,
         cart: false,
       },
 
+      // 全商品データの格納（配列）
+      products: [],
+
+      // 各値のデータバインディング
+      p_id: 1, // ID（リスト識別用）
+      p_name: '', // 名前
+      p_detail: '', // 詳細
+      p_price: '', // 価格
+
+      // 各商品情報を格納
+      product: {},
+
+      // 全商品データの格納（配列）
+      carts: [],
+
+      cart: {
+        id: 1, // ID（リスト識別用）
+        name: '', // 名前
+        price: '', // 価格
+      },
     }
   },
   methods: {
     // 追加ボタン押下時：各入力項目を元にカード型リストを作成する
     onClickDataAppend: function() {
       // 各テキストフィールドに1字以上の入力がされているか
-      if (this.name !== '' && this.detail !== '' && this.price !== '') {
-        if (this.price <= 0) {
+      if (this.p_name !== '' && this.p_detail !== '' && this.p_price !== '') {
+        if (this.p_price <= 0) {
           alert('金額は1円以上の数値を入力してください');
+          this.p_price = "";
+
           return;
         }
 
         // 入力内容をオブジェクトへ格納
         this.product = {
-          id: this.id++,
-          name: this.name,
-          detail: this.detail,
-          price: this.price,
+          id: this.p_id++,
+          name: this.p_name,
+          detail: this.p_detail,
+          price: this.p_price,
         }
 
         // 配列にオブジェクト（各入力内容）を追加
@@ -101,9 +110,9 @@ export default {
         this.flag.product = true;
 
         // 入力内容の初期化
-        this.name = '';
-        this.detail = '';
-        this.price = '';
+        this.p_name = '';
+        this.p_detail = '';
+        this.p_price = '';
       }
     },
 
@@ -118,8 +127,8 @@ export default {
 
       if (this.products.length === 0) {
         // リストが空だったら合計金額部分を非活性化
-        this.flag.product = true;
-        this.flag.cart = true;
+        this.flag.product = false;
+        this.flag.cart = false;
       }
     },
   },
