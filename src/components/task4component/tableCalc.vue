@@ -6,11 +6,11 @@
     </tr>
     <tr class="dataCartTable__calc__row">
       <th>商品金額</th>
-      <td>1,200</td>
+      <td>{{ calcSum }}</td>
     </tr>
     <tr class="dataCartTable__calc__row">
       <th>消費税</th>
-      <td>120</td>
+      <td>{{ calcSum }}</td>
     </tr>
     <tr class="dataCartTable__calc__row">
       <th>合計</th>
@@ -23,12 +23,22 @@
 export default {
   name: 'task4Calc',
   props: {
+    carts: Array,
   },
   data: function() {
     return {
+      // 親コンポーネント（componentTask4.vue）から渡ってきた配列を格納
+      lists: this.carts,
     }
   },
-  methods: {
+  computed: {
+    calcSum: function() {
+
+      return this.lists.forEach(list => {
+        console.log(list.price);
+      });
+
+    }
   },
 }
 </script>

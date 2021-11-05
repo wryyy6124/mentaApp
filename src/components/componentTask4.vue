@@ -25,19 +25,11 @@
       </div>
     </div>
 
-    <div style="background: #ddd; line-height:1.5; padding: 20px;">
-      <h3 style="font-weight: bold; margin-bottom: 20px;">検証用</h3>
-      <p style="margin-bottom: 10px;">・商品一覧<br> => {{ products }}</p>
-      <p>・カート追加分<br> => {{ carts }}</p>
-      <p>・数量<br> => {{ num }}</p>
-    </div>
-
     <div class="dataProduct" v-if="flag.product">
       <ol class="dataProduct__list">
         <!-- データ追加した商品一覧を追加した数分カード表示する -->
         <task4Card
           v-for="(product, key) in products" :key="product.id" :product="product"
-          :changeNum="num"
           @add="onClickCalc(key)" @del="onClickListDelete(key)"
         />
       </ol>
@@ -54,35 +46,34 @@
           <th>小計</th>
           <th>操作</th>
         </tr>
-
         <!-- カートに追加した商品の一覧と金額合計表示 -->
         <task4TableList
           v-for="(cart, key) in carts" :key="cart.id" :cart="cart"
-          @modalOpen="onTraditionData"
+          @modalOpen="onClickModalOpen" 
         />
       </table>
 
-      <task4TableCalc />
+      <task4TableCalc :carts="carts" />
     </div>
 
+    <task4modalWindow
+      v-if="flag.modal" :cartData="cartData"
+      @modalClose="onClickModalClose" @changeNum="onChangeNum"
+    />
   </div>
 </template>
 
 <script>
 import task4Card from "./task4component/card";
+import task4modalWindow from "./task4component/modalWindow";
 import task4TableList from "./task4component/tableList";
 import task4TableCalc from "./task4component/tableCalc";
 
 export default {
   name: 'componentTask4',
-  props: {
-    cartData: Object,
-    changeNum: Number,
-  },
   components: {
-    task4Card,
-    task4TableList,
-    task4TableCalc,
+    task4Card, task4modalWindow,
+    task4TableList, task4TableCalc,
   },
   data: function() {
     return {
@@ -90,6 +81,7 @@ export default {
       flag: {
         product: false,
         cart: false,
+        modal: false,
       },
 
       // 全商品データの格納（配列）
@@ -110,10 +102,17 @@ export default {
       cartValue: {
         id: 0, // ID（リスト識別用）
         name: '', // 名前
+        num: 1,
         price: '', // 価格
       },
 
-      num: this.changeNum,
+      cartData: {
+        id: 0,
+        name: '', // 名前
+        num: 1,
+        price: '', // 価格
+      },
+
     }
   },
   methods: {
@@ -135,6 +134,7 @@ export default {
           id: this.p_id++,
           name: this.p_name,
           detail: this.p_detail,
+          num: 1,
           price: this.p_price,
         }
 
@@ -167,6 +167,7 @@ export default {
       this.cartValue = {
         id: this.products[num].id,
         name: this.products[num].name,
+        num: this.products[num].num,
         price: this.products[num].price,
       }
       this.carts.push(this.cartValue);
@@ -184,11 +185,26 @@ export default {
       }
     },
 
-    /* --------------------------------------------------
-      子コンポーネント（tableList.vue）から受け取ったデータを
-      更に親コンポーネント（App.vue）へ渡す
-    --------------------------------------------------*/
-    onTraditionData: function(...args) { this.$emit('modalOpen', ...args); },
+    // モーダルウィンドウ起動・停止
+    onClickModalOpen: function(id, name, num, price) {
+      this.cartData.id = id;
+      this.cartData.name = name;
+      this.cartData.num = num;
+      this.cartData.price = price;
+
+      // モーダルウィンドウ起動
+      this.flag.modal = true;
+    },
+    onClickModalClose: function() { this.flag.modal = false; },
+
+    // 数量変更
+    onChangeNum: function(...args) {
+      for (let i = 0; i < this.carts.length; i++) {        
+        if (this.carts[i].id === args[0]) {
+          this.carts[i].num = args[1];
+        }
+      }
+    },
   },
 }
 </script>

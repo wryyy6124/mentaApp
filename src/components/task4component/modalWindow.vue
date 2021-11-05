@@ -3,6 +3,7 @@
     <div class="modalWindow__body">
       <div class="modalWindow__body__contents">
         <div class="modalWindow__body__closeBtn" @click="$emit('modalClose')">
+        <!-- <div class="modalWindow__body__closeBtn"> -->
           Close<i class="fas fa-times"></i>
         </div>
         <div class="modalWindow__body__header">
@@ -22,7 +23,7 @@
               単価：{{ Number(info.price).toLocaleString() }} 円
             </div>
             <div class="modalWindow__body__number">
-              個数：<input type="number" v-model.number="info.num">
+              個数：<input type="number" v-model="info.num">
             </div>
             <div class="modalWindow__body__button" @click="onChangeNum">
               確定する
@@ -43,6 +44,7 @@ export default {
   data: function() {
     return {
       info: {
+        id: this.cartData.id,
         name: this.cartData.name,
         price: this.cartData.price,
         num: this.cartData.num,
@@ -62,8 +64,8 @@ export default {
       // 親コンポーネント（App.vue）にモーダルウィンドウをcloseさせるように合図
       this.$emit('modalClose');
 
-      // 親コンポーネント（App.vue）に変更した個数を伝える
-      this.$emit('changeProductNum', this.info.num);
+      // 親コンポーネント（App.vue）に変更したIDと個数を伝える
+      this.$emit('changeNum', this.info.id, Number(this.info.num));
     },
   },
 }

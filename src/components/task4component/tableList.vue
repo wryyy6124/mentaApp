@@ -6,14 +6,14 @@
       <td class="dataCartTable__pName">
         {{ list.name }}
       </td>
-      <td class="dataCartTable__num">
-        {{ number }}
+      <td class="dataCartTable__num" value="1">
+        {{ list.num }}
       </td>
       <td class="dataCartTable__price">
         {{ Number(list.price).toLocaleString() }}
       </td>
       <td class="dataCartTable__total">
-        <!-- {{ Number(list.price * number).toLocaleString() }} -->
+        {{ Number(list.price * list.num).toLocaleString() }}
       </td>
       <td class="dataCartTable__btn">
         <div class="dataCartTable__btn__edit" @click="onClickChangeNum">編集</div>
@@ -27,20 +27,16 @@ export default {
   name: 'task4List',
   props: {
     cart: Object,
-    changeNum: Number,
   },
   data: function() {
     return {
       // 親コンポーネント（componentTask4.vue）から渡ってきた配列を格納
       list: this.cart,
-
-      // 商品数
-      number: this.changeNum,
     }
   },
   methods: {
     onClickChangeNum: function() {
-      this.$emit('modalOpen',　this.list.name, this.list.num, this.list.price);
+      this.$emit('modalOpen',　this.list.id, this.list.name, this.list.num, this.list.price);
     },
   },
 }

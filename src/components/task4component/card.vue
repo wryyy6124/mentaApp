@@ -22,7 +22,7 @@ export default {
   },
   data: function() {
     return {
-      // 親コンポーネント（componentTask4.vue）から渡ってきた配列を格納
+      // componentTask4.vueから渡ってきた配列を格納
       list: this.product,
     }
   },

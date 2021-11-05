@@ -48,17 +48,8 @@
       </div>
 
       <!-- 子コンポーネント引き継ぎ -->
-      <componentTask4
-        :cartData="cartData" :changeNum="changeNum"
-        @modalOpen="onClickModalOpen" @modalClose="onClickModalClose"
-      />
+      <componentTask4 />
     </div>
-
-    <!-- モーダルウィンドウ -->
-    <modalWindow
-      :cartData="cartData" v-if="isDisplay.modal"
-      @modalClose="onClickModalClose" @changeProductNum="onChangeNum"
-    />
 
   </div>
   <!-- #app end -->
@@ -72,15 +63,11 @@ import componentTask2 from "./components/componentTask2";
 import componentTask3 from "./components/componentTask3";
 import componentTask4 from "./components/componentTask4";
 
-// モーダルウィンドウのインポート
-import modalWindow from "./components/modalWindow";
-
 export default {
   name: 'App',
   components: {
     componentTask1, componentTask2,
     componentTask3, componentTask4,
-    modalWindow,
   },
   data: function() {
     return {
@@ -90,7 +77,7 @@ export default {
         task: false,
 
         // モーダルウィンドウ
-        modal: false,
+        // modal: false,
       },
 
       // カート内の商品情報格納
@@ -100,7 +87,7 @@ export default {
         num: 1,
       },
 
-      changeNum: 1,
+      // changeNum: 1,
 
     }
   },
@@ -109,16 +96,16 @@ export default {
     toggleAccordion: function() { this.isDisplay.task = !this.isDisplay.task; },
 
     // モーダルウィンドウ起動・停止
-    onClickModalOpen: function(name, num, price) {
-      // 孫コンポーネントから渡ってきたデータを格納
-      this.cartData.name = name;
-      this.cartData.num = num;
-      this.cartData.price = price;
+    // onClickModalOpen: function(name, num, price) {
+    //   // 孫コンポーネントから渡ってきたデータを格納
+    //   this.cartData.name = name;
+    //   this.cartData.num = num;
+    //   this.cartData.price = price;
 
-      // モーダルウィンドウ起動
-      this.isDisplay.modal = true;
-    },
-    onClickModalClose: function() { this.isDisplay.modal = false; },
+    //   // モーダルウィンドウ起動
+    //   this.isDisplay.modal = true;
+    // },
+    // onClickModalClose: function() { this.isDisplay.modal = false; },
 
     // 商品数変更
     onChangeNum: function(number) {
