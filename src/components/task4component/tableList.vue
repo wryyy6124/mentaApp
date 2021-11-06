@@ -10,14 +10,14 @@
         {{ list.num }}
       </td>
       <td class="dataCartTable__price">
-        {{ Number(list.price).toLocaleString() }}
+        {{ amountDelimiter(list.price) }}
       </td>
       <td class="dataCartTable__total">
-        {{ Number(list.price * list.num).toLocaleString() }}
+        {{ amountDelimiter(list.price * list.num) }}
       </td>
       <td class="dataCartTable__btn">
         <div class="dataCartTable__btn__edit" @click="onClickChangeNum">編集</div>
-        <div class="dataCartTable__btn__delete">削除</div>
+        <div class="dataCartTable__btn__delete" @click="onClickDeleteList">削除</div>
       </td>
     </tr>
 </template>
@@ -37,6 +37,15 @@ export default {
   methods: {
     onClickChangeNum: function() {
       this.$emit('modalOpen',　this.list.id, this.list.name, this.list.num, this.list.price);
+    },
+
+    onClickDeleteList: function() {
+      console.log('子から');
+      this.$emit('tableListDelete',　this.list.id);
+    },
+
+    amountDelimiter: function(price) {
+      return Number(price).toLocaleString();
     },
   },
 }

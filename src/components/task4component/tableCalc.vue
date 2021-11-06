@@ -6,15 +6,15 @@
     </tr>
     <tr class="dataCartTable__calc__row">
       <th>商品金額</th>
-      <td>{{ calcSum }}</td>
+      <td>{{ amountDelimiter(calcPrice()) }}</td>
     </tr>
     <tr class="dataCartTable__calc__row">
       <th>消費税</th>
-      <td>{{ calcSum }}</td>
+      <td>{{ amountDelimiter(calcTax()) }}</td>
     </tr>
     <tr class="dataCartTable__calc__row">
       <th>合計</th>
-      <td>1,320</td>
+      <td>{{ amountDelimiter(calcPrice() + calcTax()) }}</td>
     </tr>
   </table>
 </template>
@@ -27,18 +27,31 @@ export default {
   },
   data: function() {
     return {
+      // 消費税率10％
+      TAX: 10,
+
       // 親コンポーネント（componentTask4.vue）から渡ってきた配列を格納
       lists: this.carts,
     }
   },
-  computed: {
-    calcSum: function() {
+  methods: {
+    calcPrice: function() {
+      let total = 0
 
-      return this.lists.forEach(list => {
-        console.log(list.price);
+      this.lists.forEach(list => {
+        total = total + (list.price * list.num);
       });
 
-    }
+      return total;
+    },
+
+    calcTax: function() {
+      return Math.floor(this.calcPrice() / this.TAX);
+    },
+
+    amountDelimiter: function(price) {
+      return Number(price).toLocaleString();
+    },
   },
 }
 </script>

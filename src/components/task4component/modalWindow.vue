@@ -20,7 +20,7 @@
               商品名：{{ info.name }}
             </div>
             <div class="modalWindow__body__productPrice">
-              単価：{{ Number(info.price).toLocaleString() }} 円
+              単価：{{ amountDelimiter(info.price) }} 円
             </div>
             <div class="modalWindow__body__number">
               個数：<input type="number" v-model="info.num">
@@ -66,6 +66,10 @@ export default {
 
       // 親コンポーネント（App.vue）に変更したIDと個数を伝える
       this.$emit('changeNum', this.info.id, Number(this.info.num));
+    },
+
+    amountDelimiter: function(price) {
+      return Number(price).toLocaleString();
     },
   },
 }

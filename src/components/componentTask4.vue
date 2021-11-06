@@ -49,11 +49,12 @@
         <!-- カートに追加した商品の一覧と金額合計表示 -->
         <task4TableList
           v-for="(cart, key) in carts" :key="cart.id" :cart="cart"
-          @modalOpen="onClickModalOpen" 
+          @modalOpen="onClickModalOpen" @tableListDelete="onListDelete(key)"
         />
       </table>
 
       <task4TableCalc :carts="carts" />
+
     </div>
 
     <task4modalWindow
@@ -204,6 +205,10 @@ export default {
           this.carts[i].num = args[1];
         }
       }
+    },
+
+    onListDelete: function(num) {
+      this.carts.splice(num, 1);
     },
   },
 }
