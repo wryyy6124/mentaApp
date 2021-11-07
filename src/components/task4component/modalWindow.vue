@@ -68,6 +68,7 @@ export default {
       this.$emit('changeNum', this.info.id, Number(this.info.num));
     },
 
+    // 価格を3桁区切り表記へ変換する
     amountDelimiter: function(price) {
       return Number(price).toLocaleString();
     },

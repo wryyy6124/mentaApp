@@ -39,22 +39,24 @@
       <table class="dataCartTable__body">
         <!-- テーブル見出し -->
         <tr class="dataCartTable__header">
-          <th></th>
+          <th><input type="checkbox" v-model="flag.checkAll"></th>
           <th>商品名</th>
           <th>数量</th>
           <th>単価</th>
           <th>小計</th>
           <th>操作</th>
         </tr>
+
         <!-- カートに追加した商品の一覧と金額合計表示 -->
         <task4TableList
           v-for="(cart, key) in carts" :key="cart.id" :cart="cart"
+          :checkAll="flag.checkAll" @chkboxAllDelete="flag.checkAll = false;"
           @modalOpen="onClickModalOpen" @tableListDelete="onListDelete(key)"
         />
       </table>
 
+      <!-- 合計金額 -->
       <task4TableCalc :carts="carts" />
-
     </div>
 
     <task4modalWindow
@@ -78,11 +80,12 @@ export default {
   },
   data: function() {
     return {
-      // 各セクションの表示管理
+      // 各セクションのフラグ管理
       flag: {
         product: false,
         cart: false,
         modal: false,
+        checkAll: false,
       },
 
       // 全商品データの格納（配列）
@@ -207,6 +210,7 @@ export default {
       }
     },
 
+    // カートに追加した商品を削除する
     onListDelete: function(num) {
       this.carts.splice(num, 1);
     },

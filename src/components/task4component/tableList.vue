@@ -1,7 +1,7 @@
 <template>
     <tr class="dataCartTable__list">
       <td class="dataCartTable__check">
-        <input type="checkbox" disabled="disabled">
+        <input type="checkbox" :checked="checkAll" @change="$emit('chkboxAllDelete')">
       </td>
       <td class="dataCartTable__pName">
         {{ list.name }}
@@ -13,7 +13,7 @@
         {{ amountDelimiter(list.price) }}
       </td>
       <td class="dataCartTable__total">
-        {{ amountDelimiter(list.price * list.num) }}
+        {{ amountDelimiter(list.price * list.num) }} 円
       </td>
       <td class="dataCartTable__btn">
         <div class="dataCartTable__btn__edit" @click="onClickChangeNum">編集</div>
@@ -27,23 +27,31 @@ export default {
   name: 'task4List',
   props: {
     cart: Object,
+    checkAll: Boolean,
   },
   data: function() {
     return {
-      // 親コンポーネント（componentTask4.vue）から渡ってきた配列を格納
+      // 親コンポーネント（componentTask4.vue）から渡ってきた配列とオプションを格納
       list: this.cart,
+      chkAll: this.checkAll,
     }
   },
   methods: {
+    // 編集ボタン（クリックした対象の各データを親コンポーネントへ伝達し個数の変更を行われる流れ）
     onClickChangeNum: function() {
       this.$emit('modalOpen',　this.list.id, this.list.name, this.list.num, this.list.price);
     },
 
+    // 削除ボタン（アラートにOK返答するとクリックした対象のIDを親コンポーネントへ伝達し削除処理が行われる流れ）
     onClickDeleteList: function() {
-      console.log('子から');
-      this.$emit('tableListDelete',　this.list.id);
+      // 削除するかしないか確認ダイアログが出現
+      const resuponse = confirm('本当に削除しますか？');
+
+      // ダイアログで「OK」返答（削除実行の為、削除対象のIDを親へ伝達）
+      resuponse ? this.$emit('tableListDelete',　this.list.id) : '';
     },
 
+    // 価格を3桁区切り表記へ変換する
     amountDelimiter: function(price) {
       return Number(price).toLocaleString();
     },

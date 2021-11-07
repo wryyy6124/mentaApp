@@ -9,12 +9,12 @@
       <td>{{ amountDelimiter(calcPrice()) }}</td>
     </tr>
     <tr class="dataCartTable__calc__row">
-      <th>消費税</th>
+      <th>消費税（{{ TAX }}%）</th>
       <td>{{ amountDelimiter(calcTax()) }}</td>
     </tr>
     <tr class="dataCartTable__calc__row">
-      <th>合計</th>
-      <td>{{ amountDelimiter(calcPrice() + calcTax()) }}</td>
+      <th>合計代金</th>
+      <td class="dataCartTable__calc__total">{{ amountDelimiter(calcPrice() + calcTax()) }} 円</td>
     </tr>
   </table>
 </template>
@@ -35,6 +35,7 @@ export default {
     }
   },
   methods: {
+    // カートに追加したアイテムの代金を計算する
     calcPrice: function() {
       let total = 0
 
@@ -45,10 +46,12 @@ export default {
       return total;
     },
 
+    // カートに追加したアイテムの代金の消費税を計算する
     calcTax: function() {
       return Math.floor(this.calcPrice() / this.TAX);
     },
 
+    // 価格を3桁区切り表記へ変換する
     amountDelimiter: function(price) {
       return Number(price).toLocaleString();
     },
@@ -78,6 +81,11 @@ export default {
     }
     th, td { padding: 10px; }
 
+    &__total {
+      color: #df0000;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
   }
 }
 
