@@ -47,14 +47,10 @@ export default {
     },
 
     // カートに追加したアイテムの代金の消費税を計算する
-    calcTax: function() {
-      return Math.floor(this.calcPrice() / this.TAX);
-    },
+    calcTax: function() { return Math.floor(this.calcPrice() / this.TAX); },
 
     // 価格を3桁区切り表記へ変換する
-    amountDelimiter: function(price) {
-      return Number(price).toLocaleString();
-    },
+    amountDelimiter: function(price) { return Number(price).toLocaleString(); },
   },
 }
 </script>

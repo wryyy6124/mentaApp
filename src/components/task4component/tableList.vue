@@ -1,7 +1,7 @@
 <template>
     <tr class="dataCartTable__list">
       <td class="dataCartTable__check">
-        <input type="checkbox" :checked="checkAll" @change="$emit('chkboxAllDelete')">
+        <input type="checkbox" :checked="checkAll" @change="onChangeCheckBox">
       </td>
       <td class="dataCartTable__pName">
         {{ list.name }}
@@ -17,7 +17,7 @@
       </td>
       <td class="dataCartTable__btn">
         <div class="dataCartTable__btn__edit" @click="onClickChangeNum">編集</div>
-        <div class="dataCartTable__btn__delete" @click="onClickDeleteList">削除</div>
+        <div class="dataCartTable__btn__delete" @click="onClickDeleteList" v-if="flag.deleteBtn">削除</div>
       </td>
     </tr>
 </template>
@@ -33,25 +33,35 @@ export default {
     return {
       // 親コンポーネント（componentTask4.vue）から渡ってきた配列とオプションを格納
       list: this.cart,
-      chkAll: this.checkAll,
+      chk: this.checkAll,
+
+      flag: {
+        deleteBtn: false,
+      },
     }
   },
   methods: {
-    // 編集ボタン（クリックした対象の各データを親コンポーネントへ伝達し個数の変更を行われる流れ）
+    // 編集ボタン押下
     onClickChangeNum: function() {
+      // クリックした対象の各データを親コンポーネントへ伝達し個数変更処理を行なう
       this.$emit('modalOpen',　this.list.id, this.list.name, this.list.num, this.list.price);
     },
 
-    // 削除ボタン（アラートにOK返答するとクリックした対象のIDを親コンポーネントへ伝達し削除処理が行われる流れ）
+    // 削除ボタン押下
     onClickDeleteList: function() {
       // 削除するかしないか確認ダイアログが出現
       const resuponse = confirm('本当に削除しますか？');
 
-      // ダイアログで「OK」返答（削除実行の為、削除対象のIDを親へ伝達）
+      // ダイアログで「OK」返答すると削除実行の為、削除対象のIDを親へ伝達し処理を行なう
       resuponse ? this.$emit('tableListDelete',　this.list.id) : '';
     },
 
-    // 価格を3桁区切り表記へ変換する
+    // チェックボックスの付け外しで発生するイベント
+    onChangeCheckBox: function() {
+      this.$emit('chkboxAllDelete');
+    },
+
+    // 引数で受け取った数値（価格）を3桁区切り表記へ変換する
     amountDelimiter: function(price) {
       return Number(price).toLocaleString();
     },
@@ -90,7 +100,11 @@ export default {
 
   &__btn {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+
+    > div {
+      &:nth-of-type(2) { margin-left: 4%; }
+    }
 
     &__edit,
     &__delete {

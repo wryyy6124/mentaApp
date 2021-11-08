@@ -39,7 +39,7 @@
       <table class="dataCartTable__body">
         <!-- テーブル見出し -->
         <tr class="dataCartTable__header">
-          <th><input type="checkbox" v-model="flag.checkAll"></th>
+          <th class="dataCartTable__header__chk"><input type="checkbox" v-model="flag.checkAll"></th>
           <th>商品名</th>
           <th>数量</th>
           <th>単価</th>
@@ -86,6 +86,7 @@ export default {
         cart: false,
         modal: false,
         checkAll: false,
+        duplicate: false,
       },
 
       // 全商品データの格納（配列）
@@ -120,7 +121,7 @@ export default {
     }
   },
   methods: {
-    // 追加ボタン押下時：各入力項目を元にカード型リストを作成する
+    // 追加ボタン押下時に各入力項目を元にカード型リストを作成する
     onClickDataAppend: function() {
       // 各テキストフィールドに1字以上の入力がされているか
       if (this.p_name !== '' && this.p_detail !== '' && this.p_price !== '') {
@@ -146,7 +147,7 @@ export default {
         this.products.push(this.product);
 
         // 商品一覧が非表示であれば表示させる
-        if(!(this.flag.product)) { this.flag.product = true; }
+        !this.flag.product ? this.flag.product = true : '';
 
         // データバインディング（各入力）部分の初期化
         this.p_name = '';
@@ -156,52 +157,64 @@ export default {
     },
 
     // AddtoCartボタン押下時
-    onClickCalc: function(num) {
+    onClickCalc: function(key) {
       // カートエリアが非表示であれば表示させる
-      if (!(this.flag.cart)) { this.flag.cart = true; }
-
-      // 同一IDの商品（＝一度カートへ追加済み）があれば、配列への追加は行わない
-      for (let i = 0; i < this.carts.length; i++) {
-        if (this.carts[i].id === this.products[num].id) {
-          return;
-        }
-      }
+      !this.flag.cart ? this.flag.cart = true : '';
 
       // 入力内容をオブジェクト（カート）へ格納
       this.cartValue = {
-        id: this.products[num].id,
-        name: this.products[num].name,
-        num: this.products[num].num,
-        price: this.products[num].price,
+        id: this.products[key].id,
+        name: this.products[key].name,
+        num: this.products[key].num,
+        price: this.products[key].price,
       }
-      this.carts.push(this.cartValue);
 
+      // 同一IDの商品（＝一度カートへ追加済み）があった場合、
+      // 配列への追加自体は行わない代わりに注文数量へ可算(＋１)する
+      for (let i = 0; i < this.carts.length; i++) {
+        if (this.carts[i].id === this.cartValue.id) {
+          this.carts[i].id + 1;
+          this.duplicate = true;
+        }
+      }
+
+      // 既にカートへ追加済みでない場合
+      if (!this.duplicate) {
+        this.carts.push(this.cartValue);
+        return;
+      }
+
+      // 重複フラグ解除
+      this.duplicate = false;
     },
 
     // Deleteボタン押下時：登録した各商品の一つを削除する
     onClickListDelete: function(num) {
       this.products.splice(num, 1);
 
+      // リストが空だったら合計金額部分を非活性化
       if (this.products.length === 0) {
-        // リストが空だったら合計金額部分を非活性化
         this.flag.product = false;
         this.flag.cart = false;
       }
     },
 
-    // モーダルウィンドウ起動・停止
+    // モーダルウィンドウ起動
     onClickModalOpen: function(id, name, num, price) {
+      // ウィンドウ起動後の各項目を入力
       this.cartData.id = id;
       this.cartData.name = name;
       this.cartData.num = num;
       this.cartData.price = price;
 
-      // モーダルウィンドウ起動
+      // ウィンドウ起動
       this.flag.modal = true;
     },
+
+    // モーダルウィンドウ停止
     onClickModalClose: function() { this.flag.modal = false; },
 
-    // 数量変更
+    //  カートに追加した商品の数量を変更する
     onChangeNum: function(...args) {
       for (let i = 0; i < this.carts.length; i++) {        
         if (this.carts[i].id === args[0]) {
@@ -211,9 +224,7 @@ export default {
     },
 
     // カートに追加した商品を削除する
-    onListDelete: function(num) {
-      this.carts.splice(num, 1);
-    },
+    onListDelete: function(num) { this.carts.splice(num, 1); },
   },
 }
 </script>
@@ -295,7 +306,14 @@ export default {
   table {
     border: 1px solid #bbb;
     text-align: center;
+    table-layout: fixed;
     &:not(:last-of-type) { margin-bottom: 20px; }
+  }
+
+  &__header {
+    &__chk {
+      width: 50px;
+    }
   }
 }
 

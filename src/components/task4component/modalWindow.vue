@@ -69,9 +69,7 @@ export default {
     },
 
     // 価格を3桁区切り表記へ変換する
-    amountDelimiter: function(price) {
-      return Number(price).toLocaleString();
-    },
+    amountDelimiter: function(price) { return Number(price).toLocaleString(); },
   },
 }
 </script>
