@@ -1,12 +1,13 @@
 <template>
     <tr class="dataCartTable__list">
       <td class="dataCartTable__check">
-        <input type="checkbox" :checked="checkAll" @change="onChangeCheckBox">
+        <input type="checkbox" :checked="flag.checkBox" @change="onChangeCheckBox">
+        <!-- <br>検証用：{{ flag.checkBox }} -->
       </td>
       <td class="dataCartTable__pName">
         {{ list.name }}
       </td>
-      <td class="dataCartTable__num" value="1">
+      <td class="dataCartTable__num">
         {{ list.num }}
       </td>
       <td class="dataCartTable__price">
@@ -33,9 +34,10 @@ export default {
     return {
       // 親コンポーネント（componentTask4.vue）から渡ってきた配列とオプションを格納
       list: this.cart,
-      chk: this.checkAll,
+      chkAll: this.checkAll,
 
       flag: {
+        checkBox: false,
         deleteBtn: false,
       },
     }
@@ -58,7 +60,12 @@ export default {
 
     // チェックボックスの付け外しで発生するイベント
     onChangeCheckBox: function() {
-      this.$emit('chkboxAllDelete');
+      // フラグの切り替え
+      this.flag.deleteBtn = !this.flag.deleteBtn;
+      this.flag.checkBox = !this.flag.checkBox;
+
+      // 親コンポーネントへ指令を出す
+      // this.$emit('chkboxDelete');
     },
 
     // 引数で受け取った数値（価格）を3桁区切り表記へ変換する
@@ -93,7 +100,7 @@ export default {
 
     td {
       vertical-align: middle;
-      padding: 15px;
+      padding: 15px 10px;
       &:not(:last-of-type) { border-right: 1px solid #bbb; }
     }
   }
@@ -103,7 +110,7 @@ export default {
     justify-content: center;
 
     > div {
-      &:nth-of-type(2) { margin-left: 4%; }
+      &:nth-of-type(2) { margin-left: 6%; }
     }
 
     &__edit,
@@ -113,10 +120,11 @@ export default {
       border-radius: 5px;
       color: #fff;
       cursor: pointer;
+      font-size: 15px;
       font-weight: bold;
       padding: 10px;
       transition: .4s;
-      width: 48%;
+      width: 44%;
 
       &:hover { opacity: .5; }
     }

@@ -39,7 +39,10 @@
       <table class="dataCartTable__body">
         <!-- テーブル見出し -->
         <tr class="dataCartTable__header">
-          <th class="dataCartTable__header__chk"><input type="checkbox" v-model="flag.checkAll"></th>
+          <th class="dataCartTable__header__chk">
+            <input type="checkbox" v-model="flag.checkAll">
+            <!-- <br>検証用：{{ flag.checkAll }} -->
+          </th>
           <th>商品名</th>
           <th>数量</th>
           <th>単価</th>
@@ -50,7 +53,7 @@
         <!-- カートに追加した商品の一覧と金額合計表示 -->
         <task4TableList
           v-for="(cart, key) in carts" :key="cart.id" :cart="cart"
-          :checkAll="flag.checkAll" @chkboxAllDelete="flag.checkAll = false;"
+          :checkAll="flag.checkAll" @change="onFlagChange" @chkboxDelete="onFlagChange"
           @modalOpen="onClickModalOpen" @tableListDelete="onListDelete(key)"
         />
       </table>
@@ -188,6 +191,10 @@ export default {
       this.duplicate = false;
     },
 
+    onFlagChange: function() {
+      this.flag.checkAll = !this.flag.checkAll;
+    },
+
     // Deleteボタン押下時：登録した各商品の一つを削除する
     onClickListDelete: function(num) {
       this.products.splice(num, 1);
@@ -312,7 +319,7 @@ export default {
 
   &__header {
     &__chk {
-      width: 50px;
+      width: 80px;
     }
   }
 }
