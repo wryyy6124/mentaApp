@@ -40,7 +40,7 @@
         <!-- テーブル見出し -->
         <tr class="dataCartTable__header">
           <th class="dataCartTable__header__chk">
-            <input type="checkbox" v-model="flag.checkAll">
+            <input type="checkbox" v-model="flag.checkAll" @change="onAllChecked($event)">
             <!-- <br>検証用：{{ flag.checkAll }} -->
           </th>
           <th>商品名</th>
@@ -53,10 +53,12 @@
         <!-- カートに追加した商品の一覧と金額合計表示 -->
         <task4TableList
           v-for="(cart, key) in carts" :key="cart.id" :cart="cart"
-          :checkAll="flag.checkAll" @change="onFlagChange" @chkboxDelete="onFlagChange"
+          :checkAll="flag.checkAll" ref="child"
           @modalOpen="onClickModalOpen" @tableListDelete="onListDelete(key)"
         />
       </table>
+
+      {{ flag.checkAll }}
 
       <!-- 合計金額 -->
       <task4TableCalc :carts="carts" />
@@ -176,7 +178,7 @@ export default {
       // 配列への追加自体は行わない代わりに注文数量へ可算(＋１)する
       for (let i = 0; i < this.carts.length; i++) {
         if (this.carts[i].id === this.cartValue.id) {
-          this.carts[i].id + 1;
+          this.carts[i].num += 1;
           this.duplicate = true;
         }
       }
@@ -191,12 +193,26 @@ export default {
       this.duplicate = false;
     },
 
-    onFlagChange: function() {
-      this.flag.checkAll = !this.flag.checkAll;
+    onAllChecked: function(e) {
+      // this.$refs.child.onChangeAllCheck();
+      console.log(e);
+
+
     },
 
     // Deleteボタン押下時：登録した各商品の一つを削除する
     onClickListDelete: function(num) {
+      // カートに追加したアイテムが存在するか
+      if(!(this.carts.length === 0)) {
+        // カートへ追加済みのアイテムがあった場合、商品カード一覧からは消去出来ない旨、アラート発呼する
+        for (let i = 0; i < this.products.length; i++) {
+          if(this.products[num].id === this.carts[i].id) {
+            alert(`カート一覧に追加中のアイテムの為、削除できません。カートに入った商品を削除してから再度お試しください。`);
+
+            return;
+          }
+        }
+      }
       this.products.splice(num, 1);
 
       // リストが空だったら合計金額部分を非活性化
@@ -231,7 +247,13 @@ export default {
     },
 
     // カートに追加した商品を削除する
-    onListDelete: function(num) { this.carts.splice(num, 1); },
+    onListDelete: function(num) {
+      // 該当の商品をカート一覧から削除する
+      this.carts.splice(num, 1);
+
+      // カート一覧が0件になったら非表示とする
+      this.carts.length === 0 ? this.flag.cart = false : '';
+    },
   },
 }
 </script>

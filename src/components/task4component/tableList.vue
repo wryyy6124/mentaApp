@@ -2,7 +2,6 @@
     <tr class="dataCartTable__list">
       <td class="dataCartTable__check">
         <input type="checkbox" :checked="flag.checkBox" @change="onChangeCheckBox">
-        <!-- <br>検証用：{{ flag.checkBox }} -->
       </td>
       <td class="dataCartTable__pName">
         {{ list.name }}
@@ -64,8 +63,14 @@ export default {
       this.flag.deleteBtn = !this.flag.deleteBtn;
       this.flag.checkBox = !this.flag.checkBox;
 
+
       // 親コンポーネントへ指令を出す
       // this.$emit('chkboxDelete');
+    },
+
+    onChangeAllCheck: function() {
+      this.chkAll ? this.flag.checkBox = true : false;
+      console.log('ああああ');
     },
 
     // 引数で受け取った数値（価格）を3桁区切り表記へ変換する
