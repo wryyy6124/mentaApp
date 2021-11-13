@@ -35,6 +35,10 @@
       </ol>
     </div>
 
+    <br><br>
+    商品一覧：{{ products }}<br><br>
+    カート一覧：{{ carts }}<br><br>
+
     <div class="dataCartTable" v-if="flag.cart">
       <table class="dataCartTable__body">
         <!-- テーブル見出し -->
@@ -52,7 +56,7 @@
         <!-- カートに追加した商品の一覧と金額合計表示 -->
         <task4TableList
           v-for="(cart, key) in carts" :key="cart.id" :cart="cart"
-          :checkAll="flag.checkAll" ref="child" @chkboxSwitch="chkAllSwitch"
+          :checkAll="flag.checkAll" @chkboxSwitch="chkAllSwitch"
           @modalOpen="onClickModalOpen" @tableListDelete="onListDelete(key)"
         />
       </table>
@@ -141,8 +145,8 @@ export default {
           id: this.p_id++,
           name: this.p_name,
           detail: this.p_detail,
-          num: 1,
           price: this.p_price,
+          num: 1,
         }
 
         // 配列にオブジェクト（各入力内容）を追加
@@ -165,17 +169,16 @@ export default {
 
       // 入力内容をオブジェクト（カート）へ格納
       this.cartValue = {
-        chk: false,
         id: this.products[key].id,
         name: this.products[key].name,
-        num: this.products[key].num,
         price: this.products[key].price,
-        del: false,
+        num: this.products[key].num,
+        chk: false,
       }
 
       // 同一IDの商品（＝一度カートへ追加済み）があった場合、
       // 配列への追加自体は行わない代わりに注文数量へ可算(＋１)する
-      for (let i = 0; i < this.carts.length; i++) {
+      for (let i=0; i<this.carts.length; i++) {
         if (this.carts[i].id === this.cartValue.id) {
           this.carts[i].num += 1;
           this.duplicate = true;
@@ -193,46 +196,46 @@ export default {
     },
 
     onAllChecked: function() {
+      // 全チェックボックスのチェック有り 　=> 各ボックスのチェックを入れる
       if(this.flag.checkAll) {
-        for(let i=0; i < this.carts.length; i++) {
-          this.carts[i].chk = true;
-          this.carts[i].del = true;
-        }
-      } else {
-        for(let i=0; i < this.carts.length; i++) {
-          this.carts[i].chk = false;
-          this.carts[i].del = false;
-        }
+        for(let i=0; i<this.carts.length; i++) { this.carts[i].chk = true; }
+        return;
       }
+
+      // 全チェックボックスのチェックなし 　=> 各ボックスのチェックを外す
+      for(let i=0; i<this.carts.length; i++) { this.carts[i].chk = false; }
     },
 
     chkAllSwitch: function() {
-      for(let i=0; i < this.carts.length; i++) {
-        !this.carts[i].chk ? this.flag.checkAll = false : '';
-      }
+      // カート一覧の各チェックボックスが「１つでもチェックが外れたら」全チェックボックスもチェックを外す
+      for(let i=0; i<this.carts.length; i++) { !this.carts[i].chk ? this.flag.checkAll = false : ''; }
     },
 
     // Deleteボタン押下時：登録した各商品の一つを削除する
     onClickListDelete: function(num) {
-      // 登録した商品カードにカートへ追加したアイテムが存在するか
-      if(this.carts.length >= 0) {
-        // カートへ追加済みのアイテムがあった場合、商品カード一覧からは消去出来ない旨、アラート発呼する
-        for (let i = 0; i < this.products.length; i++) {
-          if(this.products[num].id === this.carts[i].id) {
-            alert(`カート一覧に追加中のアイテムの為、削除できません。カートに入った商品を削除してから再度お試しください。`);
-
-            return;
-          }
+      // カートへ追加済みのアイテムがあった場合、商品カード一覧からは消去出来ない旨、アラート発呼する
+      for(let i=0; i<this.carts.length; i++) {
+        if(this.products[num].id == this.carts[i].id) {
+          alert(`カート一覧に追加中のアイテムの為、削除できません。カートに入った商品を削除後に再度お試しください。`);
+          return;
         }
       }
 
-      // 存在しなかったのでカード一覧から該当のオブジェクトを消去
+      // カート一覧が存在しなかったので商品カード一覧から該当のオブジェクトを消去
       this.products.splice(num, 1);
 
-      // 更にリストが空となった場合、不要な箇所を非表示化
+      // 商品カードが0件
       if (this.products.length === 0) {
         this.flag.product = false;
         this.flag.cart = false;
+        this.flag.checkAll = false;
+        this.carts = [];
+      }
+
+      // カートリストが0件 
+      if (this.carts.length === 0) {
+        this.flag.cart = false;
+        this.flag.checkAll = false;
       }
     },
 
@@ -253,7 +256,7 @@ export default {
 
     //  カートに追加した商品の数量を変更する
     onChangeNum: function(...args) {
-      for (let i = 0; i < this.carts.length; i++) {        
+      for (let i=0; i<this.carts.length; i++) {        
         if (this.carts[i].id === args[0]) {
           this.carts[i].num = args[1];
         }

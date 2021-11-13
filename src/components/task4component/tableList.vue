@@ -17,7 +17,7 @@
       </td>
       <td class="dataCartTable__btn">
         <div class="dataCartTable__btn__edit" @click="onClickChangeNum">編集</div>
-        <div class="dataCartTable__btn__delete" @click="onClickDeleteList" v-if="list.del">削除</div>
+        <div class="dataCartTable__btn__delete" @click="onClickDeleteList" v-if="list.chk">削除</div>
       </td>
     </tr>
 </template>
@@ -55,7 +55,6 @@ export default {
     // チェックボックスの付け外しで発生するイベント
     onChangeCheckBox: function() {
       // フラグの切り替え
-      this.list.del = !this.list.del;
       this.list.chk = !this.list.chk;
 
       // 親コンポーネントへ指令を出す
