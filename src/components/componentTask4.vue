@@ -170,6 +170,7 @@ export default {
         name: this.products[key].name,
         num: this.products[key].num,
         price: this.products[key].price,
+        del: false,
       }
 
       // 同一IDの商品（＝一度カートへ追加済み）があった場合、
@@ -195,10 +196,12 @@ export default {
       if(this.flag.checkAll) {
         for(let i=0; i < this.carts.length; i++) {
           this.carts[i].chk = true;
+          this.carts[i].del = true;
         }
       } else {
         for(let i=0; i < this.carts.length; i++) {
           this.carts[i].chk = false;
+          this.carts[i].del = false;
         }
       }
     },

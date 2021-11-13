@@ -17,7 +17,7 @@
       </td>
       <td class="dataCartTable__btn">
         <div class="dataCartTable__btn__edit" @click="onClickChangeNum">編集</div>
-        <div class="dataCartTable__btn__delete" @click="onClickDeleteList" v-if="flag.deleteBtn">削除</div>
+        <div class="dataCartTable__btn__delete" @click="onClickDeleteList" v-if="list.del">削除</div>
       </td>
     </tr>
 </template>
@@ -34,11 +34,6 @@ export default {
       // 親コンポーネント（componentTask4.vue）から渡ってきた配列とオプションを格納
       list: this.cart,
       chkAll: this.checkAll,
-
-      flag: {
-        // checkBox: this.chkAll,
-        deleteBtn: false,
-      },
     }
   },
   methods: {
@@ -60,7 +55,7 @@ export default {
     // チェックボックスの付け外しで発生するイベント
     onChangeCheckBox: function() {
       // フラグの切り替え
-      this.flag.deleteBtn = !this.flag.deleteBtn;
+      this.list.del = !this.list.del;
       this.list.chk = !this.list.chk;
 
       // 親コンポーネントへ指令を出す
