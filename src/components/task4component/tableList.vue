@@ -67,11 +67,6 @@ export default {
       this.$emit('chkboxSwitch');
     },
 
-    // onChangeAllCheck: function() {
-    //   this.chkAll ? this.list.chk = true : false;
-    //   console.log('ああああ');
-    // },
-
     // 引数で受け取った数値（価格）を3桁区切り表記へ変換する
     amountDelimiter: function(price) {
       return Number(price).toLocaleString();
