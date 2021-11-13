@@ -40,8 +40,7 @@
         <!-- テーブル見出し -->
         <tr class="dataCartTable__header">
           <th class="dataCartTable__header__chk">
-            <input type="checkbox" v-model="flag.checkAll" @change="onAllChecked($event)">
-            <!-- <br>検証用：{{ flag.checkAll }} -->
+            <input type="checkbox" v-model="flag.checkAll" @change="onAllChecked">
           </th>
           <th>商品名</th>
           <th>数量</th>
@@ -53,12 +52,10 @@
         <!-- カートに追加した商品の一覧と金額合計表示 -->
         <task4TableList
           v-for="(cart, key) in carts" :key="cart.id" :cart="cart"
-          :checkAll="flag.checkAll" ref="child"
+          :checkAll="flag.checkAll" ref="child" @chkboxSwitch="chkAllSwitch"
           @modalOpen="onClickModalOpen" @tableListDelete="onListDelete(key)"
         />
       </table>
-
-      {{ flag.checkAll }}
 
       <!-- 合計金額 -->
       <task4TableCalc :carts="carts" />
@@ -168,6 +165,7 @@ export default {
 
       // 入力内容をオブジェクト（カート）へ格納
       this.cartValue = {
+        chk: false,
         id: this.products[key].id,
         name: this.products[key].name,
         num: this.products[key].num,
@@ -183,7 +181,7 @@ export default {
         }
       }
 
-      // 既にカートへ追加済みでない場合
+      // カート一覧へ追加済みでない場合
       if (!this.duplicate) {
         this.carts.push(this.cartValue);
         return;
@@ -193,17 +191,28 @@ export default {
       this.duplicate = false;
     },
 
-    onAllChecked: function(e) {
-      // this.$refs.child.onChangeAllCheck();
-      console.log(e);
+    onAllChecked: function() {
+      if(this.flag.checkAll) {
+        for(let i=0; i < this.carts.length; i++) {
+          this.carts[i].chk = true;
+        }
+      } else {
+        for(let i=0; i < this.carts.length; i++) {
+          this.carts[i].chk = false;
+        }
+      }
+    },
 
-
+    chkAllSwitch: function() {
+      for(let i=0; i < this.carts.length; i++) {
+        !this.carts[i].chk ? this.flag.checkAll = false : '';
+      }
     },
 
     // Deleteボタン押下時：登録した各商品の一つを削除する
     onClickListDelete: function(num) {
-      // カートに追加したアイテムが存在するか
-      if(!(this.carts.length === 0)) {
+      // 登録した商品カードにカートへ追加したアイテムが存在するか
+      if(this.carts.length >= 0) {
         // カートへ追加済みのアイテムがあった場合、商品カード一覧からは消去出来ない旨、アラート発呼する
         for (let i = 0; i < this.products.length; i++) {
           if(this.products[num].id === this.carts[i].id) {
@@ -213,9 +222,11 @@ export default {
           }
         }
       }
+
+      // 存在しなかったのでカード一覧から該当のオブジェクトを消去
       this.products.splice(num, 1);
 
-      // リストが空だったら合計金額部分を非活性化
+      // 更にリストが空となった場合、不要な箇所を非表示化
       if (this.products.length === 0) {
         this.flag.product = false;
         this.flag.cart = false;

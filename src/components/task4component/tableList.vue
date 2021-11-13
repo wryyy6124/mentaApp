@@ -1,7 +1,7 @@
 <template>
     <tr class="dataCartTable__list">
       <td class="dataCartTable__check">
-        <input type="checkbox" :checked="flag.checkBox" @change="onChangeCheckBox">
+        <input type="checkbox" :checked="list.chk" @change="onChangeCheckBox">
       </td>
       <td class="dataCartTable__pName">
         {{ list.name }}
@@ -36,7 +36,7 @@ export default {
       chkAll: this.checkAll,
 
       flag: {
-        checkBox: false,
+        // checkBox: this.chkAll,
         deleteBtn: false,
       },
     }
@@ -61,17 +61,16 @@ export default {
     onChangeCheckBox: function() {
       // フラグの切り替え
       this.flag.deleteBtn = !this.flag.deleteBtn;
-      this.flag.checkBox = !this.flag.checkBox;
-
+      this.list.chk = !this.list.chk;
 
       // 親コンポーネントへ指令を出す
-      // this.$emit('chkboxDelete');
+      this.$emit('chkboxSwitch');
     },
 
-    onChangeAllCheck: function() {
-      this.chkAll ? this.flag.checkBox = true : false;
-      console.log('ああああ');
-    },
+    // onChangeAllCheck: function() {
+    //   this.chkAll ? this.list.chk = true : false;
+    //   console.log('ああああ');
+    // },
 
     // 引数で受け取った数値（価格）を3桁区切り表記へ変換する
     amountDelimiter: function(price) {
