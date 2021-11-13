@@ -35,10 +35,6 @@
       </ol>
     </div>
 
-    <br><br>
-    商品一覧：{{ products }}<br><br>
-    カート一覧：{{ carts }}<br><br>
-
     <div class="dataCartTable" v-if="flag.cart">
       <table class="dataCartTable__body">
         <!-- テーブル見出し -->
