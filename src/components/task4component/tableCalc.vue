@@ -14,7 +14,7 @@
     </tr>
     <tr class="dataCartTable__calc__row">
       <th>合計代金</th>
-      <td class="dataCartTable__calc__total">{{ amountDelimiter(calcPrice() + calcTax()) }} 円</td>
+      <td class="dataCartTable__calc__total">{{ amountDelimiter(calcPrice() + calcTax()) }} <span>円</span></td>
     </tr>
   </table>
 </template>
@@ -81,6 +81,8 @@ export default {
       color: #df0000;
       font-size: 1.2em;
       font-weight: bold;
+
+      > span { font-size: 70%; }
     }
   }
 }

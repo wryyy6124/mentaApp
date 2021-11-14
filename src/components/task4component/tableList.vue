@@ -40,16 +40,16 @@ export default {
     // 編集ボタン押下
     onClickChangeNum: function() {
       // クリックした対象の各データを親コンポーネントへ伝達し個数変更処理を行なう
-      this.$emit('modalOpen',　this.list.id, this.list.name, this.list.num, this.list.price);
+      this.$emit('modalOpen',　this.list);
     },
 
     // 削除ボタン押下
     onClickDeleteList: function() {
       // 削除するかしないか確認ダイアログが出現
-      const resuponse = confirm('本当に削除しますか？');
+      const response = confirm('本当に削除しますか？');
 
       // ダイアログで「OK」返答すると削除実行の為、削除対象のIDを親へ伝達し処理を行なう
-      resuponse ? this.$emit('tableListDelete',　this.list.id) : '';
+      response ? this.$emit('tableListDelete',　this.list.id) : '';
     },
 
     // チェックボックスの付け外しで発生するイベント
@@ -62,9 +62,7 @@ export default {
     },
 
     // 引数で受け取った数値（価格）を3桁区切り表記へ変換する
-    amountDelimiter: function(price) {
-      return Number(price).toLocaleString();
-    },
+    amountDelimiter: function(price) { return Number(price).toLocaleString(); },
   },
 }
 </script>
@@ -112,7 +110,6 @@ export default {
       border-style: solid;
       border-radius: 5px;
       color: #fff;
-      cursor: pointer;
       font-size: 15px;
       font-weight: bold;
       padding: 10px;

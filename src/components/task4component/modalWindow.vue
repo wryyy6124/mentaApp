@@ -162,7 +162,6 @@ export default {
       border-color: #ec232a;
       border-radius: 5px;
       color: #fff;
-      cursor: pointer;
       text-align: center;
       transition: .4s;
       margin: 0 auto;

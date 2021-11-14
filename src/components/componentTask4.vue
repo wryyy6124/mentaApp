@@ -36,6 +36,12 @@
     </div>
 
     <div class="dataCartTable" v-if="flag.cart">
+      <!-- 一括操作 -->
+      <div class="dataCartTable__bulk" v-if="flag.bulk">
+        <div class="dataCartTable__bulk__edit">一括編集</div>
+        <div class="dataCartTable__bulk__delete">一括削除</div>
+      </div>
+
       <table class="dataCartTable__body">
         <!-- テーブル見出し -->
         <tr class="dataCartTable__header">
@@ -87,6 +93,7 @@ export default {
         product: false,
         cart: false,
         modal: false,
+        bulk: false,
         checkAll: false,
         duplicate: false,
       },
@@ -192,19 +199,43 @@ export default {
     },
 
     onAllChecked: function() {
-      // 全チェックボックスのチェック有り 　=> 各ボックスのチェックを入れる
+      // 全チェック欄のチェックが付いている
       if(this.flag.checkAll) {
-        for(let i=0; i<this.carts.length; i++) { this.carts[i].chk = true; }
-        return;
+        for(let i=0; i<this.carts.length; i++) { this.carts[i].chk = true; }  // 各ボックスのチェックを入れる
+        this.flag.bulk = true;  // 一括操作の項目を表示させる
+
+        return; // 以降は実施する必要がないので処理を抜ける
       }
 
-      // 全チェックボックスのチェックなし 　=> 各ボックスのチェックを外す
-      for(let i=0; i<this.carts.length; i++) { this.carts[i].chk = false; }
+      // 上記if文をスルーした為、全チェック欄のチェックが存在しなかった
+      for(let i=0; i<this.carts.length; i++) { this.carts[i].chk = false; } // 各ボックスのチェックを外す
+      this.flag.bulk = false; // 一括操作の項目を非表示とする
     },
 
     chkAllSwitch: function() {
-      // カート一覧の各チェックボックスが「１つでもチェックが外れたら」全チェックボックスもチェックを外す
-      for(let i=0; i<this.carts.length; i++) { !this.carts[i].chk ? this.flag.checkAll = false : ''; }
+      // カート一覧の各チェックボックスが「１つでもチェック済み」であれば、一括操作の項目を表示させる
+      for(let i=0; i<this.carts.length; i++) {
+        if(this.carts[i].chk) {
+          this.flag.bulk = true;
+          break;  // チェック済みの項目が見つかったので、ループを抜ける
+        }
+
+        this.flag.bulk = false; // チェック済みの項目が存在しなかったので、一括操作の項目を非表示とする
+      }
+
+      // カート一覧の各チェックボックスが「１つでも外れたら」全チェックボックスもチェックを外す
+      for(let i=0; i<this.carts.length; i++) {
+        if(!this.carts[i].chk) {
+          this.flag.checkAll = false;
+          return; // チェックが付いていない箇所をこの時点で発見できた。以降は必要ないので処理終了
+        }
+      }
+
+      // 上記ループを何事もなく抜けたということは、全てチェックがついていたということなので全チェックを付与する
+      this.flag.checkAll = true;
+
+      // 一括操作の項目を表示させる
+      this.flag.bulk = true;
     },
 
     // Deleteボタン押下時：登録した各商品の一つを削除する
@@ -236,12 +267,12 @@ export default {
     },
 
     // モーダルウィンドウ起動
-    onClickModalOpen: function(id, name, num, price) {
+    onClickModalOpen: function(data) {
       // ウィンドウ起動後の各項目を入力
-      this.cartData.id = id;
-      this.cartData.name = name;
-      this.cartData.num = num;
-      this.cartData.price = price;
+      this.cartData.id = data.id;
+      this.cartData.name = data.name;
+      this.cartData.num = data.num;
+      this.cartData.price = data.price;
 
       // ウィンドウ起動
       this.flag.modal = true;
@@ -344,6 +375,36 @@ export default {
 
 .dataCartTable {
   width: 900px !important;
+
+  &__bulk {
+    display: flex;
+    justify-content: space-between;
+    margin-left: auto;
+    padding: 0 0 20px 15px;
+    width: 40%;
+
+    > div {
+      border-width: 1px;
+      border-style: solid;
+      border-radius: 5px;
+      color: #fff;
+      text-align: center;
+      transition: .4s;
+      padding: 15px;
+      flex-basis: 48%;
+
+      &:hover { opacity: .5; }
+    }
+
+    &__edit {
+      background-color: #f0585d;
+      border-color: #ec232a;
+    }
+    &__delete {
+      background-color: #6986fa;
+      border-color: #2850f1;
+    }
+  }
 
   table {
     border: 1px solid #bbb;
