@@ -86,6 +86,7 @@ export default {
     > div {
       border-radius: 5px;
       color: #fff;
+      cursor: pointer;
       font-size: 80%;
       text-align: center;
       transition: .4s;

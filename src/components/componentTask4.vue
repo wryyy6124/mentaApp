@@ -38,9 +38,11 @@
     <div class="dataCartTable" v-if="flag.cart">
       <!-- 一括操作 -->
       <div class="dataCartTable__bulk" v-if="flag.bulk">
-        <div class="dataCartTable__bulk__edit">一括編集</div>
-        <div class="dataCartTable__bulk__delete">一括削除</div>
+        <div class="dataCartTable__bulk__edit" @click="onClickBulkEdit">一括編集</div>
+        <div class="dataCartTable__bulk__delete" @click="onClickBulkDel">一括削除</div>
       </div>
+
+      {{ carts }}
 
       <table class="dataCartTable__body">
         <!-- テーブル見出し -->
@@ -68,7 +70,7 @@
     </div>
 
     <task4modalWindow
-      v-if="flag.modal" :cartData="cartData"
+      v-if="flag.modal" :cartData="cartData" :cartsData="carts"
       @modalClose="onClickModalClose" @changeNum="onChangeNum"
     />
   </div>
@@ -298,6 +300,48 @@ export default {
       // カート一覧が0件になったら非表示とする
       this.carts.length === 0 ? this.flag.cart = false : '';
     },
+
+    // カートに追加した商品の中でチェック済みの項目を一括編集
+    onClickBulkEdit: function() {
+
+      for(let i=0; i<this.carts.length; i++) {
+        if(this.carts[i].chk) {
+          // ウィンドウ起動後の各項目を入力
+          this.cartData.id = this.carts[i].id;
+          this.cartData.name = this.carts[i].name;
+          this.cartData.num = this.carts[i].num;
+          this.cartData.price = this.carts[i].price;
+
+          // ウィンドウ起動
+          this.onClickModalOpen(this.cartData);
+          console.log('if構文の中です');
+        }
+        console.log('ループの中です');
+      }
+      console.log('ループの外です');
+
+    },
+
+    // カートに追加した商品の中でチェック済みの項目を一括削除
+    onClickBulkDel: function() {
+      // 削除するかしないか確認ダイアログが出現
+      const response = confirm('この一括操作は取り消しできません。本当に削除しますか？');
+
+      console.log(this.carts);
+
+      if(response) {
+        for(let i=0; i<this.carts.length; i++) {
+          if(this.carts[i].chk) {
+            this.carts.splice(i, 1);
+          }
+        }
+
+        alert(`チェックした項目の一括削除が完了しました`);
+        return;
+      }
+
+      alert(`一括削除をキャンセルしました`);
+    },
   },
 }
 </script>
@@ -388,6 +432,7 @@ export default {
       border-style: solid;
       border-radius: 5px;
       color: #fff;
+      cursor: pointer;
       text-align: center;
       transition: .4s;
       padding: 15px;

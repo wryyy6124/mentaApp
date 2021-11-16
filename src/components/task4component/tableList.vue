@@ -110,6 +110,7 @@ export default {
       border-style: solid;
       border-radius: 5px;
       color: #fff;
+      cursor: pointer;
       font-size: 15px;
       font-weight: bold;
       padding: 10px;

@@ -3,7 +3,6 @@
     <div class="modalWindow__body">
       <div class="modalWindow__body__contents">
         <div class="modalWindow__body__closeBtn" @click="$emit('modalClose')">
-        <!-- <div class="modalWindow__body__closeBtn"> -->
           Close<i class="fas fa-times"></i>
         </div>
         <div class="modalWindow__body__header">
@@ -49,6 +48,7 @@ export default {
         price: this.cartData.price,
         num: this.cartData.num,
       },
+      carts: this.cartsData,
     }
   },
   methods: {
@@ -162,6 +162,7 @@ export default {
       border-color: #ec232a;
       border-radius: 5px;
       color: #fff;
+      cursor: pointer;
       text-align: center;
       transition: .4s;
       margin: 0 auto;
