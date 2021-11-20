@@ -342,13 +342,9 @@ export default {
         // }
 
         // filterメソッドを使った方法（× 合計金額に反映されず）
-        this.carts = this.carts.filter(function(item) {
+        return　this.carts = this.carts.filter(function(item) {
           return !item.chk;
         });
-
-        console.log(`退避前（this.carts）：${this.carts}`);
-
-        return this.carts;
       }
 
       alert(`一括削除をキャンセルしました`);
