@@ -324,25 +324,40 @@ export default {
 
     // カートに追加した商品の中でチェック済みの項目を一括削除
     onClickBulkDel: function() {
+      // console.log(this.carts);
+
       // 削除するかしないか確認ダイアログが出現
       const response = confirm('この一括操作は取り消しできません。本当に削除しますか？');
 
-      console.log(this.carts);
-
       if(response) {
-        for(let i=0; i<this.carts.length; i++) {
-          if(this.carts[i].chk) {
-            this.carts.splice(i, 1);
-          }
-        }
+        // spliceメソッドを使った方法（×　配列の構造上、削除時に添字番号がズレるからNG）
 
-        alert(`チェックした項目の一括削除が完了しました`);
-        return;
+        // for(let i=0; i<this.carts.length; i++) {
+        //   console.log(this.carts[i].chk);
+
+        //   if(this.carts[i].chk) {
+        //     this.carts.splice(i, 1);
+        //     console.log(`${this.carts[i]} を削除しました`);
+        //   }
+        // }
+
+        // filterメソッドを使った方法（× 合計金額に反映されず）
+        this.carts = this.carts.filter(function(item) {
+          return !item.chk;
+        });
+
+        console.log(`退避前（this.carts）：${this.carts}`);
+
+        return this.carts;
       }
 
       alert(`一括削除をキャンセルしました`);
     },
   },
+  computed: {
+
+  },
+
 }
 </script>
 
