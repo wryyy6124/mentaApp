@@ -167,7 +167,6 @@ export default {
       transition: .4s;
       margin: 0 auto;
       padding: 10px;
-      width: 50%;
 
       &:hover { opacity: .4; }
     }

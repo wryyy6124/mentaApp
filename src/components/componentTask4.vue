@@ -42,8 +42,6 @@
         <div class="dataCartTable__bulk__delete" @click="onClickBulkDel">一括削除</div>
       </div>
 
-      {{ carts }}
-
       <table class="dataCartTable__body">
         <!-- テーブル見出し -->
         <tr class="dataCartTable__header">
@@ -304,56 +302,57 @@ export default {
     // カートに追加した商品の中でチェック済みの項目を一括編集
     onClickBulkEdit: function() {
 
-      for(let i=0; i<this.carts.length; i++) {
-        if(this.carts[i].chk) {
-          // ウィンドウ起動後の各項目を入力
-          this.cartData.id = this.carts[i].id;
-          this.cartData.name = this.carts[i].name;
-          this.cartData.num = this.carts[i].num;
-          this.cartData.price = this.carts[i].price;
+      // for(let i=0; i<this.carts.length; i++) {
+      //   if(this.carts[i].chk) {
+      //     // ウィンドウ起動後の各項目を入力
+      //     this.cartData.id = this.carts[i].id;
+      //     this.cartData.name = this.carts[i].name;
+      //     this.cartData.num = this.carts[i].num;
+      //     this.cartData.price = this.carts[i].price;
 
-          // ウィンドウ起動
-          this.onClickModalOpen(this.cartData);
-          console.log('if構文の中です');
-        }
-        console.log('ループの中です');
-      }
-      console.log('ループの外です');
+      //     // ウィンドウ起動
+      //     this.onClickModalOpen(this.cartData);
+      //     console.log('if構文の中です');
+      //   }
+      //   console.log('ループの中です');
+      // }
+      // console.log('ループの外です');
 
     },
 
     // カートに追加した商品の中でチェック済みの項目を一括削除
     onClickBulkDel: function() {
-      // console.log(this.carts);
-
       // 削除するかしないか確認ダイアログが出現
       const response = confirm('この一括操作は取り消しできません。本当に削除しますか？');
 
+      // 確認ダイアログにてレスポンス結果がOKだったら
       if(response) {
-        // spliceメソッドを使った方法（×　配列の構造上、削除時に添字番号がズレるからNG）
+        // カートに入った商品分ループ処理を実行
+        for(let i=0; i<this.carts.length; i++) {
+          // チェックが入っている項目に対して削除を実行
+          if(this.carts[i].chk) {
+            // 削除実行
+            this.carts.splice(i, 1);
 
-        // for(let i=0; i<this.carts.length; i++) {
-        //   console.log(this.carts[i].chk);
+            // 削除した分、配列に変動があるのでループ番号に対して-1付与して帳尻を合わせる
+            i--;
+          }
+        }
 
-        //   if(this.carts[i].chk) {
-        //     this.carts.splice(i, 1);
-        //     console.log(`${this.carts[i]} を削除しました`);
-        //   }
-        // }
+        // カートの中身が0件だったらカート欄を非表示・全チェック項目からチェックを外す
+        if(!this.carts.length) {
+          this.flag.cart = false;
+          this.flag.checkAll = false;
+        }
 
-        // filterメソッドを使った方法（× 合計金額に反映されず）
-        return　this.carts = this.carts.filter(function(item) {
-          return !item.chk;
-        });
+        // 以降の処理は実施不要なのでこの時点で関数を抜ける
+        return;
       }
 
+      // 確認ダイアログにてレスポンスNG返答
       alert(`一括削除をキャンセルしました`);
     },
   },
-  computed: {
-
-  },
-
 }
 </script>
 
