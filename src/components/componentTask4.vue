@@ -35,6 +35,8 @@
       </ol>
     </div>
 
+    {{ carts }}
+
     <div class="dataCartTable" v-if="flag.cart">
       <!-- 一括操作 -->
       <div class="dataCartTable__bulk" v-if="flag.bulk">
@@ -67,9 +69,16 @@
       <task4TableCalc :carts="carts" />
     </div>
 
+    <!-- モーダルウィンドウ（単体変更）起動 -->
     <task4modalWindow
-      v-if="flag.modal" :cartData="cartData" :cartsData="carts"
+      v-if="flag.modal" :cartData="cartData"
       @modalClose="onClickModalClose" @changeNum="onChangeNum"
+    />
+
+    <!-- モーダルウィンドウ（一括変更）起動 -->
+    <task4modalWindowBulk
+      v-if="flag.modalBulk" :cartsData="carts"
+      @modalClose="onClickModalClose"
     />
   </div>
 </template>
@@ -77,14 +86,15 @@
 <script>
 import task4Card from "./task4component/card";
 import task4modalWindow from "./task4component/modalWindow";
+import task4modalWindowBulk from "./task4component/modalWindowBulk";
 import task4TableList from "./task4component/tableList";
 import task4TableCalc from "./task4component/tableCalc";
 
 export default {
   name: 'componentTask4',
   components: {
-    task4Card, task4modalWindow,
-    task4TableList, task4TableCalc,
+    task4Card, task4TableList, task4TableCalc,
+    task4modalWindow, task4modalWindowBulk
   },
   data: function() {
     return {
@@ -93,6 +103,7 @@ export default {
         product: false,
         cart: false,
         modal: false,
+        modalBulk: false,
         bulk: false,
         checkAll: false,
         duplicate: false,
@@ -266,7 +277,7 @@ export default {
       }
     },
 
-    // モーダルウィンドウ起動
+    // モーダルウィンドウ`（商品単体）起動
     onClickModalOpen: function(data) {
       // ウィンドウ起動後の各項目を入力
       this.cartData.id = data.id;
@@ -279,7 +290,10 @@ export default {
     },
 
     // モーダルウィンドウ停止
-    onClickModalClose: function() { this.flag.modal = false; },
+    onClickModalClose: function() {
+      this.flag.modal = false;
+      this.flag.modalBulk = false;
+    },
 
     //  カートに追加した商品の数量を変更する
     onChangeNum: function(...args) {
@@ -318,6 +332,8 @@ export default {
       // }
       // console.log('ループの外です');
 
+      // ウィンドウ起動
+      this.flag.modalBulk = true;
     },
 
     // カートに追加した商品の中でチェック済みの項目を一括削除

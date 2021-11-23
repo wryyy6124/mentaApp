@@ -1,31 +1,30 @@
 <template>
-  <div class="modalWindow">
-    <div class="modalWindow__body">
-      <div class="modalWindow__body__contents">
-        <div class="modalWindow__body__closeBtn" @click="$emit('modalClose')">
+  <div class="modalWindowBulk">
+    <div class="modalWindowBulk__body">
+      <div class="modalWindowBulk__body__contents">
+        <div class="modalWindowBulk__body__closeBtn" @click="$emit('modalClose')">
           Close<i class="fas fa-times"></i>
         </div>
-        <div class="modalWindow__body__header">
+        <div class="modalWindowBulk__body__header">
           ▼注文の商品数を変更する
         </div>
-        <div class="modalWindow__body__wrapper">
-          <div class="modalWindow__body__box">
-            <div class="modalWindow__body__productImage">
-              Dummy
+        <div class="modalWindowBulk__body__section">
+          <div class="modalWindowBulk__body__wrapper" v-for="item of carts">
+            <div class="modalWindowBulk__body__box">
+              <div class="modalWindowBulk__body__productImage">
+                Dummy
+              </div>
             </div>
-          </div>
-          <div class="modalWindow__body__box">
-            <div class="modalWindow__body__productName">
-              商品名：{{ info.name }}
-            </div>
-            <div class="modalWindow__body__productPrice">
-              単価：{{ amountDelimiter(info.price) }} 円
-            </div>
-            <div class="modalWindow__body__number">
-              個数：<input type="number" v-model="info.num">
-            </div>
-            <div class="modalWindow__body__button" @click="onChangeNum">
-              確定する
+            <div class="modalWindowBulk__body__box">
+              <div class="modalWindowBulk__body__productName">
+                商品名：{{ item.name }}
+              </div>
+              <div class="modalWindowBulk__body__productPrice">
+                単価：{{ amountDelimiter(item.price) }} 円
+              </div>
+              <div class="modalWindowBulk__body__number">
+                個数：<input type="number" v-model="item.num">
+              </div>
             </div>
           </div>
         </div>
@@ -36,35 +35,30 @@
 
 <script>
 export default {
-  name: 'modalWindow',
+  name: 'modalWindowBulk',
   props: {
-    cartData: Object,
+    cartsData: Array,
   },
   data: function() {
     return {
-      info: {
-        id: this.cartData.id,
-        name: this.cartData.name,
-        price: this.cartData.price,
-        num: this.cartData.num,
-      },
+      carts: this.cartsData,
     }
   },
   methods: {
     onChangeNum: function() {
       // 個数1未満を指定していたら処理を行わなずに数値を初期化
-      if (this.info.num <= 0) {
-        alert('1以上の数値を入力してください');
-        this.info.num = 1;
+      // if (this.info.num <= 0) {
+      //   alert('1以上の数値を入力してください');
+      //   this.info.num = 1;
 
-        return;
-      }
+      //   return;
+      // }
 
-      // 親コンポーネント（App.vue）にモーダルウィンドウをcloseさせるように合図
-      this.$emit('modalClose');
+      // // 親コンポーネント（App.vue）にモーダルウィンドウをcloseさせるように合図
+      // this.$emit('modalClose');
 
-      // 親コンポーネント（App.vue）に変更したIDと個数を伝える
-      this.$emit('changeNum', this.info.id, Number(this.info.num));
+      // // 親コンポーネント（App.vue）に変更したIDと個数を伝える
+      // this.$emit('changeNum', this.info.id, Number(this.info.num));
     },
 
     // 価格を3桁区切り表記へ変換する
@@ -74,7 +68,7 @@ export default {
 </script>
 
 <style lang="scss">
-.modalWindow {
+.modalWindowBulk {
   animation-name: displayToggleAnime;
   animation-duration: 1s;
 
