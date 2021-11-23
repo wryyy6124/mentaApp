@@ -35,8 +35,6 @@
       </ol>
     </div>
 
-    {{ carts }}
-
     <div class="dataCartTable" v-if="flag.cart">
       <!-- 一括操作 -->
       <div class="dataCartTable__bulk" v-if="flag.bulk">
@@ -77,7 +75,7 @@
 
     <!-- モーダルウィンドウ（一括変更）起動 -->
     <task4modalWindowBulk
-      v-if="flag.modalBulk" :cartsData="carts"
+      v-if="flag.modalBulk" :cartsData="chkCarts"
       @modalClose="onClickModalClose"
     />
   </div>
@@ -123,6 +121,9 @@ export default {
 
       // 全商品データの格納（配列）
       carts: [],
+
+      // チェック済みの商品データの格納（配列）
+      chkCarts: [],
 
       cartValue: {
         id: 0, // ID（リスト識別用）
@@ -331,6 +332,17 @@ export default {
       //   console.log('ループの中です');
       // }
       // console.log('ループの外です');
+      this.chkCarts = [];
+
+      let num = 0;
+
+      for(let i=0; i<this.carts.length; i++) {
+        // チェックが入っている項目に対して削除を実行
+        if(this.carts[i].chk) {
+          this.chkCarts[num] = this.carts[i];
+          num++;
+        }
+      }
 
       // ウィンドウ起動
       this.flag.modalBulk = true;

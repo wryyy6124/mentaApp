@@ -6,24 +6,29 @@
           Close<i class="fas fa-times"></i>
         </div>
         <div class="modalWindowBulk__body__header">
-          ▼注文の商品数を変更する
+          <div class="modalWindowBulk__body__text">
+            ▼注文の商品数を変更する
+          </div>
+          <!-- <div class="modalWindowBulk__body__button">
+            確定する
+          </div> -->
         </div>
         <div class="modalWindowBulk__body__section">
+          <div class="modalWindowBulk__body__box">
+            <div class="modalWindowBulk__body__productName">
+              商品名
+            </div>
+            <div class="modalWindowBulk__body__number">
+              個数
+            </div>
+          </div>
           <div class="modalWindowBulk__body__wrapper" v-for="item of carts">
             <div class="modalWindowBulk__body__box">
-              <div class="modalWindowBulk__body__productImage">
-                Dummy
-              </div>
-            </div>
-            <div class="modalWindowBulk__body__box">
               <div class="modalWindowBulk__body__productName">
-                商品名：{{ item.name }}
-              </div>
-              <div class="modalWindowBulk__body__productPrice">
-                単価：{{ amountDelimiter(item.price) }} 円
+                {{ item.name }}
               </div>
               <div class="modalWindowBulk__body__number">
-                個数：<input type="number" v-model="item.num">
+                <input type="number" v-model="item.num">
               </div>
             </div>
           </div>
@@ -116,38 +121,15 @@ export default {
     }
 
     &__header {
-      font-size: 25px;
-      font-weight: bold;
-      margin-bottom: 15px;
-    }
-
-    &__wrapper {
+      margin-bottom: 30px;
       display: flex;
       justify-content: space-between;
-    }
-
-    &__box {
-      width: 45%;
-      > div:not(:last-of-type) { margin-bottom: 15px; }
-    }
-
-    &__productImage {
-      background-color: #666;
-      border-radius: 5px;
-      color: #fff;
-      text-align: center;
-      padding: 50px 0;
-    }
-
-    &__number {
-      display: flex;
       align-items: center;
+    }
 
-      > input {
-        border: 1px solid #000;
-        padding: 10px;
-        width: 50%;
-      }
+    &__text {
+      font-size: 25px;
+      font-weight: bold;
     }
 
     &__button {
@@ -158,10 +140,53 @@ export default {
       cursor: pointer;
       text-align: center;
       transition: .4s;
-      margin: 0 auto;
       padding: 10px;
 
       &:hover { opacity: .4; }
+    }
+
+    &__wrapper {
+      padding: 10px 0 10px 30px;
+
+      &:not(:last-of-type) {
+        border-bottom: 1px dotted #343434;
+        // margin-bottom: 15px;
+      }
+    }
+
+    &__box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      // width: 45%;
+    }
+
+    &__productName {
+      width: 65%;
+    }
+
+    // &__productImage {
+    //   background-color: #666;
+    //   border-radius: 5px;
+    //   color: #fff;
+    //   text-align: center;
+    //   padding: 50px 0;
+    // }
+
+    &__number {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 30%;
+
+      > input {
+        border: 1px solid #000;
+        text-align: center;
+        margin: 0 auto;
+        padding: 10px;
+        width: 50%;
+      }
     }
   }
 }
