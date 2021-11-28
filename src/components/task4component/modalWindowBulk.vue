@@ -7,28 +7,17 @@
         </div>
         <div class="modalWindowBulk__body__header">
           <div class="modalWindowBulk__body__text">
-            ▼注文の商品数を変更する
+            ▼注文の商品数を一括変更する
           </div>
-          <!-- <div class="modalWindowBulk__body__button">
-            確定する
-          </div> -->
         </div>
         <div class="modalWindowBulk__body__section">
-          <div class="modalWindowBulk__body__box">
-            <div class="modalWindowBulk__body__productName">
-              商品名
-            </div>
-            <div class="modalWindowBulk__body__number">
-              個数
-            </div>
-          </div>
-          <div class="modalWindowBulk__body__wrapper" v-for="item of carts">
+          <div class="modalWindowBulk__body__wrapper">
             <div class="modalWindowBulk__body__box">
-              <div class="modalWindowBulk__body__productName">
-                {{ item.name }}
-              </div>
               <div class="modalWindowBulk__body__number">
-                <input type="number" v-model="item.num">
+                個数：　<input type="number" v-model="num">
+              </div>
+              <div class="modalWindowBulk__body__button" @click="onChangeNumBulk">
+                確定する
               </div>
             </div>
           </div>
@@ -41,33 +30,27 @@
 <script>
 export default {
   name: 'modalWindowBulk',
-  props: {
-    cartsData: Array,
-  },
   data: function() {
     return {
-      carts: this.cartsData,
+      num: 1,
     }
   },
   methods: {
-    onChangeNum: function() {
+    onChangeNumBulk: function() {
       // 個数1未満を指定していたら処理を行わなずに数値を初期化
-      // if (this.info.num <= 0) {
-      //   alert('1以上の数値を入力してください');
-      //   this.info.num = 1;
+      if (this.num <= 0) {
+        alert('1以上の数値を入力してください');
+        this.num = 1;
 
-      //   return;
-      // }
+        return;
+      }
 
-      // // 親コンポーネント（App.vue）にモーダルウィンドウをcloseさせるように合図
-      // this.$emit('modalClose');
+      // 親コンポーネント（App.vue）にモーダルウィンドウをcloseさせるように合図
+      this.$emit('modalClose');
 
-      // // 親コンポーネント（App.vue）に変更したIDと個数を伝える
-      // this.$emit('changeNum', this.info.id, Number(this.info.num));
+      // 親コンポーネント（App.vue）に変更したIDと個数を伝える
+      this.$emit('changeNumBulk', this.num);
     },
-
-    // 価格を3桁区切り表記へ変換する
-    amountDelimiter: function(price) { return Number(price).toLocaleString(); },
   },
 }
 </script>
@@ -146,39 +129,21 @@ export default {
     }
 
     &__wrapper {
-      padding: 10px 0 10px 30px;
-
-      &:not(:last-of-type) {
-        border-bottom: 1px dotted #343434;
-        // margin-bottom: 15px;
-      }
+      padding: 10px 30px;
+      &:not(:last-of-type) { border-bottom: 1px dotted #343434; }
     }
 
     &__box {
       display: flex;
-      justify-content: space-between;
+      justify-content: space-evenly;
       align-items: center;
-
-      // width: 45%;
     }
-
-    &__productName {
-      width: 65%;
-    }
-
-    // &__productImage {
-    //   background-color: #666;
-    //   border-radius: 5px;
-    //   color: #fff;
-    //   text-align: center;
-    //   padding: 50px 0;
-    // }
 
     &__number {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      width: 30%;
+      width: 50%;
 
       > input {
         border: 1px solid #000;

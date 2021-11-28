@@ -42,6 +42,8 @@
         <div class="dataCartTable__bulk__delete" @click="onClickBulkDel">一括削除</div>
       </div>
 
+      {{ carts }}
+
       <table class="dataCartTable__body">
         <!-- テーブル見出し -->
         <tr class="dataCartTable__header">
@@ -75,8 +77,8 @@
 
     <!-- モーダルウィンドウ（一括変更）起動 -->
     <task4modalWindowBulk
-      v-if="flag.modalBulk" :cartsData="chkCarts"
-      @modalClose="onClickModalClose"
+      v-if="flag.modalBulk"
+      @changeNumBulk="onChangeBulk" @modalClose="onClickModalClose"
     />
   </div>
 </template>
@@ -122,8 +124,8 @@ export default {
       // 全商品データの格納（配列）
       carts: [],
 
-      // チェック済みの商品データの格納（配列）
-      chkCarts: [],
+      // // チェック済みの商品データの格納（配列）
+      // chkCarts: [],
 
       cartValue: {
         id: 0, // ID（リスト識別用）
@@ -145,10 +147,10 @@ export default {
     // 追加ボタン押下時に各入力項目を元にカード型リストを作成する
     onClickDataAppend: function() {
       // 各テキストフィールドに1字以上の入力がされているか
-      if (this.p_name !== '' && this.p_detail !== '' && this.p_price !== '') {
+      if(this.p_name !== '' && this.p_detail !== '' && this.p_price !== '') {
 
         // 正しい価格が入力されているか
-        if (this.p_price <= 0) {
+        if(this.p_price <= 0) {
           alert('金額は1円以上の数値を入力してください');
           this.p_price = "";
 
@@ -193,15 +195,15 @@ export default {
 
       // 同一IDの商品（＝一度カートへ追加済み）があった場合、
       // 配列への追加自体は行わない代わりに注文数量へ可算(＋１)する
-      for (let i=0; i<this.carts.length; i++) {
-        if (this.carts[i].id === this.cartValue.id) {
+      for(let i=0; i<this.carts.length; i++) {
+        if(this.carts[i].id === this.cartValue.id) {
           this.carts[i].num += 1;
           this.duplicate = true;
         }
       }
 
       // カート一覧へ追加済みでない場合
-      if (!this.duplicate) {
+      if(!this.duplicate) {
         this.carts.push(this.cartValue);
         return;
       }
@@ -264,7 +266,7 @@ export default {
       this.products.splice(num, 1);
 
       // 商品カードが0件
-      if (this.products.length === 0) {
+      if(this.products.length === 0) {
         this.flag.product = false;
         this.flag.cart = false;
         this.flag.checkAll = false;
@@ -272,7 +274,7 @@ export default {
       }
 
       // カートリストが0件 
-      if (this.carts.length === 0) {
+      if(this.carts.length === 0) {
         this.flag.cart = false;
         this.flag.checkAll = false;
       }
@@ -298,9 +300,18 @@ export default {
 
     //  カートに追加した商品の数量を変更する
     onChangeNum: function(...args) {
-      for (let i=0; i<this.carts.length; i++) {        
+      for(let i=0; i<this.carts.length; i++) {        
         if (this.carts[i].id === args[0]) {
           this.carts[i].num = args[1];
+        }
+      }
+    },
+
+    //  カートに追加した且つチェックした商品の数量を一括変更する
+    onChangeBulk: function(number) {
+      for(let i=0; i<this.carts.length; i++) {        
+        if (this.carts[i].chk) {
+          this.carts[i].num = number;
         }
       }
     },
@@ -316,34 +327,6 @@ export default {
 
     // カートに追加した商品の中でチェック済みの項目を一括編集
     onClickBulkEdit: function() {
-
-      // for(let i=0; i<this.carts.length; i++) {
-      //   if(this.carts[i].chk) {
-      //     // ウィンドウ起動後の各項目を入力
-      //     this.cartData.id = this.carts[i].id;
-      //     this.cartData.name = this.carts[i].name;
-      //     this.cartData.num = this.carts[i].num;
-      //     this.cartData.price = this.carts[i].price;
-
-      //     // ウィンドウ起動
-      //     this.onClickModalOpen(this.cartData);
-      //     console.log('if構文の中です');
-      //   }
-      //   console.log('ループの中です');
-      // }
-      // console.log('ループの外です');
-      this.chkCarts = [];
-
-      let num = 0;
-
-      for(let i=0; i<this.carts.length; i++) {
-        // チェックが入っている項目に対して削除を実行
-        if(this.carts[i].chk) {
-          this.chkCarts[num] = this.carts[i];
-          num++;
-        }
-      }
-
       // ウィンドウ起動
       this.flag.modalBulk = true;
     },
