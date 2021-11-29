@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  name: 'modalWindow',
+  name: 'modalWindowDel',
   props: {
     cartData: Object,
   },

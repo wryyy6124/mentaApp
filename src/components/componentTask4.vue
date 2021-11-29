@@ -1,37 +1,21 @@
 <template>
   <div class="funcPropGiveArea">
     <div class="dataGive">
-      <div class="dataGive__header">
-        データ追加
-      </div>
+      <div class="dataGive__header">データ追加</div>
       <div class="dataGive__body">
         <ul class="dataGive__body__list">
-          <li>
-            <span class="dataGive__list__header">商品名</span>
-            <input class="dataGive__list__inputText"　type="text" v-model.trim="p_name" name="productName" placeholder="商品名称を入力" autocomplete="off">
-          </li>
-          <li>
-            <span class="dataGive__list__header">詳細</span>
-            <input class="dataGive__list__inputText"　type="text" v-model.trim="p_detail" name="productDetail" placeholder="商品の詳細を入力" autocomplete="off">
-          </li>
-          <li>
-            <span class="dataGive__list__header">金額</span>
-            <input class="dataGive__list__inputText"　type="number" v-model.trim="p_price" name="productPrice" placeholder="金額は1円以上の数値を入力" autocomplete="off">
-          </li>
+          <li><span class="dataGive__list__header">商品名</span><input class="dataGive__list__inputText"　type="text" v-model.trim="p_name" name="productName" placeholder="商品名称を入力" autocomplete="off"></li>
+          <li><span class="dataGive__list__header">詳細</span><input class="dataGive__list__inputText"　type="text" v-model.trim="p_detail" name="productDetail" placeholder="商品の詳細を入力" autocomplete="off"></li>
+          <li><span class="dataGive__list__header">金額</span><input class="dataGive__list__inputText"　type="number" v-model.trim="p_price" name="productPrice" placeholder="金額は1円以上の数値を入力" autocomplete="off"></li>
         </ul>
-        <div class="dataGive__body__append" @click="onClickDataAppend">
-          追加
-        </div>
+        <div class="dataGive__body__append" @click="onClickDataAppend">追加</div>
       </div>
     </div>
 
     <div class="dataProduct" v-if="flag.product">
       <ol class="dataProduct__list">
         <!-- データ追加した商品一覧を追加した数分カード表示する -->
-        <task4Card
-          v-for="(product, key) in products" :key="product.id" :product="product"
-          @add="onClickCalc(key)" @del="onClickListDelete(key)"
-        />
+        <task4Card v-for="(product, key) in products" :key="product.id" :product="product" @add="onClickCalc(key)" @del="onClickListDelete(key)" />
       </ol>
     </div>
 
@@ -42,26 +26,17 @@
         <div class="dataCartTable__bulk__delete" @click="onClickBulkDel">一括削除</div>
       </div>
 
-      {{ carts }}
-
       <table class="dataCartTable__body">
         <!-- テーブル見出し -->
         <tr class="dataCartTable__header">
-          <th class="dataCartTable__header__chk">
-            <input type="checkbox" v-model="flag.checkAll" @change="onAllChecked">
-          </th>
-          <th>商品名</th>
-          <th>数量</th>
-          <th>単価</th>
-          <th>小計</th>
-          <th>操作</th>
+          <th class="dataCartTable__header__chk"><input type="checkbox" v-model="flag.checkAll" @change="onAllChecked"></th>
+          <th>商品名</th><th>数量</th><th>単価</th><th>小計</th><th>操作</th>
         </tr>
 
         <!-- カートに追加した商品の一覧と金額合計表示 -->
-        <task4TableList
-          v-for="(cart, key) in carts" :key="cart.id" :cart="cart"
-          :checkAll="flag.checkAll" @chkboxSwitch="chkAllSwitch"
-          @modalOpen="onClickModalOpen" @tableListDelete="onListDelete(key)"
+        <task4TableList v-for="(cart, key) in carts" :key="cart.id"
+          :cart="cart" :checkAll="flag.checkAll"
+          @chkboxSwitch="chkAllSwitch" @modalOpen="onClickModalOpen" @tableListDelete="onListDelete(key)"
         />
       </table>
 
@@ -70,31 +45,36 @@
     </div>
 
     <!-- モーダルウィンドウ（単体変更）起動 -->
-    <task4modalWindow
-      v-if="flag.modal" :cartData="cartData"
-      @modalClose="onClickModalClose" @changeNum="onChangeNum"
-    />
+    <task4modalWindow v-if="flag.modal" :cartData="cartData" @changeNum="onChangeNum" @modalClose="onClickModalClose" />
+
+    <!-- モーダルウィンドウ（単体削除）起動 -->
+    <!-- <task4modalWindowDel v-if="flag.modalDel" /> -->
 
     <!-- モーダルウィンドウ（一括変更）起動 -->
-    <task4modalWindowBulk
-      v-if="flag.modalBulk"
-      @changeNumBulk="onChangeBulk" @modalClose="onClickModalClose"
-    />
+    <task4modalWindowBulk v-if="flag.modalBulk" @changeNumBulk="onChangeBulk" @modalClose="onClickModalClose" />
+
+    <!-- モーダルウィンドウ（一括削除）起動 -->
+    <!-- <task4modalWindowBulkDel v-if="flag.modalBulkDel" /> -->
   </div>
 </template>
 
 <script>
 import task4Card from "./task4component/card";
-import task4modalWindow from "./task4component/modalWindow";
-import task4modalWindowBulk from "./task4component/modalWindowBulk";
 import task4TableList from "./task4component/tableList";
 import task4TableCalc from "./task4component/tableCalc";
+
+// モーダルウィンドウ
+import task4modalWindow from "./task4component/modalWindow";
+import task4modalWindowDel from "./task4component/modalWindowDel";
+import task4modalWindowBulk from "./task4component/modalWindowBulk";
+import task4modalWindowBulkDel from "./task4component/modalWindowBulkDel";
 
 export default {
   name: 'componentTask4',
   components: {
     task4Card, task4TableList, task4TableCalc,
-    task4modalWindow, task4modalWindowBulk
+    task4modalWindow, task4modalWindowDel,
+    task4modalWindowBulk, task4modalWindowBulkDel,
   },
   data: function() {
     return {
@@ -103,7 +83,9 @@ export default {
         product: false,
         cart: false,
         modal: false,
+        modalDel: false,
         modalBulk: false,
+        modalBulkDel: false,
         bulk: false,
         checkAll: false,
         duplicate: false,
@@ -280,7 +262,7 @@ export default {
       }
     },
 
-    // モーダルウィンドウ`（商品単体）起動
+    // モーダルウィンドウ（商品単体）起動
     onClickModalOpen: function(data) {
       // ウィンドウ起動後の各項目を入力
       this.cartData.id = data.id;
@@ -395,7 +377,6 @@ export default {
         justify-content: space-between;
         align-items: center;
         line-height: 1.2;
-
         &:not(:last-of-type) { margin-bottom: 15px; }
 
         > span {
@@ -423,7 +404,6 @@ export default {
       transition: .4s;
       padding: 10px 0;
       flex-basis: 15%;
-
       &:hover { background-color: #ccc; }
     }
   }
@@ -458,7 +438,6 @@ export default {
       transition: .4s;
       padding: 15px;
       flex-basis: 48%;
-
       &:hover { opacity: .5; }
     }
 
@@ -466,6 +445,7 @@ export default {
       background-color: #f0585d;
       border-color: #ec232a;
     }
+
     &__delete {
       background-color: #6986fa;
       border-color: #2850f1;
@@ -480,9 +460,7 @@ export default {
   }
 
   &__header {
-    &__chk {
-      width: 80px;
-    }
+    &__chk { width: 80px; }
   }
 }
 

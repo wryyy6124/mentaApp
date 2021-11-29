@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: 'modalWindowBulk',
+  name: 'modalWindowBulkDel',
   data: function() {
     return {
       num: 1,
