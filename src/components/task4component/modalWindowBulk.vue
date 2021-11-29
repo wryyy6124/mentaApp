@@ -116,7 +116,6 @@ export default {
       text-align: center;
       transition: .4s;
       padding: 10px;
-
       &:hover { opacity: .4; }
     }
 

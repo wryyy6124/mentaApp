@@ -1,20 +1,10 @@
 <template>
     <tr class="dataCartTable__list">
-      <td class="dataCartTable__check">
-        <input type="checkbox" :checked="list.chk" @change="onChangeCheckBox">
-      </td>
-      <td class="dataCartTable__pName">
-        {{ list.name }}
-      </td>
-      <td class="dataCartTable__num">
-        {{ list.num }}
-      </td>
-      <td class="dataCartTable__price">
-        {{ amountDelimiter(list.price) }}
-      </td>
-      <td class="dataCartTable__total">
-        {{ amountDelimiter(list.price * list.num) }} 円
-      </td>
+      <td class="dataCartTable__check"><input type="checkbox" :checked="list.chk" @change="onChangeCheckBox"></td>
+      <td class="dataCartTable__pName">{{ list.name }}</td>
+      <td class="dataCartTable__num">{{ list.num }}</td>
+      <td class="dataCartTable__price">{{ amountDelimiter(list.price) }}</td>
+      <td class="dataCartTable__total">{{ amountDelimiter(list.price * list.num) }} 円</td>
       <td class="dataCartTable__btn">
         <div class="dataCartTable__btn__edit" @click="onClickChangeNum">編集</div>
         <div class="dataCartTable__btn__delete" @click="onClickDeleteList" v-if="list.chk">削除</div>
@@ -46,10 +36,12 @@ export default {
     // 削除ボタン押下
     onClickDeleteList: function() {
       // 削除するかしないか確認ダイアログが出現
-      const response = confirm('本当に削除しますか？');
+      // const response = confirm('本当に削除しますか？');
 
       // ダイアログで「OK」返答すると削除実行の為、削除対象のIDを親へ伝達し処理を行なう
-      response ? this.$emit('tableListDelete',　this.list.id) : '';
+      // response ? this.$emit('tableListDelete',　this.list.id) : '';
+
+      this.$emit('tableListDelete',　this.list);
     },
 
     // チェックボックスの付け外しで発生するイベント

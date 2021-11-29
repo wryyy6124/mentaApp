@@ -1,16 +1,19 @@
 <template>
-  <div class="modalWindowBulk">
-    <div class="modalWindowBulk__body">
-      <div class="modalWindowBulk__body__contents">
-        <div class="modalWindowBulk__body__closeBtn" @click="$emit('modalClose')">Close<i class="fas fa-times"></i></div>
-        <div class="modalWindowBulk__body__header">
-          <div class="modalWindowBulk__body__text">▼注文の商品数を一括変更する</div>
+  <div class="modalWindowBulkDel">
+    <div class="modalWindowBulkDel__body">
+      <div class="modalWindowBulkDel__body__contents">
+        <div class="modalWindowBulkDel__body__closeBtn" @click="$emit('modalClose')">Close<i class="fas fa-times"></i></div>
+        <div class="modalWindowBulkDel__body__header">
+          <div class="modalWindowBulkDel__body__text">▼チェック済みの商品を一括削除する</div>
         </div>
-        <div class="modalWindowBulk__body__section">
-          <div class="modalWindowBulk__body__wrapper">
-            <div class="modalWindowBulk__body__box">
-              <div class="modalWindowBulk__body__number">個数：　<input type="number" v-model="num"></div>
-              <div class="modalWindowBulk__body__button" @click="onChangeNumBulk">確定する</div>
+        <div class="modalWindowBulkDel__body__section">
+          <div class="modalWindowBulkDel__body__wrapper">
+            <div v-for="item in items">
+              {{ item.name }}
+              {{ item.num }}
+            </div>
+            <div class="modalWindowBulkDel__body__box">
+              <div class="modalWindowBulkDel__body__button" @click="onChangeNumBulk">全て削除する</div>
             </div>
           </div>
         </div>
@@ -21,34 +24,26 @@
 
 <script>
 export default {
-  name: 'modalWindowBulkDel',
+  name: 'modalWindowBulkDelDel',
+  props: {
+    chkCarts: Array,
+  },
   data: function() {
     return {
-      num: 1,
+      items: this.chkCarts,
     }
   },
   methods: {
     onChangeNumBulk: function() {
-      // 個数1未満を指定していたら処理を行わなずに数値を初期化
-      if (this.num <= 0) {
-        alert('1以上の数値を入力してください');
-        this.num = 1;
-
-        return;
-      }
-
       // 親コンポーネント（App.vue）にモーダルウィンドウをcloseさせるように合図
       this.$emit('modalClose');
-
-      // 親コンポーネント（App.vue）に変更したIDと個数を伝える
-      this.$emit('changeNumBulk', this.num);
     },
   },
 }
 </script>
 
 <style lang="scss">
-.modalWindowBulk {
+.modalWindowBulkDel {
   animation-name: displayToggleAnime;
   animation-duration: 1s;
 
@@ -108,8 +103,8 @@ export default {
     }
 
     &__button {
-      background-color: #f0585d;
-      border-color: #ec232a;
+      background-color: #6986fa;
+      border-color: #2850f1;
       border-radius: 5px;
       color: #fff;
       cursor: pointer;
