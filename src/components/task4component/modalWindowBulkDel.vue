@@ -36,6 +36,7 @@ export default {
     onChangeNumBulk: function() {
       // 親コンポーネント（App.vue）にモーダルウィンドウをcloseさせるように合図
       this.$emit('modalClose');
+      this.$emit('onDeleteBulk');
     },
   },
 }

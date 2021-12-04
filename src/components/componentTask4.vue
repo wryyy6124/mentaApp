@@ -258,8 +258,9 @@ export default {
       }
 
       // カートリストが0件 
-      if(this.carts.length === 0) {
+      if(!this.carts.length) {
         this.flag.cart = false;
+        this.flag.bulk = false;
         this.flag.checkAll = false;
       }
     },
@@ -315,7 +316,7 @@ export default {
       }
 
       // カート一覧が0件になったら非表示とする
-      if(this.carts.length === 0) {
+      if(!this.carts.length) {
         this.flag.cart = false;
         this.flag.bulk = false;
         this.flag.checkAll = false;
@@ -348,36 +349,26 @@ export default {
       }
 
       this.flag.modalBulkDel = true;
+    },
+    onListDeleteBulk: function() {
+      // カートに入った商品分ループ処理を実行
+      for(let i=0; i<this.carts.length; i++) {
+        // チェックが入っている項目に対して削除を実行
+        if(this.carts[i].chk) {
+          // 削除実行
+          this.carts.splice(i, 1);
 
-      // 削除するかしないか確認ダイアログが出現
-      // const response = confirm('この一括操作は取り消しできません。本当に削除しますか？');
+          // 削除した分、配列に変動があるのでループ番号に対して-1付与して帳尻を合わせる
+          i--;
+        }
+      }
 
-      // 確認ダイアログにてレスポンス結果がOKだったら
-      // if(response) {
-      //   // カートに入った商品分ループ処理を実行
-      //   for(let i=0; i<this.carts.length; i++) {
-      //     // チェックが入っている項目に対して削除を実行
-      //     if(this.carts[i].chk) {
-      //       // 削除実行
-      //       this.carts.splice(i, 1);
-
-      //       // 削除した分、配列に変動があるのでループ番号に対して-1付与して帳尻を合わせる
-      //       i--;
-      //     }
-      //   }
-
-      //   // カートの中身が0件だったらカート欄を非表示・全チェック項目からチェックを外す
-      //   if(!this.carts.length) {
-      //     this.flag.cart = false;
-      //     this.flag.checkAll = false;
-      //   }
-
-      //   // 以降の処理は実施不要なのでこの時点で関数を抜ける
-      //   return;
-      // }
-
-      // // 確認ダイアログにてレスポンスNG返答
-      // alert(`一括削除をキャンセルしました`);
+      // カートの中身が0件だったらカート欄を非表示・全チェック項目からチェックを外す
+      if(!this.carts.length) {
+        this.flag.cart = false;
+        this.flag.bulk = false;
+        this.flag.checkAll = false;
+      }
     },
   },
 }
