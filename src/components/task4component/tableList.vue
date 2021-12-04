@@ -34,7 +34,9 @@ export default {
     },
 
     // 削除ボタン押下
-    onClickDeleteList: function() {
+    onClickDeleteList: function(e) {
+      // console.log(this);
+
       // 削除するかしないか確認ダイアログが出現
       // const response = confirm('本当に削除しますか？');
 

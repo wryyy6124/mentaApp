@@ -36,11 +36,11 @@
         <!-- カートに追加した商品の一覧と金額合計表示 -->
         <task4TableList v-for="(cart, key) in carts" :key="cart.id"
           :cart="cart" :checkAll="flag.checkAll"
-          @chkboxSwitch="chkAllSwitch" @modalOpen="onClickModalOpen" @tableListDelete="onListDelete"
+          @chkboxSwitch="chkAllSwitch" @modalOpen="onClickModalOpen" @tableListDelete="onClickModalDelOpen"
         />
       </table>
 
-      carts：　{{ carts }}
+      <!-- <pre>{{ carts }}</pre> -->
 
       <!-- 合計金額 -->
       <task4TableCalc :carts="carts" />
@@ -50,13 +50,13 @@
     <task4modalWindow v-if="flag.modal" :cartData="cartData" @changeNum="onChangeNum" @modalClose="onClickModalClose" />
 
     <!-- モーダルウィンドウ（単体削除）起動 -->
-    <task4modalWindowDel v-if="flag.modalDel" :cartData="cartData" @onDelete="" @modalClose="onClickModalClose" />
+    <task4modalWindowDel v-if="flag.modalDel" :cartData="cartData" @onDelete="onListDelete" @modalClose="onClickModalClose" />
 
     <!-- モーダルウィンドウ（一括変更）起動 -->
     <task4modalWindowBulk v-if="flag.modalBulk" @changeNumBulk="onChangeBulk" @modalClose="onClickModalClose" />
 
     <!-- モーダルウィンドウ（一括削除）起動 -->
-    <task4modalWindowBulkDel v-if="flag.modalBulkDel" :chkCarts="chkCarts" @modalClose="onClickModalClose" />
+    <task4modalWindowBulkDel v-if="flag.modalBulkDel" :chkCarts="chkCarts" @onDeleteBulk="onListDeleteBulk" @modalClose="onClickModalClose" />
   </div>
 </template>
 
@@ -264,6 +264,14 @@ export default {
       }
     },
 
+      // モーダルウィンドウ停止
+    onClickModalClose: function() {
+      this.flag.modal = false;
+      this.flag.modalDel = false;
+      this.flag.modalBulk = false;
+      this.flag.modalBulkDel = false;
+    },
+
     // モーダルウィンドウ（商品単体）起動
     onClickModalOpen: function(data) {
       // ウィンドウ起動後の各項目を入力
@@ -275,7 +283,16 @@ export default {
       // ウィンドウ起動
       this.flag.modal = true;
     },
+    onChangeNum: function(...args) {
+      for(let i=0; i<this.carts.length; i++) {        
+        if(this.carts[i].id === args[0]) {
+          this.carts[i].num = args[1];
+          return;
+        }
+      }
+    },
 
+    // カートに追加した商品を削除する
     onClickModalDelOpen: function(data) {
       // ウィンドウ起動後の各項目を入力
       this.cartData.id = data.id;
@@ -286,24 +303,30 @@ export default {
       // ウィンドウ起動
       this.flag.modalDel = true;
     },
+    onListDelete: function(id) {
+      console.log(id);
 
-    // モーダルウィンドウ停止
-    onClickModalClose: function() {
-      this.flag.modal = false;
-      this.flag.modalDel = false;
-      this.flag.modalBulk = false;
-      this.flag.modalBulkDel = false;
-    },
-
-    //  カートに追加した商品の数量を変更する
-    onChangeNum: function(...args) {
       for(let i=0; i<this.carts.length; i++) {        
-        if(this.carts[i].id === args[0]) {
-          this.carts[i].num = args[1];
+        if(this.carts[i].id === id) {
+          // 該当の商品をカート一覧から削除する
+          this.carts.splice(i, 1);
+          break;
         }
+      }
+
+      // カート一覧が0件になったら非表示とする
+      if(this.carts.length === 0) {
+        this.flag.cart = false;
+        this.flag.bulk = false;
+        this.flag.checkAll = false;
       }
     },
 
+    // カートに追加した商品の中でチェック済みの項目を一括編集
+    onClickBulkEdit: function() {
+      // ウィンドウ起動
+      this.flag.modalBulk = true;
+    },
     //  カートに追加した且つチェックした商品の数量を一括変更する
     onChangeBulk: function(number) {
       for(let i=0; i<this.carts.length; i++) {        
@@ -311,30 +334,6 @@ export default {
           this.carts[i].num = number;
         }
       }
-    },
-
-    // カートに追加した商品を削除する
-    onListDelete: function(data) {
-      // ウィンドウ起動後の各項目を入力
-      this.cartData.id = data.id;
-      this.cartData.name = data.name;
-      this.cartData.num = data.num;
-      this.cartData.price = data.price;
-
-      // ウィンドウ起動
-      this.flag.modalDel = true;
-
-      // 該当の商品をカート一覧から削除する
-      // this.carts.splice(num, 1);
-
-      // カート一覧が0件になったら非表示とする
-      // this.carts.length === 0 ? this.flag.cart = false : '';
-    },
-
-    // カートに追加した商品の中でチェック済みの項目を一括編集
-    onClickBulkEdit: function() {
-      // ウィンドウ起動
-      this.flag.modalBulk = true;
     },
 
     // カートに追加した商品の中でチェック済みの項目を一括削除

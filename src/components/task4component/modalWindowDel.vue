@@ -38,19 +38,11 @@ export default {
   },
   methods: {
     onClickDelete: function() {
-      // 個数1未満を指定していたら処理を行わなずに数値を初期化
-      // if (this.info.num <= 0) {
-      //   alert('1以上の数値を入力してください');
-      //   this.info.num = 1;
-
-      //   return;
-      // }
-
       // 親コンポーネント（App.vue）にモーダルウィンドウをcloseさせるように合図
       this.$emit('modalClose');
 
-      // 親コンポーネント（App.vue）に変更したIDと個数を伝える
-      this.$emit('onDelete', this.info);
+      // 親コンポーネント（App.vue）に変更したIDを伝える
+      this.$emit('onDelete', this.info.id);
     },
 
     // 価格を3桁区切り表記へ変換する

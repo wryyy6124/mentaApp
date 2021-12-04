@@ -8,13 +8,12 @@
         </div>
         <div class="modalWindowBulkDel__body__section">
           <div class="modalWindowBulkDel__body__wrapper">
-            <div v-for="item in items">
-              {{ item.name }}
-              {{ item.num }}
-            </div>
-            <div class="modalWindowBulkDel__body__box">
-              <div class="modalWindowBulkDel__body__button" @click="onChangeNumBulk">全て削除する</div>
-            </div>
+            <ol class="modalWindowBulkDel__body__list">
+              <li v-for="item in items">{{ item.name }}</li>
+            </ol>
+          </div>
+          <div class="modalWindowBulkDel__body__box">
+            <div class="modalWindowBulkDel__body__button" @click="onChangeNumBulk">全て削除する</div>
           </div>
         </div>
       </div>
@@ -115,9 +114,18 @@ export default {
       &:hover { opacity: .4; }
     }
 
-    &__wrapper {
-      padding: 10px 30px;
-      &:not(:last-of-type) { border-bottom: 1px dotted #343434; }
+    &__list {
+      background-color: #ddd;
+      list-style: auto;
+      overflow: scroll;
+      margin-bottom: 30px;
+      padding: 20px 0 20px 50px;
+      max-height: 200px;
+
+      > li {
+        padding-left: 15px;
+        &:not(:last-of-type) { margin-bottom: 25px; }
+      }
     }
 
     &__box {
