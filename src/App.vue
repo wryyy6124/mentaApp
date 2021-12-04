@@ -8,45 +8,31 @@
     <link rel ="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
 
     <!-- 完了した課題分のアコーディオン開閉 -->
-    <div class="taskToggle" @click="toggleAccordion">
-      タスク完了分（クリックで開閉）<i class="fas fa-angle-double-down"></i>
-    </div>
+    <div class="taskToggle" @click="toggleAccordion">タスク完了分（クリックで開閉）<i class="fas fa-angle-double-down"></i></div>
 
     <!-- 完了した課題を格納する -->
     <div class="accordionTask" :class="{ is_display: isDisplay.task }">
       <div class="funcWrapper">
-        <div class="funcWrapper__header">
-          ①数値の加算・減算・初期化
-        </div>
-
+        <div class="funcWrapper__header">①数値の加算・減算・初期化</div>
         <!-- 加算・減算　 -->
         <componentTask1 />
       </div>
 
       <div class="funcWrapper">
-        <div class="funcWrapper__header">
-          ②リスト生成・初期化
-        </div>
-
+        <div class="funcWrapper__header">②リスト生成・初期化</div>
         <!-- リスト生成　-->
         <componentTask2 />
       </div>
 
       <div class="funcWrapper">
-        <div class="funcWrapper__header">
-          ③コメントの投稿／削除・検索
-        </div>
-
+        <div class="funcWrapper__header">③コメントの投稿／削除・検索</div>
         <!-- コメント投稿 -->
         <componentTask3 />
       </div>
     </div>
 
     <div class="funcWrapper">
-      <div class="funcWrapper__header">
-        ④コンポーネントへ値（プロパティ）引き渡し
-      </div>
-
+      <div class="funcWrapper__header">④コンポーネントへ値（プロパティ）引き渡し</div>
       <!-- 子コンポーネント引き継ぎ -->
       <componentTask4 />
     </div>
@@ -75,9 +61,6 @@ export default {
       isDisplay: {
         // 完了分課題
         task: false,
-
-        // モーダルウィンドウ
-        // modal: false,
       },
 
       // カート内の商品情報格納
@@ -86,26 +69,11 @@ export default {
         price: '',
         num: 1,
       },
-
-      // changeNum: 1,
-
     }
   },
   methods: {
     // 課題（完了分）の格納
     toggleAccordion: function() { this.isDisplay.task = !this.isDisplay.task; },
-
-    // モーダルウィンドウ起動・停止
-    // onClickModalOpen: function(name, num, price) {
-    //   // 孫コンポーネントから渡ってきたデータを格納
-    //   this.cartData.name = name;
-    //   this.cartData.num = num;
-    //   this.cartData.price = price;
-
-    //   // モーダルウィンドウ起動
-    //   this.isDisplay.modal = true;
-    // },
-    // onClickModalClose: function() { this.isDisplay.modal = false; },
 
     // 商品数変更
     onChangeNum: function(number) {
@@ -117,6 +85,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 // Vueインスタンスのスタイル定義
 #app {
   color: #2c3e50;

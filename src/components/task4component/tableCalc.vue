@@ -59,6 +59,7 @@ export default {
 
 .dataCartTable {
   &__calc {
+    border: 1px solid #bbb;
     margin-left: auto;
     width: 40%;
 
@@ -75,6 +76,7 @@ export default {
       background-color: #f0f0f0;
       text-align: center;
     }
+    td { text-align: center; }
     th, td { padding: 10px; }
 
     &__total {

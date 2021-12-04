@@ -30,7 +30,11 @@
         <!-- テーブル見出し -->
         <tr class="dataCartTable__header">
           <th class="dataCartTable__header__chk"><input type="checkbox" v-model="flag.checkAll" @change="onAllChecked"></th>
-          <th>商品名</th><th>数量</th><th>単価</th><th>小計</th><th>操作</th>
+          <th>商品名</th>
+          <th>数量<i class="fas fa-sort" @click="tableSort('num')"></i></th>
+          <th>単価<i class="fas fa-sort" @click="tableSort('price')"></i></th>
+          <th>小計</th>
+          <th>操作</th>
         </tr>
 
         <!-- カートに追加した商品の一覧と金額合計表示 -->
@@ -39,8 +43,6 @@
           @chkboxSwitch="chkAllSwitch" @modalOpen="onClickModalOpen" @tableListDelete="onClickModalDelOpen"
         />
       </table>
-
-      <!-- <pre>{{ carts }}</pre> -->
 
       <!-- 合計金額 -->
       <task4TableCalc :carts="carts" />
@@ -91,6 +93,7 @@ export default {
         bulk: false,
         checkAll: false,
         duplicate: false,
+        sort: false,
       },
 
       // 全商品データの格納（配列）
@@ -305,8 +308,6 @@ export default {
       this.flag.modalDel = true;
     },
     onListDelete: function(id) {
-      console.log(id);
-
       for(let i=0; i<this.carts.length; i++) {        
         if(this.carts[i].id === id) {
           // 該当の商品をカート一覧から削除する
@@ -369,6 +370,31 @@ export default {
         this.flag.bulk = false;
         this.flag.checkAll = false;
       }
+    },
+
+    // カートに追加した内容のソート
+    tableSort: function(word) {
+      if(word == 'num') {
+        this.carts.sort((prev, next) => {
+          if(this.flag.sort) {
+            return prev.num - next.num
+          } else {
+            return next.num - prev.num
+          }
+        });
+      }
+
+      if(word == 'price') {
+        this.carts.sort((prev, next) => {
+          if(this.flag.sort) {
+            return prev.price - next.price
+          } else {
+            return next.price - prev.price
+          }
+        });
+      }
+
+      this.flag.sort = !this.flag.sort;
     },
   },
 }
@@ -478,14 +504,43 @@ export default {
   }
 
   table {
-    border: 1px solid #bbb;
-    text-align: center;
-    table-layout: fixed;
     &:not(:last-of-type) { margin-bottom: 20px; }
   }
 
+  &__body {
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    text-align: center;
+    table-layout: fixed;
+    width: 100%;
+  }
+
   &__header {
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #bbb;
+
     &__chk { width: 80px; }
+
+    th {
+      text-align: center;
+      vertical-align: middle;
+      padding: 15px;
+
+      &:not(:last-of-type) { border-right: 1px solid #bbb; }
+
+      i {
+        background-color: #fff;
+        border-radius: 5px;
+        border: 1px solid;
+        cursor: pointer;
+        font-size: 20px;
+        transition: .4s;
+        margin-left: 15px;
+        padding: 0 5px;
+
+        &:hover { background-color: #ffc9d2; }
+      }
+    }
   }
 }
 

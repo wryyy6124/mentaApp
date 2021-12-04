@@ -35,14 +35,7 @@ export default {
 
     // 削除ボタン押下
     onClickDeleteList: function(e) {
-      // console.log(this);
-
-      // 削除するかしないか確認ダイアログが出現
-      // const response = confirm('本当に削除しますか？');
-
-      // ダイアログで「OK」返答すると削除実行の為、削除対象のIDを親へ伝達し処理を行なう
-      // response ? this.$emit('tableListDelete',　this.list.id) : '';
-
+      // クリックした対象の各データを親コンポーネントへ伝達し削除処理を行なう
       this.$emit('tableListDelete',　this.list);
     },
 
@@ -64,22 +57,6 @@ export default {
 <style lang="scss">
 
 .dataCartTable {
-  &__body {
-    border-radius: 5px;
-    width: 100%;
-  }
-
-  &__header {
-    background-color: #f0f0f0;
-    border-bottom: 1px solid #bbb;
-
-    th {
-      text-align: center;
-      padding: 15px;
-      &:not(:last-of-type) { border-right: 1px solid #bbb; }
-    }
-  }
-
   &__list {
     &:not(:last-of-type) { border-bottom: 1px dotted #ccc; }
 
