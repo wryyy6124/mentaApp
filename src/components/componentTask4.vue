@@ -38,10 +38,7 @@
         </tr>
 
         <!-- カートに追加した商品の一覧と金額合計表示 -->
-        <task4TableList v-for="(cart, key) in carts" :key="cart.id"
-          :cart="cart" :checkAll="flag.checkAll"
-          @chkboxSwitch="chkAllSwitch" @modalOpen="onClickModalOpen" @tableListDelete="onClickModalDelOpen"
-        />
+        <task4TableList v-for="(cart, key) in carts" :key="cart.id" :cart="cart" :checkAll="flag.checkAll" @chkboxSwitch="chkAllSwitch" @modalOpen="onClickModalOpen" @tableListDelete="onClickModalDelOpen" />
       </table>
 
       <!-- 合計金額 -->
@@ -50,13 +47,10 @@
 
     <!-- モーダルウィンドウ（単体変更）起動 -->
     <task4modalWindow v-if="flag.modal" :cartData="cartData" @changeNum="onChangeNum" @modalClose="onClickModalClose" />
-
     <!-- モーダルウィンドウ（単体削除）起動 -->
     <task4modalWindowDel v-if="flag.modalDel" :cartData="cartData" @onDelete="onListDelete" @modalClose="onClickModalClose" />
-
     <!-- モーダルウィンドウ（一括変更）起動 -->
     <task4modalWindowBulk v-if="flag.modalBulk" @changeNumBulk="onChangeBulk" @modalClose="onClickModalClose" />
-
     <!-- モーダルウィンドウ（一括削除）起動 -->
     <task4modalWindowBulkDel v-if="flag.modalBulkDel" :chkCarts="chkCarts" @onDeleteBulk="onListDeleteBulk" @modalClose="onClickModalClose" />
   </div>
@@ -401,7 +395,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 .dataGive {
   border: 1px solid #bbb;
   border-radius: 5px;
@@ -543,5 +536,4 @@ export default {
     }
   }
 }
-
 </style>

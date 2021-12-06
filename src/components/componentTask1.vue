@@ -1,23 +1,13 @@
 <template>
   <div class="funcCalcArea">
     <div class="selectCalc">
-      <button class="selectCalc__button" @click="clickCalc(1)">
-        プラス
-      </button>
-      <button class="selectCalc__button" @click="clickCalc(-1)">
-        マイナス
-      </button>
-      <button class="selectCalc__button" @click="calcInit">
-        初期化
-      </button>
+      <button class="selectCalc__button" @click="clickCalc(1)">プラス</button>
+      <button class="selectCalc__button" @click="clickCalc(-1)">マイナス</button>
+      <button class="selectCalc__button" @click="calcInit">初期化</button>
     </div>
     <div class="resultCalc">
-      <div class="resultCalc__header">
-        結果
-      </div>
-      <div class="resultCalc__body">
-        {{ calc }}
-      </div>
+      <div class="resultCalc__header">結果</div>
+      <div class="resultCalc__body">{{ calc }}</div>
     </div>
   </div>
 </template>

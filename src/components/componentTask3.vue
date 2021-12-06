@@ -1,38 +1,26 @@
 <template>
   <div class="funcCommentArea">
     <div class="commentPost">
-      <div class="commentPost__header">
-        コメント
-      </div>
+      <div class="commentPost__header">コメント</div>
       <div class="commentPost__body">
         <input class="commentPost__inputText"　type="text" v-model="commentText" name="Post" placeholder="コメントを入力してください">
-        <button class="commentPost__executionBtn" @click="commentPost">
-          追加
-        </button>
+        <button class="commentPost__executionBtn" @click="commentPost">追加</button>
       </div>
     </div>
 
     <div class="commentSearch">
       <div class="commentSearch__body">
-        <div class="commentSearch__executionIcon">
-          <i class="fas fa-search"></i>
-        </div>
+        <div class="commentSearch__executionIcon"><i class="fas fa-search"></i></div>
         <input class="commentSearch__inputText" type="text" v-model.trim="searchText" @keyup="commentFilter" name="commentSearch" placeholder="コメント一覧から検索したいキーワードを入力してください">
       </div>
     </div>
 
     <div class="commentList">
-      <div class="commentList__header">
-        コメント
-      </div>
+      <div class="commentList__header">コメント</div>
       <div class="commentList__postBody" v-for="(comment, index) in commentFilter" :key="index">
-        <div class="commentList__postText">
-          {{ comment }}
-        </div>
+        <div class="commentList__postText">{{ comment }}</div>
         <div class="commentList__postButton">
-          <div class="commentList__postButton__inner" @click="commentDelete(index)">
-            削除
-          </div>
+          <div class="commentList__postButton__inner" @click="commentDelete(index)">削除</div>
         </div>
       </div>
     </div>
@@ -89,7 +77,6 @@ export default {
 /*---------------------------------------
   「コメント投稿」エリアのスタイル定義
 ---------------------------------------*/
-
 .funcCommentArea {
   margin: 0 auto;
   width: 750px;

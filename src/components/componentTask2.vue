@@ -1,35 +1,21 @@
 <template>
   <div class="funclistArea">
     <div class="listCreate">
-      <button class="listCreate__button" :class="{ is_deactive: btnChange }" @click="listCreate(listLength)">
-        リスト作成
-      </button>
-      <button class="listCreate__button" @click="listLengthInit">
-        初期化
-      </button>
+      <button class="listCreate__button" :class="{ is_deactive: btnChange }" @click="listCreate(listLength)">リスト作成</button>
+      <button class="listCreate__button" @click="listLengthInit">初期化</button>
     </div>
     <div class="listSelect">
-      <div class="listSelect__header">
-        リスト数
-      </div>
-      <div class="listSelect__number">
-        <input type="number" v-model="listLength" @click="numberJudgement(listLength)">
-      </div>
+      <div class="listSelect__header">リスト数</div>
+      <div class="listSelect__number"><input type="number" v-model="listLength" @click="numberJudgement(listLength)"></div>
     </div>
 
     <!-- リスト数を0未満に指定した場合のみ出現 -->
-    <div :class="{ errMessage: errFlag }" v-if="errFlag">
-      マイナスは選べません
-    </div>
+    <div :class="{ errMessage: errFlag }" v-if="errFlag">マイナスは選べません</div>
 
     <div class="createResult">
-      <div class="createResult__header">
-        リスト
-      </div>
+      <div class="createResult__header">リスト</div>
       <ul class="createResult__list">
-        <li v-for="(list, index) in lists" :key="list">
-          サンプル {{ index + 1 }}
-        </li>
+        <li v-for="(list, index) in lists" :key="list">サンプル {{ index + 1 }}</li>
       </ul>
     </div>
   </div>
