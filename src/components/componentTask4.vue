@@ -4,6 +4,13 @@
       <div class="dataGive__header">データ追加</div>
       <div class="dataGive__body">
         <ul class="dataGive__body__list">
+          <li>
+            <span class="dataGive__list__header">カテゴリ</span>
+            <select class="dataGive__list__inputOption">
+              <option>カテゴリ１</option>
+              <option>カテゴリ２</option>
+            </select>
+          </li>
           <li><span class="dataGive__list__header">商品名</span><input class="dataGive__list__inputText"　type="text" v-model.trim="p_name" name="productName" placeholder="商品名称を入力" autocomplete="off"></li>
           <li><span class="dataGive__list__header">詳細</span><input class="dataGive__list__inputText"　type="text" v-model.trim="p_detail" name="productDetail" placeholder="商品の詳細を入力" autocomplete="off"></li>
           <li><span class="dataGive__list__header">金額</span><input class="dataGive__list__inputText"　type="number" v-model.trim="p_price" name="productPrice" placeholder="金額は1円以上の数値を入力" autocomplete="off"></li>
@@ -425,17 +432,23 @@ export default {
 
         > span {
           display: inline-block;
-          text-align: center;
-          flex-basis: 15%;
+          text-align: left;
+          flex-basis: 25%;
         }
 
-        > input {
+        > select {
+          appearance: auto;
+          background-color: #f0f0f0;
+          cursor: pointer;
+        }
+
+        > select, > input {
           border: 1px solid #bbb;
           border-radius: 5px;
-          flex-basis: 80%;
+          flex-basis: 75%;
         }
 
-        > span, > input { padding: 10px; }
+        > span, > select, > input { padding: 10px; }
       }
     }
 
