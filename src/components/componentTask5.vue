@@ -1,46 +1,53 @@
 <template>
-  <div class="funcPropGiveArea">
-    <div class="dataGive">
-      <div class="dataGive__header">データ追加</div>
-      <div class="dataGive__body">
-        <ul class="dataGive__body__list">
+  <div class="funcCategoryGiveArea">
+    <div class="categoryGive">
+      <div class="categoryGive__header">データ追加</div>
+      <div class="categoryGive__body">
+        <ul class="categoryGive__body__list">
           <li>
-            <span class="dataGive__list__header">カテゴリ</span>
-            <select class="dataGive__list__inputOption">
+            <span class="categoryGive__list__header">カテゴリ</span>
+            <select class="categoryGive__list__inputOption">
               <option>カテゴリ１</option>
               <option>カテゴリ２</option>
             </select>
           </li>
-          <li><span class="dataGive__list__header">商品名</span><input class="dataGive__list__inputText"　type="text" v-model.trim="p_name" name="productName" placeholder="商品名称を入力" autocomplete="off"></li>
-          <li><span class="dataGive__list__header">詳細</span><input class="dataGive__list__inputText"　type="text" v-model.trim="p_detail" name="productDetail" placeholder="商品の詳細を入力" autocomplete="off"></li>
-          <li><span class="dataGive__list__header">金額</span><input class="dataGive__list__inputText"　type="number" v-model.trim="p_price" name="productPrice" placeholder="金額は1円以上の数値を入力" autocomplete="off"></li>
+          <li>
+            <span class="categoryGive__list__header">商品名</span>
+            <input class="categoryGive__list__inputText"　type="text" v-model.trim="p_name" name="productName" placeholder="商品名称を入力" autocomplete="off">
+          </li>
+          <li>
+            <span class="categoryGive__list__header">詳細</span>
+            <input class="categoryGive__list__inputText"　type="text" v-model.trim="p_detail" name="productDetail" placeholder="商品の詳細を入力" autocomplete="off">
+          </li>
+          <li>
+            <span class="categoryGive__list__header">金額</span>
+            <input class="categoryGive__list__inputText"　type="number" v-model.trim="p_price" name="productPrice" placeholder="金額は1円以上の数値を入力" autocomplete="off">
+          </li>
         </ul>
-        <div class="dataGive__body__append" @click="onClickDataAppend">追加</div>
+        <div class="categoryGive__body__append" @click="onClickDataAppend">追加</div>
       </div>
     </div>
 
-    <div class="dataProduct" v-if="flag.product">
-      <div class="dataProduct__tab">
-        <div class="dataProduct__tab__text is_active">カテゴリー1</div>
-        <div class="dataProduct__tab__text">カテゴリー2</div>
+    <div class="categoryProduct" v-if="flag.product">
+      <div class="categoryProduct__tab">
+        <div class="categoryProduct__tab__text is_active">カテゴリー1</div>
+        <div class="categoryProduct__tab__text">カテゴリー2</div>
       </div>
-      <ol class="dataProduct__list">
+      <ol class="categoryProduct__list">
         <!-- データ追加した商品一覧を追加した数分カード表示する -->
         <task5Card v-for="(product, key) in products" :key="product.id" :product="product" @add="onClickCalc(key)" @del="onClickListDelete(key)" />
       </ol>
     </div>
 
-    <div class="dataCartTable" v-if="flag.cart">
-      <!-- 一括操作 -->
-      <div class="dataCartTable__bulk" v-if="flag.bulk">
-        <div class="dataCartTable__bulk__edit" @click="onClickBulkEdit">一括編集</div>
-        <div class="dataCartTable__bulk__delete" @click="onClickBulkDel">一括削除</div>
+    <!-- <div class="categoryTable" v-if="flag.cart">
+      <div class="categoryTable__bulk" v-if="flag.bulk">
+        <div class="categoryTable__bulk__edit" @click="onClickBulkEdit">一括編集</div>
+        <div class="categoryTable__bulk__delete" @click="onClickBulkDel">一括削除</div>
       </div>
 
-      <table class="dataCartTable__body">
-        <!-- テーブル見出し -->
-        <tr class="dataCartTable__header">
-          <th class="dataCartTable__header__chk"><input type="checkbox" v-model="flag.checkAll" @change="onAllChecked"></th>
+      <table class="categoryTable__body">
+        <tr class="categoryTable__header">
+          <th class="categoryTable__header__chk"><input type="checkbox" v-model="flag.checkAll" @change="onAllChecked"></th>
           <th>商品名</th>
           <th>数量<i class="fas fa-sort" @click="tableSort('num')"></i></th>
           <th>単価<i class="fas fa-sort" @click="tableSort('price')"></i></th>
@@ -48,22 +55,20 @@
           <th>操作</th>
         </tr>
 
-        <!-- カートに追加した商品の一覧と金額合計表示 -->
         <task5TableList v-for="(cart, key) in carts" :key="cart.id" :cart="cart" :checkAll="flag.checkAll" @chkboxSwitch="chkAllSwitch" @modalOpen="onClickModalOpen" @tableListDelete="onClickModalDelOpen" />
       </table>
 
-      <!-- 合計金額 -->
       <task5TableCalc :carts="carts" />
-    </div>
+    </div> -->
 
     <!-- モーダルウィンドウ（単体変更）起動 -->
-    <task5modalWindow v-if="flag.modal" :cartData="cartData" @changeNum="onChangeNum" @modalClose="onClickModalClose" />
+    <!-- <task5modalWindow v-if="flag.modal" :cartData="cartData" @changeNum="onChangeNum" @modalClose="onClickModalClose" /> -->
     <!-- モーダルウィンドウ（単体削除）起動 -->
-    <task5modalWindowDel v-if="flag.modalDel" :cartData="cartData" @onDelete="onListDelete" @modalClose="onClickModalClose" />
+    <!-- <task5modalWindowDel v-if="flag.modalDel" :cartData="cartData" @onDelete="onListDelete" @modalClose="onClickModalClose" /> -->
     <!-- モーダルウィンドウ（一括変更）起動 -->
-    <task5modalWindowBulk v-if="flag.modalBulk" @changeNumBulk="onChangeBulk" @modalClose="onClickModalClose" />
+    <!-- <task5modalWindowBulk v-if="flag.modalBulk" @changeNumBulk="onChangeBulk" @modalClose="onClickModalClose" /> -->
     <!-- モーダルウィンドウ（一括削除）起動 -->
-    <task5modalWindowBulkDel v-if="flag.modalBulkDel" :chkCarts="chkCarts" @onDeleteBulk="onListDeleteBulk" @modalClose="onClickModalClose" />
+    <!-- <task5modalWindowBulkDel v-if="flag.modalBulkDel" :chkCarts="chkCarts" @onDeleteBulk="onListDeleteBulk" @modalClose="onClickModalClose" /> -->
   </div>
 </template>
 
@@ -73,17 +78,17 @@ import task5TableList from "./task5component/tableList";
 import task5TableCalc from "./task5component/tableCalc";
 
 // モーダルウィンドウ
-import task5modalWindow from "./task5component/modalWindow";
-import task5modalWindowDel from "./task5component/modalWindowDel";
-import task5modalWindowBulk from "./task5component/modalWindowBulk";
-import task5modalWindowBulkDel from "./task5component/modalWindowBulkDel";
+// import task5modalWindow from "./task5component/modalWindow";
+// import task5modalWindowDel from "./task5component/modalWindowDel";
+// import task5modalWindowBulk from "./task5component/modalWindowBulk";
+// import task5modalWindowBulkDel from "./task5component/modalWindowBulkDel";
 
 export default {
   name: 'componentTask5',
   components: {
     task5Card, task5TableList, task5TableCalc,
-    task5modalWindow, task5modalWindowDel,
-    task5modalWindowBulk, task5modalWindowBulkDel,
+    // task5modalWindow, task5modalWindowDel,
+    // task5modalWindowBulk, task5modalWindowBulkDel,
   },
   data: function() {
     return {
@@ -172,77 +177,77 @@ export default {
     },
 
     // AddtoCartボタン押下時
-    onClickCalc: function(key) {
-      // カートエリアが非表示であれば表示させる
-      !this.flag.cart ? this.flag.cart = true : '';
+    // onClickCalc: function(key) {
+    //   // カートエリアが非表示であれば表示させる
+    //   !this.flag.cart ? this.flag.cart = true : '';
 
-      // 入力内容をオブジェクト（カート）へ格納
-      this.cartValue = {
-        id: this.products[key].id,
-        name: this.products[key].name,
-        price: this.products[key].price,
-        num: this.products[key].num,
-        chk: false,
-      }
+    //   // 入力内容をオブジェクト（カート）へ格納
+    //   this.cartValue = {
+    //     id: this.products[key].id,
+    //     name: this.products[key].name,
+    //     price: this.products[key].price,
+    //     num: this.products[key].num,
+    //     chk: false,
+    //   }
 
-      // 同一IDの商品（＝一度カートへ追加済み）があった場合、
-      // 配列への追加自体は行わない代わりに注文数量へ可算(＋１)する
-      for(let i=0; i<this.carts.length; i++) {
-        if(this.carts[i].id === this.cartValue.id) {
-          this.carts[i].num += 1;
-          this.duplicate = true;
-        }
-      }
+    //   // 同一IDの商品（＝一度カートへ追加済み）があった場合、
+    //   // 配列への追加自体は行わない代わりに注文数量へ可算(＋１)する
+    //   for(let i=0; i<this.carts.length; i++) {
+    //     if(this.carts[i].id === this.cartValue.id) {
+    //       this.carts[i].num += 1;
+    //       this.duplicate = true;
+    //     }
+    //   }
 
-      // カート一覧へ追加済みでない場合
-      if(!this.duplicate) {
-        this.carts.push(this.cartValue);
-        return;
-      }
+    //   // カート一覧へ追加済みでない場合
+    //   if(!this.duplicate) {
+    //     this.carts.push(this.cartValue);
+    //     return;
+    //   }
 
-      // 重複フラグ解除
-      this.duplicate = false;
-    },
+    //   // 重複フラグ解除
+    //   this.duplicate = false;
+    // },
 
-    onAllChecked: function() {
-      // 全チェック欄のチェックが付いている
-      if(this.flag.checkAll) {
-        for(let i=0; i<this.carts.length; i++) { this.carts[i].chk = true; }  // 各ボックスのチェックを入れる
-        this.flag.bulk = true;  // 一括操作の項目を表示させる
+    // onAllChecked: function() {
+    //   // 全チェック欄のチェックが付いている
+    //   if(this.flag.checkAll) {
+    //     for(let i=0; i<this.carts.length; i++) { this.carts[i].chk = true; }  // 各ボックスのチェックを入れる
+    //     this.flag.bulk = true;  // 一括操作の項目を表示させる
 
-        return; // 以降は実施する必要がないので処理を抜ける
-      }
+    //     return; // 以降は実施する必要がないので処理を抜ける
+    //   }
 
-      // 上記if文をスルーした為、全チェック欄のチェックが存在しなかった
-      for(let i=0; i<this.carts.length; i++) { this.carts[i].chk = false; } // 各ボックスのチェックを外す
-      this.flag.bulk = false; // 一括操作の項目を非表示とする
-    },
+    //   // 上記if文をスルーした為、全チェック欄のチェックが存在しなかった
+    //   for(let i=0; i<this.carts.length; i++) { this.carts[i].chk = false; } // 各ボックスのチェックを外す
+    //   this.flag.bulk = false; // 一括操作の項目を非表示とする
+    // },
 
-    chkAllSwitch: function() {
-      // カート一覧の各チェックボックスが「１つでもチェック済み」であれば、一括操作の項目を表示させる
-      for(let i=0; i<this.carts.length; i++) {
-        if(this.carts[i].chk) {
-          this.flag.bulk = true;
-          break;  // チェック済みの項目が見つかったので、ループを抜ける
-        }
+    // chkAllSwitch: function() {
+    //   // カート一覧の各チェックボックスが「１つでもチェック済み」であれば、一括操作の項目を表示させる
+    //   for(let i=0; i<this.carts.length; i++) {
+    //     if(this.carts[i].chk) {
+    //       this.flag.bulk = true;
+    //       break;  // チェック済みの項目が見つかったので、ループを抜ける
+    //     }
 
-        this.flag.bulk = false; // チェック済みの項目が存在しなかったので、一括操作の項目を非表示とする
-      }
+    //     this.flag.bulk = false; // チェック済みの項目が存在しなかったので、一括操作の項目を非表示とする
+    //   }
 
-      // カート一覧の各チェックボックスが「１つでも外れたら」全チェックボックスもチェックを外す
-      for(let i=0; i<this.carts.length; i++) {
-        if(!this.carts[i].chk) {
-          this.flag.checkAll = false;
-          return; // チェックが付いていない箇所をこの時点で発見できた。以降は必要ないので処理終了
-        }
-      }
+    //   // カート一覧の各チェックボックスが「１つでも外れたら」全チェックボックスもチェックを外す
+    //   for(let i=0; i<this.carts.length; i++) {
+    //     if(!this.carts[i].chk) {
+    //       this.flag.checkAll = false;
+    //       return; // チェックが付いていない箇所をこの時点で発見できた。以降は必要ないので処理終了
+    //     }
+    //   }
 
-      // 上記ループを何事もなく抜けたということは、全てチェックがついていたということなので全チェックを付与する
-      this.flag.checkAll = true;
+    //   // 上記ループを何事もなく抜けたということは、全てチェックがついていたということなので全チェックを付与する
+    //   this.flag.checkAll = true;
 
-      // 一括操作の項目を表示させる
-      this.flag.bulk = true;
-    },
+    //   // 一括操作の項目を表示させる
+    //   this.flag.bulk = true;
+    // },
 
     // Deleteボタン押下時：登録した各商品の一つを削除する
     onClickListDelete: function(num) {
@@ -399,7 +404,7 @@ export default {
 </script>
 
 <style lang="scss">
-.dataGive {
+.categoryGive {
   border: 1px solid #bbb;
   border-radius: 5px;
   margin-bottom: 30px;
@@ -435,7 +440,7 @@ export default {
 
         > select {
           appearance: auto;
-          background-color: #fdd7dd;
+          background-color: #fdd;
           cursor: pointer;
         }
 
@@ -463,15 +468,18 @@ export default {
   }
 }
 
-.dataProduct {
+.categoryProduct {
   background-color: #f0f0f0;
+  border: 1px solid #dfdfdf;
+  border-radius: 5px;
   margin-bottom: 30px;
-  padding: 25px;
+  padding-top: 25px;
   width: 800px !important;
 
   &__tab {
     display: flex;
     flex-flow: row wrap;
+    padding: 0 20px;
 
     &__text {
       font-size: 14px;
@@ -499,7 +507,7 @@ export default {
   }
 }
 
-.dataCartTable {
+.categoryTable {
   width: 900px !important;
 
   &__bulk {

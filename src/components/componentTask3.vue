@@ -32,41 +32,28 @@ export default {
   name: 'componentTask3',
   data: function() {
     return {
-      // コメント投稿・検索・削除
       commentText: '',
       searchText: '',
-
       commentValues: [],
       commentFilters: [],
     }
   },
   methods: {
-    // 投稿
     commentPost: function() {
-      // コメント入力欄に1字以上テキストが入っているか
       if(this.commentText !== '') {
-        // テキストを配列へ追加後、入力欄を初期化する
         this.commentValues.push(this.commentText);
         this.commentText = '';
       }
     },
-
-    // 検索キーワードと部分一致するコメントを洗い出して一覧へ表示させる
-    // 呼び出し元：computedプロパティ内のcommentFilter関数
     findByComment: function(comments, search) {
       return comments.filter(function(comment) {
-        // 部分一致のワードを捜索、なお入力がない場合はコメント全件表示させる
         return (comment.indexOf(search) !== -1 || search === '')
       })
     },
-
-    // 削除
     commentDelete: function(num) { this.commentValues.splice(num, 1); },
   },
   computed: {
-    // コメントフィルター
     commentFilter: function() {
-      // コメント一覧と検索ワードの2点を引数に「method」プロパティ内の「findByComment」メソッドを実行
       return this.findByComment(this.commentValues, this.searchText)
     },
   },
@@ -74,9 +61,6 @@ export default {
 </script>
 
 <style lang="scss">
-/*---------------------------------------
-  「コメント投稿」エリアのスタイル定義
----------------------------------------*/
 .funcCommentArea {
   margin: 0 auto;
   width: 750px;
@@ -156,7 +140,6 @@ export default {
 
   &__inputText,
   &__executionIcon {
-    // ボタンとテキストのスタイルを一旦打ち消す
     appearance: none;
     background-color: transparent;
     border: 0;
@@ -164,8 +147,6 @@ export default {
     box-sizing: content-box;
     color: inherit;
     padding: 0;
-
-    // 共通スタイル指定
     border: 1px solid #bbb;
     font-size: 16px;
     line-height: 1.2;

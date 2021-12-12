@@ -1,46 +1,47 @@
 <template>
   <!-- #app start -->
   <div id="app">
-    <!-- reset.css_destyle CDN読み込み -->
+    <!-- CDN読み込み -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/destyle.css@1.0.15/destyle.css">
-
-    <!-- FontAwesome CDN読み込み -->
     <link rel ="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
 
-    <!-- 完了した課題分のアコーディオン開閉 -->
-    <div class="taskToggle" @click="toggleAccordion">タスク完了分（クリックで開閉）<i class="fas fa-angle-double-down"></i></div>
-
     <!-- 完了した課題を格納する -->
-    <div class="accordionTask" :class="{ is_display: isDisplay.task }">
-      <div class="funcWrapper">
-        <div class="funcWrapper__header">①数値の加算・減算・初期化</div>
-        <!-- 加算・減算　 -->
-        <componentTask1 />
-      </div>
+    <div class="complateTask">
+      <div class="taskToggle" @click="toggleAccordion">タスク完了分（クリックで開閉）<i class="fas fa-angle-double-down"></i></div>
+      <div class="accordionTask" :class="{ is_display: isDisplay.task }">
+        <div class="funcWrapper">
+          <div class="funcWrapper__header">①数値の加算・減算・初期化</div>
+          <!-- 加算・減算　 -->
+          <componentTask1 />
+        </div>
 
-      <div class="funcWrapper">
-        <div class="funcWrapper__header">②リスト生成・初期化</div>
-        <!-- リスト生成　-->
-        <componentTask2 />
-      </div>
+        <div class="funcWrapper">
+          <div class="funcWrapper__header">②リスト生成・初期化</div>
+          <!-- リスト生成　-->
+          <componentTask2 />
+        </div>
 
-      <div class="funcWrapper">
-        <div class="funcWrapper__header">③コメントの投稿／削除・検索</div>
-        <!-- コメント投稿 -->
-        <componentTask3 />
-      </div>
+        <div class="funcWrapper">
+          <div class="funcWrapper__header">③コメントの投稿／削除・検索</div>
+          <!-- コメント投稿 -->
+          <componentTask3 />
+        </div>
 
-      <div class="funcWrapper">
-        <div class="funcWrapper__header">④コンポーネントへ値（プロパティ）引き渡し</div>
-        <!-- 子コンポーネント引き継ぎ -->
-        <componentTask4 />
+        <div class="funcWrapper">
+          <div class="funcWrapper__header">④コンポーネントへ値（プロパティ）引き渡し</div>
+          <!-- 子コンポーネント引き継ぎ -->
+          <componentTask4 />
+        </div>
       </div>
     </div>
 
-    <div class="funcWrapper">
-      <div class="funcWrapper__header">⑤カテゴリー分け</div>
-      <!-- 子コンポーネント引き継ぎ -->
-      <componentTask5 />
+    <!-- 進行中の課題を格納する -->
+    <div class="progressTask">
+      <div class="funcWrapper">
+        <div class="funcWrapper__header">⑤カテゴリー分け</div>
+        <!-- カテゴリー分け -->
+        <componentTask5 />
+      </div>
     </div>
 
   </div>
@@ -75,19 +76,11 @@ export default {
   methods: {
     // 課題（完了分）の格納
     toggleAccordion: function() { this.isDisplay.task = !this.isDisplay.task; },
-
-    // 商品数変更
-    onChangeNum: function(number) {
-      console.log(number);
-      this.changeNum = number;
-    },
   },
 }
 </script>
 
 <style lang="scss">
-
-// Vueインスタンスのスタイル定義
 #app {
   color: #2c3e50;
   font-size: 20px;
@@ -102,32 +95,30 @@ export default {
   to { opacity: 1; }
 }
 
-// 完了分課題収納用のスタイル定義
 .taskToggle {
   background-color: #2c3e50;
   color: #fff;
   cursor: pointer;
   text-align: center;
   margin: 0 auto;
-  margin-bottom: 40px;
   padding: 15px 0;
-  width: 900px;
+  width: 980px;
 }
 
 .accordionTask {
   animation-name: displayToggleAnime;
   animation-duration: 1s;
-
   display: none;
   &.is_display { display: block; }
+  > div { background-color: #f0fafa; }
 }
 
 // 各セクションの入れ物（.funcWrapper）のスタイル定義
 .funcWrapper {
   margin: 0 auto;
+  padding: 25px;
   padding-bottom: 60px;
-  margin: 0 auto;
-  width: 900px;
+  width: 980px;
 
   > div {
     > div {

@@ -17,23 +17,17 @@ export default {
   name: 'componentTask1',
   data: function() {
     return {
-      calc: 0, // 演算値（初期値：0）
+      calc: 0,
     }
   },
   methods: {
-    // プラス or マイナスボタン押下時 => calcプロパティに対して加算or減算の処理を行なう
     clickCalc: function(num) { this.calc += num; },
-
-    // 初期化ボタン押下時の処理 => calcプロパティを初期値に設定する
     calcInit: function() { this.calc = 0; },
   },
 }
 </script>
 
 <style lang="scss">
-/*---------------------------------------
-  「計算処理」エリアのスタイル定義
----------------------------------------*/
 .funcCalcArea {
   > div {
     display: flex;

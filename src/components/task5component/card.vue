@@ -1,14 +1,14 @@
 <template>
   <li>
-    <div class="dataProduct__image">Dummy</div>
-    <div class="dataProduct__body">
+    <div class="categoryProduct__image">Dummy</div>
+    <div class="categoryProduct__body">
       <!-- 親コンポーネントからデータ受領 -->
-      <div class="dataProduct__name">{{ list.name }}</div>
-      <div class="dataProduct__detail">{{ list.detail }}</div>
-      <div class="dataProduct__price">{{ Number(list.price).toLocaleString() }}</div>
-      <div class="dataProduct__button">
-        <div class="dataProduct__add" @click="$emit('add')">Add to Cart</div>
-        <div class="dataProduct__delete" @click="$emit('del')">Delete</div>
+      <div class="categoryProduct__name">{{ list.name }}</div>
+      <div class="categoryProduct__detail">{{ list.detail }}</div>
+      <div class="categoryProduct__price">{{ Number(list.price).toLocaleString() }}</div>
+      <div class="categoryProduct__button">
+        <div class="categoryProduct__add" @click="$emit('add')">Add to Cart</div>
+        <div class="categoryProduct__delete" @click="$emit('del')">Delete</div>
       </div>
     </div>
   </li>
@@ -22,7 +22,7 @@ export default {
   },
   data: function() {
     return {
-      // componentTask4.vueから渡ってきた配列を格納
+      // componentTask5.vueから渡ってきた配列を格納
       list: this.product,
     }
   },
@@ -30,7 +30,7 @@ export default {
 </script>
 
 <style lang="scss">
-.dataProduct {
+.categoryProduct {
   &__list {
     align-items: flex-start;
 
