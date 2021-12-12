@@ -4,6 +4,13 @@
       <div class="dataGive__header">データ追加</div>
       <div class="dataGive__body">
         <ul class="dataGive__body__list">
+          <li>
+            <span class="dataGive__list__header">カテゴリ</span>
+            <select class="dataGive__list__inputOption">
+              <option>カテゴリ１</option>
+              <option>カテゴリ２</option>
+            </select>
+          </li>
           <li><span class="dataGive__list__header">商品名</span><input class="dataGive__list__inputText"　type="text" v-model.trim="p_name" name="productName" placeholder="商品名称を入力" autocomplete="off"></li>
           <li><span class="dataGive__list__header">詳細</span><input class="dataGive__list__inputText"　type="text" v-model.trim="p_detail" name="productDetail" placeholder="商品の詳細を入力" autocomplete="off"></li>
           <li><span class="dataGive__list__header">金額</span><input class="dataGive__list__inputText"　type="number" v-model.trim="p_price" name="productPrice" placeholder="金額は1円以上の数値を入力" autocomplete="off"></li>
@@ -13,9 +20,13 @@
     </div>
 
     <div class="dataProduct" v-if="flag.product">
+      <div class="dataProduct__tab">
+        <div class="dataProduct__tab__text is_active">カテゴリー1</div>
+        <div class="dataProduct__tab__text">カテゴリー2</div>
+      </div>
       <ol class="dataProduct__list">
         <!-- データ追加した商品一覧を追加した数分カード表示する -->
-        <task4Card v-for="(product, key) in products" :key="product.id" :product="product" @add="onClickCalc(key)" @del="onClickListDelete(key)" />
+        <task5Card v-for="(product, key) in products" :key="product.id" :product="product" @add="onClickCalc(key)" @del="onClickListDelete(key)" />
       </ol>
     </div>
 
@@ -38,41 +49,41 @@
         </tr>
 
         <!-- カートに追加した商品の一覧と金額合計表示 -->
-        <task4TableList v-for="(cart, key) in carts" :key="cart.id" :cart="cart" :checkAll="flag.checkAll" @chkboxSwitch="chkAllSwitch" @modalOpen="onClickModalOpen" @tableListDelete="onClickModalDelOpen" />
+        <task5TableList v-for="(cart, key) in carts" :key="cart.id" :cart="cart" :checkAll="flag.checkAll" @chkboxSwitch="chkAllSwitch" @modalOpen="onClickModalOpen" @tableListDelete="onClickModalDelOpen" />
       </table>
 
       <!-- 合計金額 -->
-      <task4TableCalc :carts="carts" />
+      <task5TableCalc :carts="carts" />
     </div>
 
     <!-- モーダルウィンドウ（単体変更）起動 -->
-    <task4modalWindow v-if="flag.modal" :cartData="cartData" @changeNum="onChangeNum" @modalClose="onClickModalClose" />
+    <task5modalWindow v-if="flag.modal" :cartData="cartData" @changeNum="onChangeNum" @modalClose="onClickModalClose" />
     <!-- モーダルウィンドウ（単体削除）起動 -->
-    <task4modalWindowDel v-if="flag.modalDel" :cartData="cartData" @onDelete="onListDelete" @modalClose="onClickModalClose" />
+    <task5modalWindowDel v-if="flag.modalDel" :cartData="cartData" @onDelete="onListDelete" @modalClose="onClickModalClose" />
     <!-- モーダルウィンドウ（一括変更）起動 -->
-    <task4modalWindowBulk v-if="flag.modalBulk" @changeNumBulk="onChangeBulk" @modalClose="onClickModalClose" />
+    <task5modalWindowBulk v-if="flag.modalBulk" @changeNumBulk="onChangeBulk" @modalClose="onClickModalClose" />
     <!-- モーダルウィンドウ（一括削除）起動 -->
-    <task4modalWindowBulkDel v-if="flag.modalBulkDel" :chkCarts="chkCarts" @onDeleteBulk="onListDeleteBulk" @modalClose="onClickModalClose" />
+    <task5modalWindowBulkDel v-if="flag.modalBulkDel" :chkCarts="chkCarts" @onDeleteBulk="onListDeleteBulk" @modalClose="onClickModalClose" />
   </div>
 </template>
 
 <script>
-import task4Card from "./task4component/card";
-import task4TableList from "./task4component/tableList";
-import task4TableCalc from "./task4component/tableCalc";
+import task5Card from "./task5component/card";
+import task5TableList from "./task5component/tableList";
+import task5TableCalc from "./task5component/tableCalc";
 
 // モーダルウィンドウ
-import task4modalWindow from "./task4component/modalWindow";
-import task4modalWindowDel from "./task4component/modalWindowDel";
-import task4modalWindowBulk from "./task4component/modalWindowBulk";
-import task4modalWindowBulkDel from "./task4component/modalWindowBulkDel";
+import task5modalWindow from "./task5component/modalWindow";
+import task5modalWindowDel from "./task5component/modalWindowDel";
+import task5modalWindowBulk from "./task5component/modalWindowBulk";
+import task5modalWindowBulkDel from "./task5component/modalWindowBulkDel";
 
 export default {
-  name: 'componentTask4',
+  name: 'componentTask5',
   components: {
-    task4Card, task4TableList, task4TableCalc,
-    task4modalWindow, task4modalWindowDel,
-    task4modalWindowBulk, task4modalWindowBulkDel,
+    task5Card, task5TableList, task5TableCalc,
+    task5modalWindow, task5modalWindowDel,
+    task5modalWindowBulk, task5modalWindowBulkDel,
   },
   data: function() {
     return {

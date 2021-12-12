@@ -29,12 +29,18 @@
         <!-- コメント投稿 -->
         <componentTask3 />
       </div>
+
+      <div class="funcWrapper">
+        <div class="funcWrapper__header">④コンポーネントへ値（プロパティ）引き渡し</div>
+        <!-- 子コンポーネント引き継ぎ -->
+        <componentTask4 />
+      </div>
     </div>
 
     <div class="funcWrapper">
-      <div class="funcWrapper__header">④コンポーネントへ値（プロパティ）引き渡し</div>
+      <div class="funcWrapper__header">⑤カテゴリー分け</div>
       <!-- 子コンポーネント引き継ぎ -->
-      <componentTask4 />
+      <componentTask5 />
     </div>
 
   </div>
@@ -48,12 +54,14 @@ import componentTask1 from "./components/componentTask1";
 import componentTask2 from "./components/componentTask2";
 import componentTask3 from "./components/componentTask3";
 import componentTask4 from "./components/componentTask4";
+import componentTask5 from "./components/componentTask5";
 
 export default {
   name: 'App',
   components: {
     componentTask1, componentTask2,
     componentTask3, componentTask4,
+    componentTask5,
   },
   data: function() {
     return {
@@ -61,13 +69,6 @@ export default {
       isDisplay: {
         // 完了分課題
         task: false,
-      },
-
-      // カート内の商品情報格納
-      cartData: {
-        name: '',
-        price: '',
-        num: 1,
       },
     }
   },
