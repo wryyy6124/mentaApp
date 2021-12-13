@@ -9,7 +9,7 @@
         <div class="modalWindowBulk__body__section">
           <div class="modalWindowBulk__body__wrapper">
             <div class="modalWindowBulk__body__box">
-              <div class="modalWindowBulk__body__number">個数：　<input type="number" v-model="num"></div>
+              <div class="modalWindowBulk__body__number">個数: <input type="number" v-model="num"></div>
               <div class="modalWindowBulk__body__button" @click="onChangeNumBulk">確定する</div>
             </div>
           </div>

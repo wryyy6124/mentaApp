@@ -9,9 +9,9 @@
             <div class="modalWindowDel__body__productImage">Dummy</div>
           </div>
           <div class="modalWindowDel__body__box">
-            <div class="modalWindowDel__body__productName">商品名：{{ info.name }}</div>
-            <div class="modalWindowDel__body__productPrice">単価：{{ amountDelimiter(info.price) }} 円</div>
-            <div class="modalWindowDel__body__number">個数：{{ info.num }}</div>
+            <div class="modalWindowDel__body__productName">商品名:{{ info.name }}</div>
+            <div class="modalWindowDel__body__productPrice">単価:{{ amountDelimiter(info.price) }} 円</div>
+            <div class="modalWindowDel__body__number">個数:{{ info.num }}</div>
             <div class="modalWindowDel__body__button" @click="onClickDelete">削除する</div>
           </div>
         </div>

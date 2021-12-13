@@ -4,9 +4,9 @@
       <div class="dataGive__header">データ追加</div>
       <div class="dataGive__body">
         <ul class="dataGive__body__list">
-          <li><span class="dataGive__list__header">商品名</span><input class="dataGive__list__inputText"　type="text" v-model.trim="p_name" name="productName" placeholder="商品名称を入力" autocomplete="off"></li>
-          <li><span class="dataGive__list__header">詳細</span><input class="dataGive__list__inputText"　type="text" v-model.trim="p_detail" name="productDetail" placeholder="商品の詳細を入力" autocomplete="off"></li>
-          <li><span class="dataGive__list__header">金額</span><input class="dataGive__list__inputText"　type="number" v-model.trim="p_price" name="productPrice" placeholder="金額は1円以上の数値を入力" autocomplete="off"></li>
+          <li><span class="dataGive__list__header">商品名</span><input class="dataGive__list__inputText" type="text" v-model.trim="p_name" name="productName" placeholder="商品名称を入力" autocomplete="off"></li>
+          <li><span class="dataGive__list__header">詳細</span><input class="dataGive__list__inputText" type="text" v-model.trim="p_detail" name="productDetail" placeholder="商品の詳細を入力" autocomplete="off"></li>
+          <li><span class="dataGive__list__header">金額</span><input class="dataGive__list__inputText" type="number" v-model.trim="p_price" name="productPrice" placeholder="金額は1円以上の数値を入力" autocomplete="off"></li>
         </ul>
         <div class="dataGive__body__append" @click="onClickDataAppend">追加</div>
       </div>

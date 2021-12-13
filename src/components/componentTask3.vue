@@ -3,7 +3,7 @@
     <div class="commentPost">
       <div class="commentPost__header">コメント</div>
       <div class="commentPost__body">
-        <input class="commentPost__inputText"　type="text" v-model="commentText" name="Post" placeholder="コメントを入力してください">
+        <input class="commentPost__inputText" type="text" v-model="commentText" name="Post" placeholder="コメントを入力してください">
         <button class="commentPost__executionBtn" @click="commentPost">追加</button>
       </div>
     </div>

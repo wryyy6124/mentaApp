@@ -9,9 +9,9 @@
             <div class="modalWindow__body__productImage">Dummy</div>
           </div>
           <div class="modalWindow__body__box">
-            <div class="modalWindow__body__productName">商品名：{{ info.name }}</div>
-            <div class="modalWindow__body__productPrice">単価：{{ amountDelimiter(info.price) }} 円</div>
-            <div class="modalWindow__body__number">個数：<input type="number" v-model="info.num"></div>
+            <div class="modalWindow__body__productName">商品名:{{ info.name }}</div>
+            <div class="modalWindow__body__productPrice">単価:{{ amountDelimiter(info.price) }} 円</div>
+            <div class="modalWindow__body__number">個数:<input type="number" v-model="info.num"></div>
             <div class="modalWindow__body__button" @click="onChangeNum">確定する</div>
           </div>
         </div>
